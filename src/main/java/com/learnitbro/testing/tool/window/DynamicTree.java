@@ -61,7 +61,7 @@ public class DynamicTree extends JPanel {
 			DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
 			MutableTreeNode parent = (MutableTreeNode) (currentNode.getParent());
 
-			String parentName = null;
+			int parentIndex = - 1;
 
 			for (int x = 0; x < MyTreeNode.all.length(); x++) {
 				JSONObject value = (JSONObject) MyTreeNode.all.get(x);
@@ -70,6 +70,7 @@ public class DynamicTree extends JPanel {
 						.equalsIgnoreCase(value.getString("parentName").toString());
 
 				boolean isIndexMatch = currentNode.getParent().getIndex(currentNode) == value.getInt("index");
+				boolean isParentIndexMatch = currentNode.getParent().getParent().getIndex(currentNode.getParent()) == value.getInt("parentIndex");
 
 				boolean isGrandParentNameMatch = false;
 				if (value.has("grandparentName")) {
@@ -77,9 +78,9 @@ public class DynamicTree extends JPanel {
 							.equalsIgnoreCase(value.getString("grandparentName").toString());
 				}
 
-				if (isNameMatch && isParentNameMatch && isGrandParentNameMatch && isIndexMatch) {
+				if (isNameMatch && isParentNameMatch && isGrandParentNameMatch && isIndexMatch && isParentIndexMatch) {
 					MyTreeNode.all.remove(x);
-					parentName = value.getString("parentName").toString();
+					parentIndex = value.getInt("parentIndex");
 					System.out.println("Removing this node : " + currentNode);
 				}
 			}
@@ -89,7 +90,7 @@ public class DynamicTree extends JPanel {
 
 			for (int y = 0; y < MyTreeNode.all.length(); y++) {
 				JSONObject value = (JSONObject) MyTreeNode.all.get(y);
-				if (parentName.equalsIgnoreCase(value.getString("parentName")))
+				if (parentIndex ==  value.getInt("parentIndex"))
 					value.put("index", y);
 			}
 

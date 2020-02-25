@@ -82,11 +82,13 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 			String name = item.getString("name");
 			String parentName = item.getString("parentName");
 			int index = item.getInt("index");
+			int parentIndex = item.getInt("parentIndex");
 
 			boolean isUuidMatch = uuid.equalsIgnoreCase(jTextFieldName);
 			boolean isNameMatch = name.equalsIgnoreCase(node.getUserObject().toString());
 			boolean isParentNameMatch = parentName.equalsIgnoreCase(node.getParent().toString());
 			boolean isIndexMatch = index == node.getParent().getIndex(node);
+			boolean isParentIndexMatch = parentIndex == node.getParent().getParent().getIndex(node.getParent());
 
 			String grandparentName = null;
 			boolean isGrandParentNameMatch = false;
@@ -95,7 +97,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 				isGrandParentNameMatch = grandparentName.equalsIgnoreCase(node.getParent().getParent().toString());
 			} 
 			
-			if (isUuidMatch && isNameMatch && isParentNameMatch && isGrandParentNameMatch && isIndexMatch)
+			if (isUuidMatch && isNameMatch && isParentNameMatch && isGrandParentNameMatch && isIndexMatch && isParentIndexMatch)
 				return true;
 		}
 
@@ -134,6 +136,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		jo.put("parentName", getParentName());
 		jo.put("grandparentName", getGrandParentName());
 		jo.put("index", node.getParent().getIndex(node));
+		jo.put("parentIndex", node.getParent().getParent().getIndex(node.getParent()));
 
 		all.put(jo);
 //		System.out.println(all.toString(1));
