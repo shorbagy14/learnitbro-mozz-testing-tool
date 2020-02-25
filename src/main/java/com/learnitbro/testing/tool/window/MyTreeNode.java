@@ -81,15 +81,20 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 			String uuid = item.getString("uuid");
 			String name = item.getString("name");
 			String parentName = item.getString("parentName");
-			String grandparentName = item.getString("grandparentName");
 			int index = item.getInt("index");
 
 			boolean isUuidMatch = uuid.equalsIgnoreCase(jTextFieldName);
 			boolean isNameMatch = name.equalsIgnoreCase(node.getUserObject().toString());
 			boolean isParentNameMatch = parentName.equalsIgnoreCase(node.getParent().toString());
-			boolean isGrandParentNameMatch = grandparentName.equalsIgnoreCase(node.getParent().getParent().toString());
 			boolean isIndexMatch = index == node.getParent().getIndex(node);
 
+			String grandparentName = null;
+			boolean isGrandParentNameMatch = false;
+			if (item.has("grandparentName")) {
+				grandparentName = item.getString("grandparentName");
+				isGrandParentNameMatch = grandparentName.equalsIgnoreCase(node.getParent().getParent().toString());
+			} 
+			
 			if (isUuidMatch && isNameMatch && isParentNameMatch && isGrandParentNameMatch && isIndexMatch)
 				return true;
 		}
@@ -131,7 +136,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		jo.put("index", node.getParent().getIndex(node));
 
 		all.put(jo);
-		System.out.println(all.toString());
+//		System.out.println(all.toString(1));
 		json.write(new File(file.getUserDir() + "/object.json"), all.toString(1));
 	}
 }

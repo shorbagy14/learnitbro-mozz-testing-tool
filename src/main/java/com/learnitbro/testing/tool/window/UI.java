@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.UUID;
 
 import javax.swing.JFrame;
@@ -29,6 +28,7 @@ import javax.swing.tree.TreeNode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.learnitbro.testing.tool.exceptions.ReadFileException;
 import com.learnitbro.testing.tool.file.FileHandler;
 import com.learnitbro.testing.tool.file.JSONHandler;
 import com.learnitbro.testing.tool.run.Control;
@@ -101,30 +101,28 @@ public class UI extends JPanel implements ActionListener {
 		myNode.setUUID(uuid.toString());
 		myNode.setName(name);
 		myNode.setParentName(node.getParent().toString());
+		if (node.getParent().getParent() != null)
+			myNode.setGrandParentName(node.getParent().getParent().toString());
 
 		if ("click".equalsIgnoreCase(name)) {
-			myNode.setGrandParentName(node.getParent().getParent().toString());
 			// Xpath
 			lbl_01.setText("Click Element Xpath");
 			generalPanel.add(tf_01);
 			generalPanel.add(lbl_01);
 			myNode.build();
 		} else if ("link".equalsIgnoreCase(name)) {
-			myNode.setGrandParentName(node.getParent().getParent().toString());
 			// Link
 			lbl_01.setText("Link");
 			generalPanel.add(tf_01);
 			generalPanel.add(lbl_01);
 			myNode.build();
 		} else if ("clear".equalsIgnoreCase(name)) {
-			myNode.setGrandParentName(node.getParent().getParent().toString());
 			// Xpath
 			lbl_01.setText("Clear Element Xpath");
 			generalPanel.add(tf_01);
 			generalPanel.add(lbl_01);
 			myNode.build();
 		} else if ("upload".equalsIgnoreCase(name)) {
-			myNode.setGrandParentName(node.getParent().getParent().toString());
 			// Xpath
 			lbl_01.setText("Upload Element Xpath");
 			generalPanel.add(tf_01);
@@ -135,7 +133,6 @@ public class UI extends JPanel implements ActionListener {
 			generalPanel.add(lbl_02);
 			myNode.build();
 		} else if ("send keys".equalsIgnoreCase(name)) {
-			myNode.setGrandParentName(node.getParent().getParent().toString());
 			// Xpath
 			lbl_01.setText("Send Keys Element Xpath");
 			generalPanel.add(tf_01);
@@ -353,8 +350,8 @@ public class UI extends JPanel implements ActionListener {
 					JSONHandler json = new JSONHandler();
 					FileHandler file = new FileHandler();
 					content = json.read(new File(file.getUserDir() + "/tree.json"));
-				} catch (IOException ex) {
-					ex.printStackTrace();
+				} catch (Exception ex) {
+					throw new ReadFileException("Can't read file", ex);
 				}
 				JSONObject obj = new JSONObject(content);
 				JSONArray category = (JSONArray) obj.get("children");
@@ -413,7 +410,7 @@ public class UI extends JPanel implements ActionListener {
 					for (Component item : UI.generalPanel.getComponents()) {
 						if (item.toString().contains("JTextField")) {
 							String name = ((JTextField) item).getName();
-							System.out.println(name);
+//							System.out.println(name);
 
 							if (myNode.isMatch(name)) {
 								((JTextField) item).setVisible(true);
@@ -483,4 +480,3 @@ public class UI extends JPanel implements ActionListener {
 		json.write(new File(file.getUserDir() + "/tree.json"), jsonString);
 	}
 }
-

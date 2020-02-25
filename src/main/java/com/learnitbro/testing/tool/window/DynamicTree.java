@@ -61,22 +61,37 @@ public class DynamicTree extends JPanel {
 			DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
 			MutableTreeNode parent = (MutableTreeNode) (currentNode.getParent());
 
+			String parentName = null;
+
 			for (int x = 0; x < MyTreeNode.all.length(); x++) {
 				JSONObject value = (JSONObject) MyTreeNode.all.get(x);
-				boolean isNameMatch = currentNode.toString().equalsIgnoreCase(value.get("name").toString());
+				boolean isNameMatch = currentNode.toString().equalsIgnoreCase(value.getString("name").toString());
 				boolean isParentNameMatch = currentNode.getParent().toString()
-						.equalsIgnoreCase(value.get("parentName").toString());
-				boolean isGrandParentNameMatch = currentNode.getParent().getParent().toString()
-						.equalsIgnoreCase(value.get("grandparentName").toString());
+						.equalsIgnoreCase(value.getString("parentName").toString());
 
-				if (isNameMatch && isParentNameMatch && isGrandParentNameMatch) {
+				boolean isIndexMatch = currentNode.getParent().getIndex(currentNode) == value.getInt("index");
+
+				boolean isGrandParentNameMatch = false;
+				if (value.has("grandparentName")) {
+					isGrandParentNameMatch = currentNode.getParent().getParent().toString()
+							.equalsIgnoreCase(value.getString("grandparentName").toString());
+				}
+
+				if (isNameMatch && isParentNameMatch && isGrandParentNameMatch && isIndexMatch) {
 					MyTreeNode.all.remove(x);
+					parentName = value.getString("parentName").toString();
 					System.out.println("Removing this node : " + currentNode);
 				}
 			}
 
 			JSONHandler json = new JSONHandler();
 			FileHandler file = new FileHandler();
+
+			for (int y = 0; y < MyTreeNode.all.length(); y++) {
+				JSONObject value = (JSONObject) MyTreeNode.all.get(y);
+				if (parentName.equalsIgnoreCase(value.getString("parentName")))
+					value.put("index", y);
+			}
 
 			System.out.println(MyTreeNode.all.toString());
 			json.write(new File(file.getUserDir() + "/object.json"), MyTreeNode.all.toString());
