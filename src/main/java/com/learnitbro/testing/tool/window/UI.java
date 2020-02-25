@@ -1,22 +1,16 @@
 package com.learnitbro.testing.tool.window;
 
-import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.UUID;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
 import javax.swing.SwingConstants;
 
 import java.awt.Color;
@@ -27,16 +21,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,10 +34,6 @@ import com.learnitbro.testing.tool.file.JSONHandler;
 import com.learnitbro.testing.tool.run.Control;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import javax.swing.JTextField;
 
 public class UI extends JPanel implements ActionListener {
@@ -61,7 +45,7 @@ public class UI extends JPanel implements ActionListener {
 	public JFrame frame;
 	private DynamicTree treePanel;
 
-	private JTextField textField_01, textField_02;
+	private JTextField tf_01, tf_02;
 
 	static JPanel generalPanel;
 
@@ -91,17 +75,17 @@ public class UI extends JPanel implements ActionListener {
 
 		UUID uuid = UUID.randomUUID();
 
-		textField_01 = new JTextField();
-		textField_01.setBounds(89, 213, 513, 35);
-		textField_01.setColumns(10);
-		textField_01.setName(uuid.toString());
-		textField_01.getDocument().putProperty("type", "value");
+		tf_01 = new JTextField();
+		tf_01.setBounds(89, 213, 513, 35);
+		tf_01.setColumns(10);
+		tf_01.setName(uuid.toString());
+		tf_01.getDocument().putProperty("type", "t1");
 
-		textField_02 = new JTextField();
-		textField_02.setBounds(89, 313, 513, 35);
-		textField_02.setColumns(10);
-		textField_02.setName(uuid.toString());
-		textField_02.getDocument().putProperty("type", "object");
+		tf_02 = new JTextField();
+		tf_02.setBounds(89, 313, 513, 35);
+		tf_02.setColumns(10);
+		tf_02.setName(uuid.toString());
+		tf_02.getDocument().putProperty("type", "t2");
 
 		JLabel lbl_01 = new JLabel();
 		lbl_01.setHorizontalAlignment(SwingConstants.CENTER);
@@ -122,43 +106,43 @@ public class UI extends JPanel implements ActionListener {
 			myNode.setGrandParentName(node.getParent().getParent().toString());
 			// Xpath
 			lbl_01.setText("Click Element Xpath");
-			generalPanel.add(textField_01);
+			generalPanel.add(tf_01);
 			generalPanel.add(lbl_01);
 			myNode.build();
 		} else if ("link".equalsIgnoreCase(name)) {
 			myNode.setGrandParentName(node.getParent().getParent().toString());
 			// Link
 			lbl_01.setText("Link");
-			generalPanel.add(textField_01);
+			generalPanel.add(tf_01);
 			generalPanel.add(lbl_01);
 			myNode.build();
 		} else if ("clear".equalsIgnoreCase(name)) {
 			myNode.setGrandParentName(node.getParent().getParent().toString());
 			// Xpath
 			lbl_01.setText("Clear Element Xpath");
-			generalPanel.add(textField_01);
+			generalPanel.add(tf_01);
 			generalPanel.add(lbl_01);
 			myNode.build();
 		} else if ("upload".equalsIgnoreCase(name)) {
 			myNode.setGrandParentName(node.getParent().getParent().toString());
 			// Xpath
 			lbl_01.setText("Upload Element Xpath");
-			generalPanel.add(textField_01);
+			generalPanel.add(tf_01);
 			generalPanel.add(lbl_01);
 			// File location
 			lbl_02.setText("File Location");
-			generalPanel.add(textField_02);
+			generalPanel.add(tf_02);
 			generalPanel.add(lbl_02);
 			myNode.build();
 		} else if ("send keys".equalsIgnoreCase(name)) {
 			myNode.setGrandParentName(node.getParent().getParent().toString());
 			// Xpath
 			lbl_01.setText("Send Keys Element Xpath");
-			generalPanel.add(textField_01);
+			generalPanel.add(tf_01);
 			generalPanel.add(lbl_01);
 			// Text to send
 			lbl_02.setText("Text To Type");
-			generalPanel.add(textField_02);
+			generalPanel.add(tf_02);
 			generalPanel.add(lbl_02);
 			myNode.build();
 		}
@@ -393,10 +377,10 @@ public class UI extends JPanel implements ActionListener {
 								JSONObject run = (JSONObject) input.get(i);
 								p3 = treePanel.addObject(p2, (String) run.get("userObject"));
 								addNode((String) run.get("userObject"), p3);
-								if (run.has("value"))
-									textField_01.setText((String) run.get("value"));
-								if (run.has("object"))
-									textField_02.setText((String) run.get("object"));
+								if (run.has("t1"))
+									tf_01.setText((String) run.get("t1"));
+								if (run.has("t2"))
+									tf_02.setText((String) run.get("t2"));
 							}
 						} catch (Exception ex) {
 							ex.printStackTrace();
@@ -407,29 +391,6 @@ public class UI extends JPanel implements ActionListener {
 		});
 
 		treePanel.getJTree().addMouseListener(mouseListener);
-//		treePanel.getTreeModel().addTreeModelListener(new TreeModelListener() {
-//
-//			@Override
-//			public void treeNodesChanged(TreeModelEvent e) {
-//				System.out.println("Tree Node Changed " + e.getTreePath());
-//			}
-//
-//			@Override
-//			public void treeNodesInserted(TreeModelEvent e) {
-//				System.out.println("Tree Node Inserted " + e.getTreePath());
-//			}
-//
-//			@Override
-//			public void treeNodesRemoved(TreeModelEvent e) {
-//				System.out.println("Tree Node Removed " + e.getTreePath());
-//			}
-//
-//			@Override
-//			public void treeStructureChanged(TreeModelEvent e) {
-//				System.out.println("Tree Structure Changed " + e.getPath());
-//			}
-//
-//		});
 
 		treePanel.getJTree().addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
@@ -523,318 +484,3 @@ public class UI extends JPanel implements ActionListener {
 	}
 }
 
-class DynamicTree extends JPanel {
-
-	protected DefaultMutableTreeNode rootNode;
-	protected DefaultTreeModel treeModel;
-	protected JTree tree;
-	private Toolkit toolkit = Toolkit.getDefaultToolkit();
-
-	public DynamicTree() {
-		super(new GridLayout(1, 0));
-
-		rootNode = new DefaultMutableTreeNode("Test Suite");
-		treeModel = new DefaultTreeModel(rootNode);
-
-		tree = new JTree(treeModel);
-		tree.setEditable(true);
-		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		tree.setShowsRootHandles(true);
-
-		JScrollPane scrollPane = new JScrollPane(tree);
-		add(scrollPane);
-	}
-
-	public JTree getJTree() {
-		return tree;
-	}
-
-	public DefaultMutableTreeNode getDefaultMutableTreeNode() {
-		return rootNode;
-	}
-
-	public DefaultTreeModel getTreeModel() {
-		return treeModel;
-	}
-
-	/** Remove the currently selected node. */
-	public void removeCurrentNode() {
-		TreePath currentSelection = tree.getSelectionPath();
-		if (currentSelection != null) {
-			DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
-			MutableTreeNode parent = (MutableTreeNode) (currentNode.getParent());
-
-			for (int x = 0; x < MyTreeNode.all.length(); x++) {
-				JSONObject value = (JSONObject) MyTreeNode.all.get(x);
-				boolean isNameMatch = currentNode.toString().equalsIgnoreCase(value.get("name").toString());
-				boolean isParentNameMatch = currentNode.getParent().toString()
-						.equalsIgnoreCase(value.get("parentName").toString());
-				boolean isGrandParentNameMatch = currentNode.getParent().getParent().toString()
-						.equalsIgnoreCase(value.get("grandparentName").toString());
-
-				if (isNameMatch && isParentNameMatch && isGrandParentNameMatch) {
-					MyTreeNode.all.remove(x);
-					System.out.println("Removing this node : " + currentNode);
-				}
-			}
-
-			JSONHandler json = new JSONHandler();
-			FileHandler file = new FileHandler();
-
-			System.out.println(MyTreeNode.all.toString());
-			json.write(new File(file.getUserDir() + "/object.json"), MyTreeNode.all.toString());
-
-			if (parent != null) {
-				treeModel.removeNodeFromParent(currentNode);
-				return;
-			}
-		}
-
-		// Either there was no selection, or the root was selected.
-		toolkit.beep();
-	}
-
-	/** Add child to the currently selected node. */
-	public DefaultMutableTreeNode addObject(Object child) {
-		DefaultMutableTreeNode parentNode = null;
-		TreePath parentPath = tree.getSelectionPath();
-
-		if (parentPath == null) {
-			parentNode = rootNode;
-		} else {
-			parentNode = (DefaultMutableTreeNode) (parentPath.getLastPathComponent());
-		}
-
-		return addObject(parentNode, child, true);
-	}
-
-	public DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent, Object child) {
-		return addObject(parent, child, false);
-	}
-
-	public DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent, Object child, boolean shouldBeVisible) {
-		DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(child);
-
-		if (parent == null) {
-			parent = rootNode;
-		}
-
-		// It is key to invoke this on the TreeModel, and NOT DefaultMutableTreeNode
-		treeModel.insertNodeInto(childNode, parent, parent.getChildCount());
-
-		// Make sure the user can see the lovely new node.
-		if (shouldBeVisible) {
-			tree.scrollPathToVisible(new TreePath(childNode.getPath()));
-		}
-		return childNode;
-	}
-
-	public DefaultMutableTreeNode getSelectedNode() {
-		DefaultMutableTreeNode parentNode = null;
-		TreePath parentPath = tree.getSelectionPath();
-
-		if (parentPath == null) {
-			parentNode = rootNode;
-		} else {
-			parentNode = (DefaultMutableTreeNode) (parentPath.getLastPathComponent());
-		}
-
-		return parentNode;
-	}
-
-	public int getSelectedNodeLevel() {
-		DefaultMutableTreeNode parentNode = null;
-		TreePath parentPath = tree.getSelectionPath();
-
-		if (parentPath == null) {
-			parentNode = rootNode;
-		} else {
-			parentNode = (DefaultMutableTreeNode) (parentPath.getLastPathComponent());
-		}
-
-		return parentNode.getLevel();
-	}
-
-	class MyTreeModelListener implements TreeModelListener {
-		public void treeNodesChanged(TreeModelEvent e) {
-			DefaultMutableTreeNode node;
-			node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
-
-			/*
-			 * If the event lists children, then the changed node is the child of the node
-			 * we've already gotten. Otherwise, the changed node and the specified node are
-			 * the same.
-			 */
-
-			int index = e.getChildIndices()[0];
-			node = (DefaultMutableTreeNode) (node.getChildAt(index));
-
-			System.out.println("The user has finished editing the node.");
-			System.out.println("New value: " + node.getUserObject());
-		}
-
-		public void treeNodesInserted(TreeModelEvent e) {
-		}
-
-		public void treeNodesRemoved(TreeModelEvent e) {
-		}
-
-		public void treeStructureChanged(TreeModelEvent e) {
-		}
-	}
-}
-
-class MyTreeNode extends DefaultMutableTreeNode {
-
-	private String uuid;
-	private String name;
-	private String parentName;
-	private String grandparentName;
-
-	private DefaultMutableTreeNode node;
-
-	static JSONArray all = new JSONArray();
-	private JSONHandler json = new JSONHandler();
-	private FileHandler file = new FileHandler();
-
-	public MyTreeNode(DefaultMutableTreeNode node) {
-		super(node);
-		this.node = node;
-	}
-
-	public void setUUID(String uuid) {
-		this.uuid = uuid;
-	}
-
-	private String getUUID() {
-		return uuid;
-	}
-
-	public boolean isUuidExist(String uuid) {
-		String content = null;
-		try {
-			content = json.read(new File(file.getUserDir() + "/object.json"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		JSONArray array = new JSONArray(content);
-
-		for (int i = 0; i < array.length(); i++) {
-			JSONObject item = (JSONObject) array.get(i);
-			String id = (String) item.get("uuid");
-			if (id.equalsIgnoreCase(uuid))
-				return true;
-		}
-
-		return false;
-	}
-
-	public boolean isMatch(String jTextFieldName) {
-		String content = null;
-		try {
-			content = json.read(new File(file.getUserDir() + "/object.json"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		JSONArray array = new JSONArray(content);
-
-		for (int i = 0; i < array.length(); i++) {
-			JSONObject item = (JSONObject) array.get(i);
-			String uuid = (String) item.get("uuid");
-			String name = (String) item.get("name");
-			String parentName = (String) item.get("parentName");
-			String grandparentName = (String) item.get("grandparentName");
-
-			boolean isUuidMatch = uuid.equalsIgnoreCase(jTextFieldName);
-			boolean isNameMatch = name.equalsIgnoreCase(node.getUserObject().toString());
-			boolean isParentNameMatch = parentName.equalsIgnoreCase(node.getParent().toString());
-			boolean isGrandParentNameMatch = grandparentName.equalsIgnoreCase(node.getParent().getParent().toString());
-
-			if (isUuidMatch && isNameMatch && isParentNameMatch && isGrandParentNameMatch)
-				return true;
-		}
-
-		return false;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
-	}
-
-	public String getParentName() {
-		return parentName;
-	}
-
-	public void setGrandParentName(String grandparentName) {
-		this.grandparentName = grandparentName;
-	}
-
-	public String getGrandParentName() {
-		return grandparentName;
-	}
-
-	public void build() {
-
-		JSONObject jo = new JSONObject();
-		jo.put("uuid", getUUID());
-		jo.put("name", getName());
-		jo.put("parentName", getParentName());
-		jo.put("grandparentName", getGrandParentName());
-
-		all.put(jo);
-		System.out.println(all.toString());
-		json.write(new File(file.getUserDir() + "/object.json"), all.toString());
-	}
-}
-
-class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableTreeNode> {
-
-	public JsonElement serialize(DefaultMutableTreeNode src, Type typeOfSrc, JsonSerializationContext context) {
-		JsonObject jsonObject = new JsonObject();
-		MyTreeNode myNode = new MyTreeNode(src);
-
-		if (src.getLevel() == 0) {
-			jsonObject.addProperty("level", "suite");
-		} else if (src.getLevel() == 1) {
-			jsonObject.addProperty("level", "category");
-		} else if (src.getLevel() == 2) {
-			jsonObject.addProperty("level", "testCase");
-		} else if (src.getLevel() == 3) {
-			jsonObject.addProperty("level", "input");
-			src.setAllowsChildren(false);
-			for (Component item : UI.generalPanel.getComponents()) {
-				if (item.toString().contains("JTextField")) {
-					String name = ((JTextField) item).getName();
-					if (myNode.isMatch(name)) {
-						jsonObject.addProperty("uuid", ((JTextField) item).getName().toString());
-						if ("value"
-								.equalsIgnoreCase(((JTextField) item).getDocument().getProperty("type").toString())) {
-							jsonObject.addProperty("value", ((JTextField) item).getText());
-						} else if ("object"
-								.equalsIgnoreCase(((JTextField) item).getDocument().getProperty("type").toString())) {
-							jsonObject.addProperty("object", ((JTextField) item).getText());
-						}
-					}
-				}
-			}
-		} else {
-			src.setAllowsChildren(true);
-		}
-
-		jsonObject.addProperty("allowsChildren", src.getAllowsChildren());
-		jsonObject.add("userObject", context.serialize(src.getUserObject()));
-		if (src.getChildCount() > 0) {
-			jsonObject.add("children", context.serialize(Collections.list(src.children())));
-		}
-
-		return jsonObject;
-	}
-}
