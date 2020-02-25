@@ -81,23 +81,25 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 			String uuid = item.getString("uuid");
 			String name = item.getString("name");
 			String parentName = item.getString("parentName");
+			String grandparentName = item.getString("grandparentName");
+
 			int index = item.getInt("index");
 			int parentIndex = item.getInt("parentIndex");
+			int grandparentIndex = item.getInt("grandparentIndex");
 
 			boolean isUuidMatch = uuid.equalsIgnoreCase(jTextFieldName);
+
 			boolean isNameMatch = name.equalsIgnoreCase(node.getUserObject().toString());
 			boolean isParentNameMatch = parentName.equalsIgnoreCase(node.getParent().toString());
+			boolean isGrandParentNameMatch = grandparentName.equalsIgnoreCase(node.getParent().getParent().toString());
+
 			boolean isIndexMatch = index == node.getParent().getIndex(node);
 			boolean isParentIndexMatch = parentIndex == node.getParent().getParent().getIndex(node.getParent());
+			boolean isGrandParentIndexMatch = grandparentIndex == node.getParent().getParent().getParent()
+					.getIndex(node.getParent().getParent());
 
-			String grandparentName = null;
-			boolean isGrandParentNameMatch = false;
-			if (item.has("grandparentName")) {
-				grandparentName = item.getString("grandparentName");
-				isGrandParentNameMatch = grandparentName.equalsIgnoreCase(node.getParent().getParent().toString());
-			} 
-			
-			if (isUuidMatch && isNameMatch && isParentNameMatch && isGrandParentNameMatch && isIndexMatch && isParentIndexMatch)
+			if (isUuidMatch && isNameMatch && isParentNameMatch && isGrandParentNameMatch && isIndexMatch
+					&& isParentIndexMatch && isGrandParentIndexMatch)
 				return true;
 		}
 
@@ -137,6 +139,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		jo.put("grandparentName", getGrandParentName());
 		jo.put("index", node.getParent().getIndex(node));
 		jo.put("parentIndex", node.getParent().getParent().getIndex(node.getParent()));
+		jo.put("grandparentIndex", node.getParent().getParent().getParent().getIndex(node.getParent().getParent()));
 
 		all.put(jo);
 //		System.out.println(all.toString(1));

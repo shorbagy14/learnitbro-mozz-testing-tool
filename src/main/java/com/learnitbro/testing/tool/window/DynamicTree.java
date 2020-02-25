@@ -61,26 +61,28 @@ public class DynamicTree extends JPanel {
 			DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
 			MutableTreeNode parent = (MutableTreeNode) (currentNode.getParent());
 
-			int parentIndex = - 1;
+			int parentIndex = -1;
+			int grandparentIndex = -1;
 
 			for (int x = 0; x < MyTreeNode.all.length(); x++) {
 				JSONObject value = (JSONObject) MyTreeNode.all.get(x);
+
 				boolean isNameMatch = currentNode.toString().equalsIgnoreCase(value.getString("name").toString());
 				boolean isParentNameMatch = currentNode.getParent().toString()
 						.equalsIgnoreCase(value.getString("parentName").toString());
+				boolean isGrandParentNameMatch = currentNode.getParent().getParent().toString()
+						.equalsIgnoreCase(value.getString("grandparentName").toString());
 
 				boolean isIndexMatch = currentNode.getParent().getIndex(currentNode) == value.getInt("index");
-				boolean isParentIndexMatch = currentNode.getParent().getParent().getIndex(currentNode.getParent()) == value.getInt("parentIndex");
+				boolean isParentIndexMatch = currentNode.getParent().getParent()
+						.getIndex(currentNode.getParent()) == value.getInt("parentIndex");
+				boolean isGrandParentIndexMatch = currentNode.getParent().getParent().getParent()
+						.getIndex(currentNode.getParent().getParent()) == value.getInt("grandparentIndex");
 
-				boolean isGrandParentNameMatch = false;
-				if (value.has("grandparentName")) {
-					isGrandParentNameMatch = currentNode.getParent().getParent().toString()
-							.equalsIgnoreCase(value.getString("grandparentName").toString());
-				}
-
-				if (isNameMatch && isParentNameMatch && isGrandParentNameMatch && isIndexMatch && isParentIndexMatch) {
+				if (isNameMatch && isParentNameMatch && isGrandParentNameMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch) {
 					MyTreeNode.all.remove(x);
 					parentIndex = value.getInt("parentIndex");
+					grandparentIndex = value.getInt("grandparentIndex");
 					System.out.println("Removing this node : " + currentNode);
 				}
 			}
@@ -88,13 +90,17 @@ public class DynamicTree extends JPanel {
 			JSONHandler json = new JSONHandler();
 			FileHandler file = new FileHandler();
 
+			int k = 0;
 			for (int y = 0; y < MyTreeNode.all.length(); y++) {
 				JSONObject value = (JSONObject) MyTreeNode.all.get(y);
-				if (parentIndex ==  value.getInt("parentIndex"))
-					value.put("index", y);
+				if (parentIndex == value.getInt("parentIndex") && grandparentIndex == value.getInt("grandparentIndex")) {
+					value.put("index", k);
+					k++;
+//					System.out.println(value);
+				}
 			}
 
-			System.out.println(MyTreeNode.all.toString());
+//			System.out.println(MyTreeNode.all.toString());
 			json.write(new File(file.getUserDir() + "/object.json"), MyTreeNode.all.toString());
 
 			if (parent != null) {
