@@ -115,22 +115,12 @@ public class DynamicTree extends JPanel {
 		toolkit.beep();
 	}
 
-	/**
-	 * Returns the parent index of node. If the receiver does not contain node, -1
-	 * will be returned.
-	 * 
-	 * @param currentNode (DefaultMutableTreeNode)
-	 * @return index (Integer)
-	 */
-	private int getParentIndex(DefaultMutableTreeNode currentNode) {
-		return currentNode.getParent().getParent().getIndex(currentNode.getParent());
-	}
 
 	/** Add child to the currently selected node. */
 	public DefaultMutableTreeNode addObject(Object child) {
 		DefaultMutableTreeNode parentNode = null;
 		TreePath parentPath = tree.getSelectionPath();
-
+		
 		if (parentPath == null) {
 			parentNode = rootNode;
 		} else {
@@ -153,7 +143,7 @@ public class DynamicTree extends JPanel {
 
 		// It is key to invoke this on the TreeModel, and NOT DefaultMutableTreeNode
 		treeModel.insertNodeInto(childNode, parent, parent.getChildCount());
-
+				
 		// Make sure the user can see the lovely new node.
 		if (shouldBeVisible) {
 			tree.scrollPathToVisible(new TreePath(childNode.getPath()));

@@ -423,6 +423,7 @@ public class UI extends JPanel implements ActionListener {
 
 				if (level == 3) {
 					generalPanel.setVisible(true);
+					treePanel.getJTree().setEditable(false);
 					for (Component item : UI.generalPanel.getComponents()) {
 						if (item.toString().contains("JTextField")) {
 							String name = ((JTextField) item).getName();
@@ -444,6 +445,7 @@ public class UI extends JPanel implements ActionListener {
 					}
 				} else {
 					generalPanel.setVisible(false);
+					treePanel.getJTree().setEditable(true);
 				}
 			}
 		});
