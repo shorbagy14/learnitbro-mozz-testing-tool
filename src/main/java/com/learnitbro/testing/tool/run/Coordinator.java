@@ -14,6 +14,7 @@ import com.learnitbro.testing.tool.file.JSONHandler;
 import com.learnitbro.testing.tool.reporting.Email;
 import com.learnitbro.testing.tool.reporting.Report;
 import com.learnitbro.testing.tool.App;
+import com.learnitbro.testing.tool.activity.Action;
 
 public class Coordinator {
 
@@ -51,6 +52,9 @@ public class Coordinator {
 		}
 	}
 
+	/**
+	 * building the steps from JSON to selenium
+	 */
 	public void build() {
 		String content = null;
 		String DESCRIPTION = null;
@@ -59,6 +63,7 @@ public class Coordinator {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		JSONObject obj = new JSONObject(content);
 		JSONArray category = (JSONArray) obj.get("children");
 		for (int x = 0; x < category.length(); x++) {
@@ -72,24 +77,8 @@ public class Coordinator {
 				JSONArray input = (JSONArray) test.get("children");
 				try {
 					for (int i = 0; i < input.length(); i++) {
-
 						JSONObject run = (JSONObject) input.get(i);
-						if (((String) run.get("userObject")).equalsIgnoreCase("link")) {
-							driver.get(((String) run.get("value")));
-							report.info("Going to " + ((String) run.get("value")));
-						} else if (((String) run.get("userObject")).equalsIgnoreCase("click")) {
-							driver.findElement(By.xpath(((String) run.get("value")))).click();
-							report.info("Clicking on " + ((String) run.get("value")));
-						} else if (((String) run.get("userObject")).equalsIgnoreCase("send keys")) {
-							driver.findElement(By.xpath(((String) run.get("value")))).sendKeys((String) run.get("object"));
-							report.info("Send Keys of " +  ((String) run.get("object")) + " on " + ((String) run.get("value")));
-						} else if (((String) run.get("userObject")).equalsIgnoreCase("clear")) {
-							driver.findElement(By.xpath(((String) run.get("value")))).clear();
-							report.info("Clearing field on " + ((String) run.get("value")));
-						} else if (((String) run.get("userObject")).equalsIgnoreCase("send keys")) {
-							driver.findElement(By.xpath(((String) run.get("value")))).sendKeys((String) run.get("object"));
-							report.info("Uploading " +  ((String) run.get("object")) + " on " + ((String) run.get("value")));
-						}
+						steps(run);
 					}
 					report.pass(DESCRIPTION + " - PASS");
 				} catch (Exception e) {
@@ -97,6 +86,46 @@ public class Coordinator {
 					report.fail(DESCRIPTION + " - FAIL", e);
 				}
 			}
+		}
+	}
+
+	/**
+	 * Create steps here
+	 * @param run (JSONObject)
+	 */
+	public void steps(JSONObject run) {
+		Action a = new Action(driver, report);
+		String userObject = run.getString("userObject");
+		
+		String text = null;
+		String url = null;
+		By locator = null;
+		
+		if(run.has("url"))
+			url = run.getString("url");
+		
+		if(run.has("text"))
+			text = run.getString("text");
+		
+		if(run.has("locator"))
+			locator = By.xpath(run.getString("locator"));
+
+		switch (userObject.toLowerCase()) {
+		case "link":
+			a.link(url);
+			break;
+		case "click":
+			a.click(locator);
+			break;
+		case "send keys":
+			a.inputText(locator, text);
+			break;
+		case "clear":
+			a.clear(locator);
+			break;
+		case "upload":
+			a.upload(locator, text);
+			break;
 		}
 	}
 }

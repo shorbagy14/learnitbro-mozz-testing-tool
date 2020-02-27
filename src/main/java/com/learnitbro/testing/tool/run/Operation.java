@@ -69,7 +69,7 @@ public class Operation {
 			os = "Mac OS X";
 		} else if (p.contains("Win")) {
 			os = "Windows";
-		} else if (p.contains("Android") || p.contains("Linux a")) {
+		} else if (p.contains("Android")) {
 			os = "Android";
 		} else if (p.contains("Linux")) {
 			os = "Linux";
@@ -90,7 +90,7 @@ public class Operation {
 		switch (driverType.toLowerCase()) {
 		case "chrome":
 //			WebDriverManager.chromedriver().setup();
-			WebDriverManager.chromedriver().version("73").setup();
+			WebDriverManager.chromedriver().version("79").setup();
 
 			ChromeOptions chromeOptions = new ChromeOptions();
 //			chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
@@ -138,16 +138,6 @@ public class Operation {
 		report.info("Machine OS: " + System.getProperty("os.name"));
 		report.info("Headless: " + headless);
 		return driver;
-	}
-
-	public void setupWebsite(String website) {
-
-		driver.get(website);
-
-		System.out.println("Url: " + driver.getCurrentUrl());
-		System.out.println("Title: " + driver.getTitle());
-		report.pass("Launching website");
-		report.info("Website: " + website);
 	}
 
 	public void setupTest() {

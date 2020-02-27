@@ -3,7 +3,6 @@ package com.learnitbro.testing.tool.window;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.io.File;
-import java.util.Arrays;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;

@@ -9,7 +9,6 @@ public class Control {
 		Operation operation = new Operation(browser);
 		operation.setupReport();
 		operation.setupDriver(headless);
-//		operation.setupWebsite(website);
 		operation.setupTest();
 	}
 
