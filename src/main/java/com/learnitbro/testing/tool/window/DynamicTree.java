@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import com.learnitbro.testing.tool.file.FileHandler;
 import com.learnitbro.testing.tool.file.JSONHandler;
 
+@SuppressWarnings("serial")
 public class DynamicTree extends JPanel {
 
 	protected DefaultMutableTreeNode rootNode;
@@ -74,22 +75,27 @@ public class DynamicTree extends JPanel {
 //						.equalsIgnoreCase(value.getString("grandparentName").toString());
 
 				boolean isIndexMatch = currentNode.getParent().getIndex(currentNode) == value.getInt("index");
-				boolean isParentIndexMatch = currentNode.getParent().getParent()
-						.getIndex(currentNode.getParent()) == value.getInt("parentIndex");
-				boolean isGrandParentIndexMatch = currentNode.getParent().getParent().getParent()
-						.getIndex(currentNode.getParent().getParent()) == value.getInt("grandparentIndex");
+
+				boolean isParentIndexMatch = true;
+				boolean isGrandParentIndexMatch = true;
+				if (currentNode.getParent().getParent() != null) {
+					isParentIndexMatch = currentNode.getParent().getParent().getIndex(currentNode.getParent()) == value
+							.getInt("parentIndex");
+					if (currentNode.getParent().getParent().getParent() != null) {
+						isGrandParentIndexMatch = currentNode.getParent().getParent().getParent()
+								.getIndex(currentNode.getParent().getParent()) == value.getInt("grandparentIndex");
+					}
+				}
 
 				// isParentNameMatch && isGrandParentNameMatch &&
 				if (isNameMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch) {
 					MyTreeNode.all.remove(x);
 					parentIndex = value.getInt("parentIndex");
 					grandparentIndex = value.getInt("grandparentIndex");
+
 					System.out.println("Removing this node : " + currentNode);
 				}
 			}
-
-			JSONHandler json = new JSONHandler();
-			FileHandler file = new FileHandler();
 
 			int k = 0;
 			for (int y = 0; y < MyTreeNode.all.length(); y++) {
@@ -103,7 +109,7 @@ public class DynamicTree extends JPanel {
 			}
 
 //			System.out.println(MyTreeNode.all.toString());
-			json.write(new File(file.getUserDir() + "/object.json"), MyTreeNode.all.toString(1));
+			JSONHandler.write(new File(FileHandler.getUserDir() + "/object.json"), MyTreeNode.all.toString(1));
 
 			if (parent != null) {
 				treeModel.removeNodeFromParent(currentNode);
@@ -115,12 +121,11 @@ public class DynamicTree extends JPanel {
 		toolkit.beep();
 	}
 
-
 	/** Add child to the currently selected node. */
 	public DefaultMutableTreeNode addObject(Object child) {
 		DefaultMutableTreeNode parentNode = null;
 		TreePath parentPath = tree.getSelectionPath();
-		
+
 		if (parentPath == null) {
 			parentNode = rootNode;
 		} else {
@@ -143,7 +148,7 @@ public class DynamicTree extends JPanel {
 
 		// It is key to invoke this on the TreeModel, and NOT DefaultMutableTreeNode
 		treeModel.insertNodeInto(childNode, parent, parent.getChildCount());
-				
+
 		// Make sure the user can see the lovely new node.
 		if (shouldBeVisible) {
 			tree.scrollPathToVisible(new TreePath(childNode.getPath()));

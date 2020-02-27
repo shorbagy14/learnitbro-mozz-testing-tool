@@ -9,7 +9,7 @@ import org.apache.commons.io.FileUtils;
 
 public class JSONHandler {
 	
-	public void write(File name, String body) {
+	public static void write(File name, String body) {
         try (FileWriter file = new FileWriter(name)) {
  
             file.write(body);
@@ -20,7 +20,7 @@ public class JSONHandler {
         }
     }
 	
-	public String read(File file) throws IOException  {
+	public static String read(File file) throws IOException  {
 	    String content = FileUtils.readFileToString(file, "utf-8");
 	    return content;
 	}

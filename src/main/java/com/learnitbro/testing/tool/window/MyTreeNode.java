@@ -2,7 +2,6 @@ package com.learnitbro.testing.tool.window;
 
 import java.awt.Component;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +22,7 @@ import com.learnitbro.testing.tool.exceptions.ReadFileException;
 import com.learnitbro.testing.tool.file.FileHandler;
 import com.learnitbro.testing.tool.file.JSONHandler;
 
+@SuppressWarnings("serial")
 public class MyTreeNode extends DefaultMutableTreeNode {
 
 	private String uuid;
@@ -33,8 +33,6 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 	private DefaultMutableTreeNode node;
 
 	static JSONArray all = new JSONArray();
-	private JSONHandler json = new JSONHandler();
-	private FileHandler file = new FileHandler();
 
 	public MyTreeNode(DefaultMutableTreeNode node) {
 		super(node);
@@ -52,7 +50,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 	public boolean isUuidExist(String uuid) {
 		String content = null;
 		try {
-			content = json.read(new File(file.getUserDir() + "/object.json"));
+			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/object.json"));
 		} catch (Exception e) {
 			throw new ReadFileException("Can't read file", e);
 		}
@@ -71,7 +69,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 	public boolean isMatch(String jTextFieldName) {
 		String content = null;
 		try {
-			content = json.read(new File(file.getUserDir() + "/object.json"));
+			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/object.json"));
 		} catch (Exception e) {
 			throw new ReadFileException("Can't read file", e);
 		}
@@ -174,10 +172,13 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		jo.put("index", getIndex());
 		jo.put("parentIndex", getParentIndex());
 		jo.put("grandparentIndex", getGrandParentIndex());
+		jo.put("hasChildren", getParentIndex() == -1);
+		jo.put("hasGrandChildren", getGrandParentIndex() == -1);
 
+		
 		all.put(jo);
 //		System.out.println(all.toString(1));
-		json.write(new File(file.getUserDir() + "/object.json"), all.toString(1));
+		JSONHandler.write(new File(FileHandler.getUserDir() + "/object.json"), all.toString(1));
 	}
 }
 
@@ -185,6 +186,7 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 
 	private List<String> uuidList = new ArrayList<String>();
 
+	@SuppressWarnings("unchecked")
 	public JsonElement serialize(DefaultMutableTreeNode src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject jsonObject = new JsonObject();
 		MyTreeNode myNode = new MyTreeNode(src);
