@@ -42,7 +42,7 @@ public class App {
 	}
 
 	private void printCreds() {
-		System.out.print("Copyright Learn It Bro (2019) All Rights Reserved\nMohamed Elshorbagy\nLearn It Bro\n");
+		System.out.print("Copyright Learn It Bro (2020) All Rights Reserved\nMohamed Elshorbagy\nLearn It Bro\n");
 		System.out.println(getTitle());
 		System.out.println(getVersion());
 	}

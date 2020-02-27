@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 
 public class StreamHandler {
 	
-	public String inputStreamTextBuilder(InputStream inputStream) {
+	public static String inputStreamTextBuilder(InputStream inputStream) {
 		StringBuilder textBuilder = new StringBuilder();
 		try (Reader reader = new BufferedReader(
 				new InputStreamReader(inputStream, Charset.forName(StandardCharsets.UTF_8.name())))) {
@@ -26,7 +26,7 @@ public class StreamHandler {
 		return textBuilder.toString();
 	}
 
-	public String inputStreamTextBuilder(File file) {
+	public static String inputStreamTextBuilder(File file) {
 
 		StringBuilder builder = new StringBuilder();
 		try {

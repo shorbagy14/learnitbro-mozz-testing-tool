@@ -60,23 +60,23 @@ public class FileHandler {
 		return file;
 	}
 	
-	public String getUserDir() {
+	public static String getUserDir() {
 		return System.getProperty("user.dir");
 	}
 
-	public String getUserHome() {
+	public static String getUserHome() {
 		return System.getProperty("user.home");
 	}
 
-	public String getUserName() {
+	public static String getUserName() {
 		return System.getProperty("user.name");
 	}
 
-	public boolean isValidFile(File file) {
+	public static boolean isValidFile(File file) {
 		return file.isFile() && !file.isHidden() && !file.getName().startsWith(".");
 	}
 
-	public boolean isValidImage(File file) {
+	public static boolean isValidImage(File file) {
 		return file.getName().toLowerCase().contains(".jpg")
 				|| file.getName().toLowerCase().contains(".png") && isValidFile(file);
 	}

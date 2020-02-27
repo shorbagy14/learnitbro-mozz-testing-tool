@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Test Suite",
+    "category": "suite",
+    "platform": "web",
+    "require": [
+    ]
+  },
+  {
+    "name": "Category",
+    "category": "add",
+    "platform": "web",
+    "require": [
+    ]
+  },
+  {
+    "name": "Test Case",
+    "category": "add",
+    "platform": "web",
+    "require": [
+    ]
+  },
+  {
+    "name": "Click",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Link",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "url"
+    ]
+  },
+  {
+    "name": "Clear",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Send Keys",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator",
+      "text"
+    ]
+  },
+  {
+    "name": "Page to Load",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time", "locator"
+    ]
+  },
+  {
+    "name": "Clickable Element",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time", "locator"
+    ]
+  }
+]
