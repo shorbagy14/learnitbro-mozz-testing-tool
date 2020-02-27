@@ -77,6 +77,16 @@ public class UI extends JPanel implements ActionListener {
 
 		UUID uuid = UUID.randomUUID();
 
+		MyTreeNode myNode = new MyTreeNode(node);
+		myNode.setUUID(uuid.toString());
+		myNode.setName(name);
+
+		if (1 == level || 2 == level) {
+			myNode.build();
+		}
+		
+		// NEED TO MAKE CHANGES
+		
 		tf_01 = new JTextField();
 		tf_01.setBounds(89, 213, 513, 35);
 		tf_01.setColumns(10);
@@ -99,20 +109,9 @@ public class UI extends JPanel implements ActionListener {
 		lbl_02.setBounds(275, 285, 161, 16);
 		lbl_02.setName(uuid.toString());
 
-		MyTreeNode myNode = new MyTreeNode(node);
-		myNode.setUUID(uuid.toString());
-		myNode.setName(name);
-//		myNode.setParentName(node.getParent().toString());
-//		if (node.getParent().getParent() != null)
-//			myNode.setGrandParentName(node.getParent().getParent().toString());
-
-		if (1 == level || 2 == level) {
-			myNode.build();
-		}
-
 		if ("click".equalsIgnoreCase(name)) {
 			// Xpath
-			lbl_01.setText("Click Element Xpath");
+			lbl_01.setText("Xpath");
 			generalPanel.add(tf_01);
 			generalPanel.add(lbl_01);
 			myNode.build();
@@ -124,23 +123,23 @@ public class UI extends JPanel implements ActionListener {
 			myNode.build();
 		} else if ("clear".equalsIgnoreCase(name)) {
 			// Xpath
-			lbl_01.setText("Clear Element Xpath");
+			lbl_01.setText("Xpath");
 			generalPanel.add(tf_01);
 			generalPanel.add(lbl_01);
 			myNode.build();
 		} else if ("upload".equalsIgnoreCase(name)) {
 			// Xpath
-			lbl_01.setText("Upload Element Xpath");
+			lbl_01.setText("Xpath");
 			generalPanel.add(tf_01);
 			generalPanel.add(lbl_01);
 			// File location
-			lbl_02.setText("File Location");
+			lbl_02.setText("Text");
 			generalPanel.add(tf_02);
 			generalPanel.add(lbl_02);
 			myNode.build();
 		} else if ("send keys".equalsIgnoreCase(name)) {
 			// Xpath
-			lbl_01.setText("Send Keys Element Xpath");
+			lbl_01.setText("Xpath");
 			generalPanel.add(tf_01);
 			generalPanel.add(lbl_01);
 			// Text to send

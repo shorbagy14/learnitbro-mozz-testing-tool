@@ -3,8 +3,6 @@ package com.learnitbro.testing.tool.window;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -64,7 +62,6 @@ public class DynamicTree extends JPanel {
 			DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
 			MutableTreeNode parent = (MutableTreeNode) (currentNode.getParent());
 
-//			int index = -1;
 			int parentIndex = -1;
 			int grandparentIndex = -1;
 
@@ -72,11 +69,6 @@ public class DynamicTree extends JPanel {
 				JSONObject value = (JSONObject) MyTreeNode.all.get(x);
 
 				boolean isNameMatch = currentNode.toString().equalsIgnoreCase(value.getString("name").toString());
-//				boolean isParentNameMatch = currentNode.getParent().toString()
-//						.equalsIgnoreCase(value.getString("parentName").toString());
-//				boolean isGrandParentNameMatch = currentNode.getParent().getParent().toString()
-//						.equalsIgnoreCase(value.getString("grandparentName").toString());
-
 				boolean isIndexMatch = currentNode.getParent().getIndex(currentNode) == value.getInt("index");
 
 				boolean isParentIndexMatch = true;
@@ -92,7 +84,6 @@ public class DynamicTree extends JPanel {
 
 				// isParentNameMatch && isGrandParentNameMatch &&
 				if (isNameMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch) {
-//					index = value.getInt("index");
 					parentIndex = value.getInt("parentIndex");
 					grandparentIndex = value.getInt("grandparentIndex");
 					
