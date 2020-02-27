@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -80,8 +81,8 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 			JSONObject item = array.getJSONObject(i);
 			String uuid = item.getString("uuid");
 			String name = item.getString("name");
-			String parentName = item.getString("parentName");
-			String grandparentName = item.getString("grandparentName");
+//			String parentName = item.getString("parentName");
+//			String grandparentName = item.getString("grandparentName");
 
 			int index = item.getInt("index");
 			int parentIndex = item.getInt("parentIndex");
@@ -90,16 +91,16 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 			boolean isUuidMatch = uuid.equalsIgnoreCase(jTextFieldName);
 
 			boolean isNameMatch = name.equalsIgnoreCase(node.getUserObject().toString());
-			boolean isParentNameMatch = parentName.equalsIgnoreCase(node.getParent().toString());
-			boolean isGrandParentNameMatch = grandparentName.equalsIgnoreCase(node.getParent().getParent().toString());
+//			boolean isParentNameMatch = parentName.equalsIgnoreCase(node.getParent().toString());
+//			boolean isGrandParentNameMatch = grandparentName.equalsIgnoreCase(node.getParent().getParent().toString());
 
 			boolean isIndexMatch = index == node.getParent().getIndex(node);
 			boolean isParentIndexMatch = parentIndex == node.getParent().getParent().getIndex(node.getParent());
 			boolean isGrandParentIndexMatch = grandparentIndex == node.getParent().getParent().getParent()
 					.getIndex(node.getParent().getParent());
 
-			if (isUuidMatch && isNameMatch && isParentNameMatch && isGrandParentNameMatch && isIndexMatch
-					&& isParentIndexMatch && isGrandParentIndexMatch)
+			// && isParentNameMatch && isGrandParentNameMatch
+			if (isUuidMatch && isNameMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch)
 				return true;
 		}
 
@@ -118,7 +119,9 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		this.parentName = parentName;
 	}
 
-	public String getParentName() {
+	public Object getParentName() {
+		if (parentName == null)
+			return JSONObject.NULL;
 		return parentName;
 	}
 
@@ -126,8 +129,39 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		this.grandparentName = grandparentName;
 	}
 
-	public String getGrandParentName() {
+	public Object getGrandParentName() {
+		if (grandparentName == null)
+			return JSONObject.NULL;
 		return grandparentName;
+	}
+
+	private int getIndex() {
+		if (node.getParent() == null)
+			return -1;
+		return node.getParent().getIndex(node);
+	}
+
+	private TreeNode getParentTreeNode() {
+		return node.getParent().getParent();
+	}
+
+	private TreeNode getGrandParentTreeNode() {
+		return getParentTreeNode().getParent();
+	}
+
+	private int getParentIndex() {
+		if (getParentTreeNode() == null)
+			return -1;
+		return getParentTreeNode().getIndex(node.getParent());
+	}
+
+	private int getGrandParentIndex() {
+		if (getParentTreeNode() != null) {
+			if (getGrandParentTreeNode() == null)
+				return -1;
+		} else
+			return -1;
+		return getGrandParentTreeNode().getIndex(getParentTreeNode());
 	}
 
 	public void build() {
@@ -135,11 +169,11 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		JSONObject jo = new JSONObject();
 		jo.put("uuid", getUUID());
 		jo.put("name", getName());
-		jo.put("parentName", getParentName());
-		jo.put("grandparentName", getGrandParentName());
-		jo.put("index", node.getParent().getIndex(node));
-		jo.put("parentIndex", node.getParent().getParent().getIndex(node.getParent()));
-		jo.put("grandparentIndex", node.getParent().getParent().getParent().getIndex(node.getParent().getParent()));
+//		jo.put("parentName", getParentName());
+//		jo.put("grandparentName", getGrandParentName());
+		jo.put("index", getIndex());
+		jo.put("parentIndex", getParentIndex());
+		jo.put("grandparentIndex", getGrandParentIndex());
 
 		all.put(jo);
 //		System.out.println(all.toString(1));

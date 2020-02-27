@@ -100,9 +100,17 @@ public class UI extends JPanel implements ActionListener {
 		MyTreeNode myNode = new MyTreeNode(node);
 		myNode.setUUID(uuid.toString());
 		myNode.setName(name);
-		myNode.setParentName(node.getParent().toString());
-		if (node.getParent().getParent() != null)
-			myNode.setGrandParentName(node.getParent().getParent().toString());
+//		myNode.setParentName(node.getParent().toString());
+//		if (node.getParent().getParent() != null)
+//			myNode.setGrandParentName(node.getParent().getParent().toString());
+
+//		if ("test case".equalsIgnoreCase(name)) {
+//			myNode.build();
+//		}
+//
+//		if ("category".equalsIgnoreCase(name)) {
+//			myNode.build();
+//		}
 
 		if ("click".equalsIgnoreCase(name)) {
 			// Xpath
@@ -353,6 +361,14 @@ public class UI extends JPanel implements ActionListener {
 				} catch (Exception ex) {
 					throw new ReadFileException("Can't read file", ex);
 				}
+
+				Object root = treePanel.getTreeModel().getRoot();
+				int count = treePanel.getTreeModel().getChildCount(root);
+				System.out.println(count);
+				if (count != 0) {
+					// ADD REMOVE FUNCTION
+				}
+
 				JSONObject obj = new JSONObject(content);
 				JSONArray category = (JSONArray) obj.get("children");
 				for (int x = 0; x < category.length(); x++) {
