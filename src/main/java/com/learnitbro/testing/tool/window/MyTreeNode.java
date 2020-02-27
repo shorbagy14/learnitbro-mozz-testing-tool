@@ -79,8 +79,6 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 			JSONObject item = array.getJSONObject(i);
 			String uuid = item.getString("uuid");
 			String name = item.getString("name");
-//			String parentName = item.getString("parentName");
-//			String grandparentName = item.getString("grandparentName");
 
 			int index = item.getInt("index");
 			int parentIndex = item.getInt("parentIndex");
@@ -205,11 +203,8 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 						uuidList.add(uuid + "-" + type);
 
 						jsonObject.addProperty("uuid", uuid);
-						if ("t1".equalsIgnoreCase(type)) {
-							jsonObject.addProperty("t1", text);
-						} else if ("t2".equalsIgnoreCase(type)) {
-							jsonObject.addProperty("t2", text);
-						}
+						jsonObject.addProperty(type, text);
+					
 					}
 				}
 			}

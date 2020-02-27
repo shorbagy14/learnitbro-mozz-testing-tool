@@ -3,5 +3,6 @@
 /.classpath
 /.settings
 /.project
-*.json
+/object.json
+/tree.json
 *.html

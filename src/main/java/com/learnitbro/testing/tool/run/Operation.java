@@ -43,8 +43,7 @@ public class Operation {
 
 	public String getBrowserInfo(WebDriver myDriver) {
 		JavascriptExecutor js = (JavascriptExecutor) myDriver;
-		StreamHandler stream = new StreamHandler();
-		String browserInfo = stream.inputStreamTextBuilder(getClass().getResourceAsStream("/info.txt"));
+		String browserInfo = StreamHandler.inputStreamTextBuilder(getClass().getResourceAsStream("/info.txt"));
 		Object info = js.executeScript("return " + browserInfo).toString();
 		browserInfo = String.valueOf(info);
 		return browserInfo;
