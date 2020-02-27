@@ -3,6 +3,8 @@ package com.learnitbro.testing.tool.window;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -62,6 +64,7 @@ public class DynamicTree extends JPanel {
 			DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
 			MutableTreeNode parent = (MutableTreeNode) (currentNode.getParent());
 
+//			int index = -1;
 			int parentIndex = -1;
 			int grandparentIndex = -1;
 
@@ -89,17 +92,18 @@ public class DynamicTree extends JPanel {
 
 				// isParentNameMatch && isGrandParentNameMatch &&
 				if (isNameMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch) {
-					MyTreeNode.all.remove(x);
+//					index = value.getInt("index");
 					parentIndex = value.getInt("parentIndex");
 					grandparentIndex = value.getInt("grandparentIndex");
-
+					
+					MyTreeNode.all.remove(x);
 					System.out.println("Removing this node : " + currentNode);
 				}
 			}
 
 			int k = 0;
 			for (int y = 0; y < MyTreeNode.all.length(); y++) {
-				JSONObject value = (JSONObject) MyTreeNode.all.get(y);
+				JSONObject value = MyTreeNode.all.getJSONObject(y);
 				if (parentIndex == value.getInt("parentIndex")
 						&& grandparentIndex == value.getInt("grandparentIndex")) {
 					value.put("index", k);

@@ -173,8 +173,6 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		jo.put("parentIndex", getParentIndex());
 		jo.put("grandparentIndex", getGrandParentIndex());
 		jo.put("hasChildren", getParentIndex() == -1);
-		jo.put("hasGrandChildren", getGrandParentIndex() == -1);
-
 		
 		all.put(jo);
 //		System.out.println(all.toString(1));

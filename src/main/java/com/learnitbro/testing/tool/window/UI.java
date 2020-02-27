@@ -400,6 +400,11 @@ public class UI extends JPanel implements ActionListener {
 					return;
 				}
 				
+				if(node.getChildCount() == 0)
+					btnRemove.setEnabled(true);
+				else
+					btnRemove.setEnabled(false);
+				
 				/* retrieve the node that was selected */
 				// Object nodeInfo = node.getUserObject();
 				int level = node.getLevel();
