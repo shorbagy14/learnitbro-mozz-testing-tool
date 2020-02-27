@@ -3,6 +3,7 @@ package com.learnitbro.testing.tool.window;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.io.File;
+import java.util.Arrays;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -15,6 +16,7 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.learnitbro.testing.tool.file.FileHandler;
@@ -86,7 +88,7 @@ public class DynamicTree extends JPanel {
 				if (isNameMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch) {
 					parentIndex = value.getInt("parentIndex");
 					grandparentIndex = value.getInt("grandparentIndex");
-					
+
 					MyTreeNode.all.remove(x);
 					System.out.println("Removing this node : " + currentNode);
 				}
@@ -114,6 +116,20 @@ public class DynamicTree extends JPanel {
 
 		// Either there was no selection, or the root was selected.
 		toolkit.beep();
+	}
+
+	public void removeAll() {
+		for (int x = treeModel.getChildCount(rootNode)-1; x >= 0; x--) {
+			treeModel.removeNodeFromParent((DefaultMutableTreeNode) treeModel.getChild(rootNode, x));
+		}
+		
+//		System.out.println("Length: " +  MyTreeNode.all.length());
+		if(MyTreeNode.all.length() != 0) {
+			MyTreeNode.all = new JSONArray();
+		}
+		
+		JSONHandler.write(new File(FileHandler.getUserDir() + "/object.json"), MyTreeNode.all.toString(1));
+
 	}
 
 	/** Add child to the currently selected node. */

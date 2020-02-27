@@ -46,13 +46,11 @@ public class UI extends JPanel implements ActionListener {
 	public JFrame frame;
 	private DynamicTree treePanel;
 
-	private JTextField tf_01, tf_02;
-
 	static JPanel generalPanel;
-	
-	String[] add = {"Category", "Test Case"};
-	String[] action = {"Link", "Click", "Clear", "Send Keys", "Upload"};
-	String[] wait = {"Page to Load", "Clickable Element", "Visible Element", "Available Element"};
+
+	String[] add = { "Category", "Test Case" };
+	String[] action = { "Link", "Click", "Clear", "Send Keys", "Upload" };
+	String[] wait = { "Page to Load", "Clickable Element", "Visible Element", "Available Element" };
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
@@ -84,16 +82,18 @@ public class UI extends JPanel implements ActionListener {
 		if (1 == level || 2 == level) {
 			myNode.build();
 		}
-		
+
 		// NEED TO MAKE CHANGES
-		
-		tf_01 = new JTextField();
+
+		// Create a JTextField depending on the property type
+
+		JTextField tf_01 = new JTextField();
 		tf_01.setBounds(89, 213, 513, 35);
 		tf_01.setColumns(10);
 		tf_01.setName(uuid.toString());
 		tf_01.getDocument().putProperty("type", "t1");
 
-		tf_02 = new JTextField();
+		JTextField tf_02 = new JTextField();
 		tf_02.setBounds(89, 313, 513, 35);
 		tf_02.setColumns(10);
 		tf_02.setName(uuid.toString());
@@ -234,7 +234,7 @@ public class UI extends JPanel implements ActionListener {
 		// Add Menu
 		final JMenu mnAdd = new JMenu("Add");
 		menuBar.add(mnAdd);
-		for(int x=0; x< add.length; x++) {
+		for (int x = 0; x < add.length; x++) {
 			JMenuItem mntm = new JMenuItem(add[x]);
 			mnAdd.add(mntm);
 			mntm.setActionCommand(ADD_COMMAND);
@@ -242,19 +242,19 @@ public class UI extends JPanel implements ActionListener {
 		}
 		disableMenuItems(mnAdd);
 		enableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
-		
+
 //		// Condition Menu
 //		JMenu mnCondition = new JMenu("Condition");
 //		menuBar.add(mnCondition);
-		
+
 		/**
-		 *  Condition Menu - To be added
+		 * Condition Menu - To be added
 		 */
 
 		// Action Menu
 		final JMenu mnAction = new JMenu("Action");
 		menuBar.add(mnAction);
-		for(int x=0; x< action.length; x++) {
+		for (int x = 0; x < action.length; x++) {
 			JMenuItem mntm = new JMenuItem(action[x]);
 			mnAction.add(mntm);
 			mntm.setActionCommand(ADD_COMMAND);
@@ -265,7 +265,7 @@ public class UI extends JPanel implements ActionListener {
 		// Wait Menu
 		JMenu mnWait = new JMenu("Wait");
 		menuBar.add(mnWait);
-		for(int x=0; x< wait.length; x++) {
+		for (int x = 0; x < wait.length; x++) {
 			JMenuItem mntm = new JMenuItem(wait[x]);
 			mnWait.add(mntm);
 			mntm.setActionCommand(ADD_COMMAND);
@@ -276,9 +276,9 @@ public class UI extends JPanel implements ActionListener {
 //		// Assert Menu
 //		JMenu mnAssert = new JMenu("Assert");
 //		menuBar.add(mnAssert);
-		
+
 		/**
-		 *  Assert Menu - To be added
+		 * Assert Menu - To be added
 		 */
 
 		// End of Menu Bar ---->
@@ -337,7 +337,7 @@ public class UI extends JPanel implements ActionListener {
 		// Load Tree
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
 				String content = null;
 				try {
 					content = JSONHandler.read(new File(FileHandler.getUserDir() + "/tree.json"));
@@ -347,9 +347,11 @@ public class UI extends JPanel implements ActionListener {
 
 				Object root = treePanel.getTreeModel().getRoot();
 				int count = treePanel.getTreeModel().getChildCount(root);
-				System.out.println(count);
+//				System.out.println(count);
 				if (count != 0) {
 					// ADD REMOVE FUNCTION
+					treePanel.removeAll();
+					UI.generalPanel.removeAll();
 				}
 
 				JSONObject obj = new JSONObject(content);
@@ -373,10 +375,18 @@ public class UI extends JPanel implements ActionListener {
 								JSONObject run = input.getJSONObject(i);
 								p3 = treePanel.addObject(p2, run.getString("userObject"));
 								addNode(3, run.getString("userObject"), p3);
-								if (run.has("t1"))
-									tf_01.setText(run.getString("t1"));
-								if (run.has("t2"))
-									tf_02.setText(run.getString("t2"));
+
+								for (Component item : UI.generalPanel.getComponents()) {
+									if (item.toString().contains("JTextField")) {
+										MyTreeNode myNode = new MyTreeNode(p3);
+										String uuid = ((JTextField) item).getName();
+										if (myNode.isMatch(uuid)) {
+											JTextField jtf = ((JTextField) item);
+											String type = jtf.getDocument().getProperty("type").toString();
+											jtf.setText(run.getString(type));
+										}
+									}
+								}
 							}
 						} catch (Exception ex) {
 							ex.printStackTrace();
@@ -398,18 +408,18 @@ public class UI extends JPanel implements ActionListener {
 					generalPanel.setVisible(false);
 					return;
 				}
-				
-				if(node.getChildCount() == 0)
+
+				if (node.getChildCount() == 0)
 					btnRemove.setEnabled(true);
 				else
 					btnRemove.setEnabled(false);
-				
+
 				/* retrieve the node that was selected */
 				// Object nodeInfo = node.getUserObject();
 				int level = node.getLevel();
 
 				MyTreeNode myNode = new MyTreeNode(node);
-				System.out.println(myNode);
+//				System.out.println(myNode);
 
 				if (level == 3) {
 					generalPanel.setVisible(true);
