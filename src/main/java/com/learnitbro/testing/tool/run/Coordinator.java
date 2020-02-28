@@ -107,8 +107,11 @@ public class Coordinator {
 		if(run.has("text"))
 			text = run.getString("text");
 		
-		if(run.has("locator"))
-			locator = By.xpath(run.getString("locator"));
+		if(run.has("locator")) {
+			String locatorType = run.getString("locatorType");
+			String locatorValue = run.getString("locator");
+			locator = getLocator(locatorType, locatorValue);
+		}
 
 		switch (userObject.toLowerCase()) {
 		case "link":
@@ -127,5 +130,26 @@ public class Coordinator {
 			a.upload(locator, text);
 			break;
 		}
+	}
+	
+	/**
+	 * Returns the locator based on type in JSON
+	 * 
+	 * @param type - locator type
+	 * @param text - locator value
+	 * @return locator
+	 */
+	private By getLocator(String type, String text) {
+		if(type.equals("xpath"))
+			return By.xpath(text);
+		else if(type.equals("class"))
+			return By.className(text);
+		else if(type.equals("css"))
+			return By.cssSelector(text);
+		else if(type.equals("name"))
+			return By.name(text);
+		else if(type.equals("id"))
+			return By.id(text);
+		return null;
 	}
 }

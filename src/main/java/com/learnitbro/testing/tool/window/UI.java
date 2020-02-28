@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -88,27 +89,35 @@ public class UI extends JPanel implements ActionListener {
 				JSONArray req = obj.getJSONArray("require");
 
 				if (objName.equalsIgnoreCase(name)) {
-					int a = 100;
+					int posY = 100;
+//					int posX = 50;
 					for (int y = 0; y < req.length(); y++) {
 
+						String v = req.getString(y);
+
 						JTextField jtf = new JTextField();
-						jtf.setBounds(89, 53 + a, 513, 35);
+						jtf.setBounds(150, 55 + posY, 450, 35);
 						jtf.setColumns(10);
 						jtf.setName(uuid.toString());
+						jtf.getDocument().putProperty("type", v);
+						generalPanel.add(jtf);
 
 						JLabel lbl = new JLabel();
 						lbl.setHorizontalAlignment(SwingConstants.CENTER);
-						lbl.setBounds(275, 25 + a, 161, 16);
+						lbl.setBounds(275, 25 + posY, 160, 15);
 						lbl.setName(uuid.toString());
-
-						a += 100;
-
-						String v = req.getString(y);
 						lbl.setText(v);
-						jtf.getDocument().putProperty("type", v);
-
 						generalPanel.add(lbl);
-						generalPanel.add(jtf);
+
+						if (req.getString(y).equals("locator")) {
+							JComboBox<String> jcb = new JComboBox<String>(
+									new String[] { "xpath", "css", "class", "id", "name" });
+							jcb.setName(uuid.toString());
+							jcb.setBounds(40, 60 + posY, 100, 25);
+							generalPanel.add(jcb);
+						}
+
+						posY += 100;
 					}
 				}
 			}
@@ -364,13 +373,20 @@ public class UI extends JPanel implements ActionListener {
 								addNode(3, run.getString("userObject"), p3);
 
 								for (Component item : UI.generalPanel.getComponents()) {
+									MyTreeNode myNode = new MyTreeNode(p3);
 									if (item.toString().contains("JTextField")) {
-										MyTreeNode myNode = new MyTreeNode(p3);
 										String uuid = ((JTextField) item).getName();
 										if (myNode.isMatch(uuid)) {
 											JTextField jtf = ((JTextField) item);
 											String type = jtf.getDocument().getProperty("type").toString();
 											jtf.setText(run.getString(type));
+										}
+									} else if (item.toString().contains("JComboBox")) {
+										String uuid = ((JComboBox) item).getName();
+										if (myNode.isMatch(uuid)) {
+											JComboBox jcb = ((JComboBox) item);
+											String type = "locatorType";
+											jcb.setSelectedItem(run.getString(type));
 										}
 									}
 								}
@@ -414,8 +430,6 @@ public class UI extends JPanel implements ActionListener {
 					for (Component item : UI.generalPanel.getComponents()) {
 						if (item.toString().contains("JTextField")) {
 							String name = ((JTextField) item).getName();
-//							System.out.println(name);
-
 							if (myNode.isMatch(name)) {
 								((JTextField) item).setVisible(true);
 							} else {
@@ -427,6 +441,13 @@ public class UI extends JPanel implements ActionListener {
 								((JLabel) item).setVisible(true);
 							} else {
 								((JLabel) item).setVisible(false);
+							}
+						} else if (item.toString().contains("JComboBox")) {
+							String name = ((JComboBox) item).getName();
+							if (myNode.isMatch(name)) {
+								((JComboBox) item).setVisible(true);
+							} else {
+								((JComboBox) item).setVisible(false);
 							}
 						}
 					}

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -164,7 +165,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		jo.put("index", getIndex());
 		jo.put("parentIndex", getParentIndex());
 		jo.put("grandparentIndex", getGrandParentIndex());
-		
+
 		all.put(jo);
 //		System.out.println(all.toString(1));
 		JSONHandler.write(new File(FileHandler.getUserDir() + "/object.json"), all.toString(1));
@@ -204,7 +205,21 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 
 						jsonObject.addProperty("uuid", uuid);
 						jsonObject.addProperty(type, text);
-					
+
+					}
+				} else if (item.toString().contains("JComboBox")) {
+					String uuid = ((JComboBox) item).getName();
+					if (myNode.isMatch(uuid)) {
+
+						String text = ((JComboBox) item).getSelectedItem().toString();
+						String type = "locatorType";
+						
+						if (uuidList.contains(uuid + "-" + type))
+							continue;
+
+						uuidList.add(uuid + "-" + type);
+						
+						jsonObject.addProperty(type, text);
 					}
 				}
 			}
