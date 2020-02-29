@@ -192,6 +192,7 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 
 		if (src.getLevel() == 0) {
 			jsonObject.addProperty("level", "suite");
+			setLevel(myNode, jsonObject);
 		} else if (src.getLevel() == 1) {
 			jsonObject.addProperty("level", "category");
 		} else if (src.getLevel() == 2) {
@@ -199,7 +200,7 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 		} else if (src.getLevel() == 3) {
 			jsonObject.addProperty("level", "input");
 			src.setAllowsChildren(false);
-			setLevel3(myNode, jsonObject);
+			setLevel(myNode, jsonObject);
 
 		} else {
 			src.setAllowsChildren(true);
@@ -214,7 +215,7 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 		return jsonObject;
 	}
 
-	private void setLevel3(MyTreeNode myNode, JsonObject jsonObject) {
+	private void setLevel(MyTreeNode myNode, JsonObject jsonObject) {
 		for (Component item : UI.generalPanel.getComponents()) {
 			if (item.toString().contains("JTextField")) {
 				String uuid = ((JTextField) item).getName();
@@ -237,7 +238,7 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 				if (myNode.isMatch(uuid)) {
 
 					String text = ((JComboBox) item).getSelectedItem().toString();
-					String type = "locatorType";
+					String type = ((JComboBox) item).getClientProperty("type").toString();
 
 					if (uuidList.contains(uuid + "-" + type))
 						continue;

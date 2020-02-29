@@ -2,6 +2,7 @@ package com.learnitbro.testing.tool.run;
 
 import java.util.concurrent.TimeUnit;
 
+import org.json.JSONObject;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -140,9 +141,9 @@ public class Operation {
 		return driver;
 	}
 
-	public void setupTest() {
+	public void setupTest(JSONObject obj) {
 		Coordinator coordinator = new Coordinator(driver, getReport());
-		coordinator.runTests();
+		coordinator.runTests(obj);
 	}
 
 	public Report getReport() {

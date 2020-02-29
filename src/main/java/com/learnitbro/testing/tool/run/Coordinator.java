@@ -35,9 +35,9 @@ public class Coordinator {
 		email = new Email();
 	}
 
-	public void runTests() {
+	public void runTests(JSONObject obj) {
 		try {
-			build();
+			build(obj);
 		} catch (Exception | AssertionError e) {
 			throw new RuntimeException("Test has failed. Refer to the report");
 		} finally {
@@ -54,29 +54,21 @@ public class Coordinator {
 	/**
 	 * building the steps from JSON to selenium
 	 */
-	public void build() {
-		String content = null;
+	public void build(JSONObject obj) {
 		String DESCRIPTION = null;
-		try {
-			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/tree.json"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		JSONObject obj = new JSONObject(content);
-		JSONArray category = (JSONArray) obj.get("children");
+		JSONArray category = obj.getJSONArray("children");
 		for (int x = 0; x < category.length(); x++) {
-			JSONObject cat = (JSONObject) category.get(x);
-			DESCRIPTION = (String) cat.get("userObject");
+			JSONObject cat = category.getJSONObject(x);
+			DESCRIPTION = cat.getString("userObject");
 			report.createTest(DESCRIPTION);
-			JSONArray testCase = (JSONArray) cat.get("children");
+			JSONArray testCase = cat.getJSONArray("children");
 			for (int y = 0; y < testCase.length(); y++) {
-				JSONObject test = (JSONObject) testCase.get(y);
+				JSONObject test = testCase.getJSONObject(y);
 				report.info((String) test.get("userObject"));
-				JSONArray input = (JSONArray) test.get("children");
+				JSONArray input = test.getJSONArray("children");
 				try {
 					for (int i = 0; i < input.length(); i++) {
-						JSONObject run = (JSONObject) input.get(i);
+						JSONObject run = input.getJSONObject(i);
 						steps(run);
 					}
 					report.pass(DESCRIPTION + " - PASS");

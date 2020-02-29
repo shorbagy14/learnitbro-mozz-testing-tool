@@ -2,21 +2,21 @@
   {
     "name": "Test Suite",
     "category": "suite",
-    "platform": "web",
-    "require": [
+    "platform": "all",
+    "require": ["browserName", "headless", "platform"
     ]
   },
   {
     "name": "Category",
     "category": "add",
-    "platform": "web",
+    "platform": "all",
     "require": [
     ]
   },
   {
     "name": "Test Case",
     "category": "add",
-    "platform": "web",
+    "platform": "all",
     "require": [
     ]
   },

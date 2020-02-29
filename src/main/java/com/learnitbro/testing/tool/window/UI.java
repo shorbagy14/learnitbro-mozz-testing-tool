@@ -69,13 +69,6 @@ public class UI extends JPanel implements ActionListener {
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 
-		treePanel = new DynamicTree();
-		treePanel.setBackground(Color.WHITE);
-		treePanel.setBounds(0, 0, 276, 607);
-		frame.getContentPane().add(treePanel);
-//		treePanel.setRootUserObject("Test Suite");
-		addNode(0, "Test Suite", treePanel.getDefaultMutableTreeNode());
-
 		config = StreamHandler.inputStreamTextBuilder(getClass().getResourceAsStream("/config.json"));
 
 		// <---- Button Panel
@@ -121,6 +114,16 @@ public class UI extends JPanel implements ActionListener {
 
 		// End of General Panel ---->
 
+		// <---- Tree Panel
+
+		treePanel = new DynamicTree();
+		treePanel.setBackground(Color.WHITE);
+		treePanel.setBounds(0, 0, 276, 607);
+		frame.getContentPane().add(treePanel);
+//		treePanel.setRootUserObject("Test Suite");
+		addNode(0, "Test Suite", treePanel.getDefaultMutableTreeNode());
+
+		// End of Tree Panel ---->
 		// <---- Menu Bar
 
 		JMenuBar menuBar = new JMenuBar();
@@ -268,6 +271,11 @@ public class UI extends JPanel implements ActionListener {
 					UI.generalPanel.removeAll();
 				}
 				loadTree();
+				
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePanel.getDefaultMutableTreeNode();
+				MyTreeNode myNode = new MyTreeNode(node);
+				setVisibiltyLevel(myNode);
+//				generalPanel.setVisible(false);
 			}
 		});
 
@@ -297,26 +305,28 @@ public class UI extends JPanel implements ActionListener {
 				MyTreeNode myNode = new MyTreeNode(node);
 //				System.out.println(myNode);
 
+				setVisibiltyLevel(myNode);
+
 				if (level == 3) {
-					setVisibiltyLevel3(myNode);
+					treePanel.getJTree().setEditable(false);
 				} else {
-					generalPanel.setVisible(false);
+//					generalPanel.setVisible(false);
 					treePanel.getJTree().setEditable(true);
 				}
 			}
 		});
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	private void loadTree() {
-		
+
 		String content = null;
 		try {
 			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/tree.json"));
 		} catch (Exception ex) {
 			throw new ReadFileException("Can't read file", ex);
 		}
-		
+
 		JSONObject suite = new JSONObject(content);
 		treePanel.setRootUserObject(suite.getString("userObject"));
 		addNode(0, suite.getString("userObject"), treePanel.getDefaultMutableTreeNode());
@@ -355,7 +365,7 @@ public class UI extends JPanel implements ActionListener {
 								String uuid = ((JComboBox) item).getName();
 								if (myNode.isMatch(uuid)) {
 									JComboBox jcb = ((JComboBox) item);
-									String type = "locatorType";
+									String type = jcb.getClientProperty("type").toString();
 									jcb.setSelectedItem(run.getString(type));
 								}
 							}
@@ -369,10 +379,9 @@ public class UI extends JPanel implements ActionListener {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private void setVisibiltyLevel3(MyTreeNode myNode) {
+	private void setVisibiltyLevel(MyTreeNode myNode) {
 
 		generalPanel.setVisible(true);
-		treePanel.getJTree().setEditable(false);
 		for (Component item : UI.generalPanel.getComponents()) {
 			if (item.toString().contains("JTextField")) {
 				String name = ((JTextField) item).getName();
@@ -443,7 +452,7 @@ public class UI extends JPanel implements ActionListener {
 		System.out.println(jsonString);
 		JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/tree.json"), jsonString);
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 
@@ -471,16 +480,57 @@ public class UI extends JPanel implements ActionListener {
 		myNode.setUUID(uuid.toString());
 		myNode.setName(name);
 
-		if (level == 3) {
-			JSONArray arr = new JSONArray(config);
-			for (int x = 0; x < arr.length(); x++) {
-				JSONObject obj = arr.getJSONObject(x);
-				String objName = obj.getString("name");
-				JSONArray req = obj.getJSONArray("require");
+		JSONArray arr = new JSONArray(config);
+		for (int x = 0; x < arr.length(); x++) {
+
+			JSONObject obj = arr.getJSONObject(x);
+			String objName = obj.getString("name");
+			String objCategory = obj.getString("category");
+			JSONArray req = obj.getJSONArray("require");
+
+			if (level == 0) {
+
+				if (objCategory.equalsIgnoreCase("suite")) {
+					int posX = 0;
+					for (int y = 0; y < req.length(); y++) {
+
+						String v = req.getString(y);
+
+						JLabel lbl = new JLabel();
+						lbl.setHorizontalAlignment(SwingConstants.CENTER);
+						lbl.setBounds(10 + posX, 25, 160, 15);
+						lbl.setName(uuid.toString());
+						lbl.setText(v);
+						generalPanel.add(lbl);
+
+						JComboBox<String> jcb = null;
+						if (v.equals("browserName")) {
+							jcb = new JComboBox<String>(
+									new String[] { "chrome", "firefox", "edge", "ie", "safari", "opera" });
+						} else if(v.equals("headless")) {
+							jcb = new JComboBox<String>(
+									new String[] { "false", "true"});
+						} else if(v.equals("platform")) {
+							jcb = new JComboBox<String>(
+									new String[] { "web"});
+						} else {
+							throw new IllegalArgumentException("Wrong argument in the configuration file");
+						}
+
+						jcb.setName(uuid.toString());
+						jcb.setBounds(40 + posX, 60, 100, 25);
+						jcb.putClientProperty("type", v);
+						generalPanel.add(jcb);
+
+						posX += 250;
+					}
+				}
+			}
+
+			else if (level == 3) {
 
 				if (objName.equalsIgnoreCase(name)) {
 					int posY = 100;
-//					int posX = 50;
 					for (int y = 0; y < req.length(); y++) {
 
 						String v = req.getString(y);
@@ -504,6 +554,7 @@ public class UI extends JPanel implements ActionListener {
 									new String[] { "xpath", "css", "class", "id", "name" });
 							jcb.setName(uuid.toString());
 							jcb.setBounds(40, 60 + posY, 100, 25);
+							jcb.putClientProperty("type", v);
 							generalPanel.add(jcb);
 						}
 
