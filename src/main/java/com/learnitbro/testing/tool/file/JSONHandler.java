@@ -42,17 +42,17 @@ public class JSONHandler {
 	}
 	
 	/**
-	 * Returns true if the file is a valid JSON
+	 * Returns true if the body is a valid JSON
 	 * 
-	 * @param file
+	 * @param body
 	 * @return boolean
 	 */
-	public static boolean isJSONValid(String file) {
+	public static boolean isJSONValid(String body) {
 	    try {
-	        new JSONObject(file);
+	        new JSONObject(body);
 	    } catch (JSONException ex) {
 	        try {
-	            new JSONArray(file);
+	            new JSONArray(body);
 	        } catch (JSONException ex1) {
 	            return false;
 	        }

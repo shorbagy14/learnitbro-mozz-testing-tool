@@ -65,7 +65,7 @@ public class App {
 		File dest = new File(FileHandler.getUserDir() + "/tree.json");
 
 		if (source.exists()) {
-			if (JSONHandler.isJSONValid(file)) {
+			if (JSONHandler.isJSONValid(JSONHandler.read(source))) {
 				try {
 					FileUtils.copyFile(source, dest);
 				} catch (Exception e) {
