@@ -88,10 +88,9 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 			boolean isUuidMatch = uuid.equalsIgnoreCase(jTextFieldName);
 			boolean isNameMatch = name.equalsIgnoreCase(node.getUserObject().toString());
 
-			boolean isIndexMatch = index == node.getParent().getIndex(node);
-			boolean isParentIndexMatch = parentIndex == node.getParent().getParent().getIndex(node.getParent());
-			boolean isGrandParentIndexMatch = grandparentIndex == node.getParent().getParent().getParent()
-					.getIndex(node.getParent().getParent());
+			boolean isIndexMatch = index == getIndex();
+			boolean isParentIndexMatch = parentIndex == getParentIndex();
+			boolean isGrandParentIndexMatch = grandparentIndex == getGrandParentIndex();
 
 			if (isUuidMatch && isNameMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch)
 				return true;
@@ -128,27 +127,37 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		return grandparentName;
 	}
 
-	private int getIndex() {
-		if (node.getParent() == null)
+	public int getIndex() {
+		if (getTreeNode() == null)
 			return -1;
-		return node.getParent().getIndex(node);
+		return getTreeNode().getIndex(node);
 	}
 
-	private TreeNode getParentTreeNode() {
-		return node.getParent().getParent();
+	public TreeNode getTreeNode() {
+		return node.getParent();
 	}
 
-	private TreeNode getGrandParentTreeNode() {
+	public TreeNode getParentTreeNode() {
+		return getTreeNode().getParent();
+	}
+
+	public TreeNode getGrandParentTreeNode() {
 		return getParentTreeNode().getParent();
 	}
 
-	private int getParentIndex() {
+	public int getParentIndex() {
+		if (getTreeNode() == null)
+			return -1;
+
 		if (getParentTreeNode() == null)
 			return -1;
-		return getParentTreeNode().getIndex(node.getParent());
+		return getParentTreeNode().getIndex(getTreeNode());
 	}
 
-	private int getGrandParentIndex() {
+	public int getGrandParentIndex() {
+		if (getTreeNode() == null)
+			return -1;
+
 		if (getParentTreeNode() != null) {
 			if (getGrandParentTreeNode() == null)
 				return -1;
@@ -190,39 +199,8 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 		} else if (src.getLevel() == 3) {
 			jsonObject.addProperty("level", "input");
 			src.setAllowsChildren(false);
-			for (Component item : UI.generalPanel.getComponents()) {
-				if (item.toString().contains("JTextField")) {
-					String uuid = ((JTextField) item).getName();
-					if (myNode.isMatch(uuid)) {
+			setLevel3(myNode, jsonObject);
 
-						String type = ((JTextField) item).getDocument().getProperty("type").toString();
-						String text = ((JTextField) item).getText();
-
-						if (uuidList.contains(uuid + "-" + type))
-							continue;
-
-						uuidList.add(uuid + "-" + type);
-
-						jsonObject.addProperty("uuid", uuid);
-						jsonObject.addProperty(type, text);
-
-					}
-				} else if (item.toString().contains("JComboBox")) {
-					String uuid = ((JComboBox) item).getName();
-					if (myNode.isMatch(uuid)) {
-
-						String text = ((JComboBox) item).getSelectedItem().toString();
-						String type = "locatorType";
-						
-						if (uuidList.contains(uuid + "-" + type))
-							continue;
-
-						uuidList.add(uuid + "-" + type);
-						
-						jsonObject.addProperty(type, text);
-					}
-				}
-			}
 		} else {
 			src.setAllowsChildren(true);
 		}
@@ -234,5 +212,41 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 		}
 
 		return jsonObject;
+	}
+
+	private void setLevel3(MyTreeNode myNode, JsonObject jsonObject) {
+		for (Component item : UI.generalPanel.getComponents()) {
+			if (item.toString().contains("JTextField")) {
+				String uuid = ((JTextField) item).getName();
+				if (myNode.isMatch(uuid)) {
+
+					String type = ((JTextField) item).getDocument().getProperty("type").toString();
+					String text = ((JTextField) item).getText();
+
+					if (uuidList.contains(uuid + "-" + type))
+						continue;
+
+					uuidList.add(uuid + "-" + type);
+
+					jsonObject.addProperty("uuid", uuid);
+					jsonObject.addProperty(type, text);
+
+				}
+			} else if (item.toString().contains("JComboBox")) {
+				String uuid = ((JComboBox) item).getName();
+				if (myNode.isMatch(uuid)) {
+
+					String text = ((JComboBox) item).getSelectedItem().toString();
+					String type = "locatorType";
+
+					if (uuidList.contains(uuid + "-" + type))
+						continue;
+
+					uuidList.add(uuid + "-" + type);
+
+					jsonObject.addProperty(type, text);
+				}
+			}
+		}
 	}
 }

@@ -26,6 +26,7 @@ import javax.swing.JMenuItem;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
 import org.json.JSONArray;
@@ -147,6 +148,8 @@ public class UI extends JPanel implements ActionListener {
 		treePanel.setBackground(Color.WHITE);
 		treePanel.setBounds(0, 0, 276, 607);
 		frame.getContentPane().add(treePanel);
+//		treePanel.setRootUserObject("Test Suite");
+		addNode(0, "Test Suite", treePanel.getDefaultMutableTreeNode());
 
 		config = StreamHandler.inputStreamTextBuilder(getClass().getResourceAsStream("/config.json"));
 
@@ -350,8 +353,11 @@ public class UI extends JPanel implements ActionListener {
 					UI.generalPanel.removeAll();
 				}
 
-				JSONObject obj = new JSONObject(content);
-				JSONArray category = obj.getJSONArray("children");
+				JSONObject suite = new JSONObject(content);
+					treePanel.setRootUserObject(suite.getString("userObject"));
+					addNode(0, suite.getString("userObject"), treePanel.getDefaultMutableTreeNode());
+				
+				JSONArray category = suite.getJSONArray("children");
 				for (int x = 0; x < category.length(); x++) {
 					DefaultMutableTreeNode p1;
 					JSONObject cat = category.getJSONObject(x);
@@ -401,6 +407,7 @@ public class UI extends JPanel implements ActionListener {
 
 		treePanel.getJTree().addMouseListener(mouseListener);
 
+		// Handles changes in the tree (Control what the user see based on selection)
 		treePanel.getJTree().addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePanel.getJTree()

@@ -1,19 +1,16 @@
 package com.learnitbro.testing.tool.run;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.asserts.SoftAssert;
 
 import com.learnitbro.testing.tool.file.FileHandler;
 import com.learnitbro.testing.tool.file.JSONHandler;
 import com.learnitbro.testing.tool.reporting.Email;
 import com.learnitbro.testing.tool.reporting.Report;
-import com.learnitbro.testing.tool.App;
 import com.learnitbro.testing.tool.activity.Action;
 
 public class Coordinator {
