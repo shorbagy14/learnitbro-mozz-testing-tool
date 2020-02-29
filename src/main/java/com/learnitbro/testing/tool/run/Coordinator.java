@@ -17,6 +17,8 @@ import com.learnitbro.testing.tool.App;
 import com.learnitbro.testing.tool.activity.Action;
 
 public class Coordinator {
+	
+	public static String emailList = "shorbagy14@gmail.com";
 
 	private WebDriver driver;
 //	private SoftAssert softAssert;
@@ -46,7 +48,7 @@ public class Coordinator {
 			report.flush();
 			String info = " - " + Control.browser.toUpperCase();
 			email.sendAttachmentInEmail("Test Report - " + report.getTime() + info,
-					"This is an automated email. Here is the report for the test. Mohamed Elshorbagy", App.emailList,
+					"This is an automated email. Here is the report for the test. Mohamed Elshorbagy", emailList,
 					report.getAllReports());
 			// softAssert.assertAll();
 		}
@@ -60,7 +62,7 @@ public class Coordinator {
 		String DESCRIPTION = null;
 		try {
 			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/tree.json"));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

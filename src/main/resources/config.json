@@ -45,6 +45,14 @@
     ]
   },
   {
+    "name": "Sleep",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "time"
+    ]
+  },
+  {
     "name": "Send Keys",
     "category": "action",
     "platform": "web",
@@ -58,7 +66,7 @@
     "category": "wait",
     "platform": "web",
     "require": [
-      "time", "locator"
+      "time"
     ]
   },
   {
