@@ -8,17 +8,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import org.openqa.selenium.JavascriptExecutor;
 
-public class Wait {
+public class WaitBuilder {
 
 	private WebDriver driver;
 
 	@SuppressWarnings("unused")
-	private Wait() {
+	private WaitBuilder() {
 		// Leave Empty -- Always keep this constructor private
 		throw new NullPointerException("You forgot to pass the driver to this class: " + this.getClass().getName());
 	}
 
-	public Wait(WebDriver driver) {
+	public WaitBuilder(WebDriver driver) {
 		this.driver = driver;
 	}
 

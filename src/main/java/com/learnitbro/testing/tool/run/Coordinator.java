@@ -11,7 +11,7 @@ import com.learnitbro.testing.tool.file.FileHandler;
 import com.learnitbro.testing.tool.file.JSONHandler;
 import com.learnitbro.testing.tool.reporting.Email;
 import com.learnitbro.testing.tool.reporting.Report;
-import com.learnitbro.testing.tool.activity.Action;
+import com.learnitbro.testing.tool.activity.ActionBuilder;
 
 public class Coordinator {
 	
@@ -85,12 +85,17 @@ public class Coordinator {
 	 * @param run (JSONObject)
 	 */
 	public void steps(JSONObject run) {
-		Action a = new Action(driver, report);
+		checkActions(run);
+	}
+	
+	private void checkActions(JSONObject run) {
+		ActionBuilder a = new ActionBuilder(driver, report);
 		String userObject = run.getString("userObject");
 		
 		String text = null;
 		String url = null;
 		By locator = null;
+		int time = 0;
 		
 		if(run.has("url"))
 			url = run.getString("url");
@@ -102,6 +107,10 @@ public class Coordinator {
 			String locatorType = run.getString("locatorType");
 			String locatorValue = run.getString("locator");
 			locator = getLocator(locatorType, locatorValue);
+		}
+		
+		if(run.has("time")) {
+			time = Integer.valueOf(run.getString("time"));
 		}
 
 		switch (userObject.toLowerCase()) {
@@ -116,6 +125,9 @@ public class Coordinator {
 			break;
 		case "clear":
 			a.clear(locator);
+			break;
+		case "sleep":
+			a.sleep(time);
 			break;
 		case "upload":
 			a.upload(locator, text);

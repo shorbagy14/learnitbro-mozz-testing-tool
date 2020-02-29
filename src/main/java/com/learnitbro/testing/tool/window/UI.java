@@ -549,12 +549,12 @@ public class UI extends JPanel implements ActionListener {
 						lbl.setText(v);
 						generalPanel.add(lbl);
 
-						if (req.getString(y).equals("locator")) {
+						if (v.equals("locator")) {
 							JComboBox<String> jcb = new JComboBox<String>(
 									new String[] { "xpath", "css", "class", "id", "name" });
 							jcb.setName(uuid.toString());
 							jcb.setBounds(40, 60 + posY, 100, 25);
-							jcb.putClientProperty("type", v);
+							jcb.putClientProperty("type", "locatorType");
 							generalPanel.add(jcb);
 						}
 

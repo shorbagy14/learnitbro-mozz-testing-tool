@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.learnitbro.testing.tool.reporting.Report;
 
-public class Action {
+public class ActionBuilder {
 
 	private WebDriver driver;
 	private Report report;
@@ -20,12 +20,12 @@ public class Action {
 	private JavascriptExecutor js;
 
 	@SuppressWarnings("unused")
-	private Action() {
+	private ActionBuilder() {
 		// Leave Empty -- Always keep this constructor private
 		throw new NullPointerException("You forgot to pass the driver to this class: " + this.getClass().getName());
 	}
 
-	public Action(WebDriver driver, Report report) {
+	public ActionBuilder(WebDriver driver, Report report) {
 		this.driver = driver;
 		this.report = report;
 		if (actions == null)
@@ -142,7 +142,7 @@ public class Action {
 		report.info("Double clicking on " + locator);
 	}
 
-	public static void sleep(long Time) {
+	public void sleep(long Time) {
 		try {
 			Thread.sleep(Time);
 		} catch (Exception e) {
