@@ -231,6 +231,14 @@ public class UI extends JPanel implements ActionListener {
 			}
 
 			public void checkTreePanel() {
+
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePanel.getJTree()
+						.getLastSelectedPathComponent();
+				if (node != null) {
+					MyTreeNode myNode = new MyTreeNode(node);
+					setVisibiltyLevel(myNode);
+				}
+
 				int level = treePanel.getSelectedNodeLevel();
 				if (level == 0 || level == 1) {
 					disableMenuItems(mnAction);
@@ -271,7 +279,7 @@ public class UI extends JPanel implements ActionListener {
 					UI.generalPanel.removeAll();
 				}
 				loadTree();
-				
+
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePanel.getDefaultMutableTreeNode();
 				MyTreeNode myNode = new MyTreeNode(node);
 				setVisibiltyLevel(myNode);
@@ -507,12 +515,10 @@ public class UI extends JPanel implements ActionListener {
 						if (v.equals("browserName")) {
 							jcb = new JComboBox<String>(
 									new String[] { "chrome", "firefox", "edge", "ie", "safari", "opera" });
-						} else if(v.equals("headless")) {
-							jcb = new JComboBox<String>(
-									new String[] { "false", "true"});
-						} else if(v.equals("platform")) {
-							jcb = new JComboBox<String>(
-									new String[] { "web"});
+						} else if (v.equals("headless")) {
+							jcb = new JComboBox<String>(new String[] { "false", "true" });
+						} else if (v.equals("platform")) {
+							jcb = new JComboBox<String>(new String[] { "web" });
 						} else {
 							throw new IllegalArgumentException("Wrong argument in the configuration file");
 						}
