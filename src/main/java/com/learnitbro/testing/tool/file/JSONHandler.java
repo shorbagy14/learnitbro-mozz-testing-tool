@@ -19,6 +19,7 @@ public class JSONHandler {
 	 * @param body - JSON string
 	 */
 	public static void write(File name, String body) {
+		name.getParentFile().mkdirs();
         try (FileWriter file = new FileWriter(name)) {
  
             file.write(body);

@@ -25,7 +25,7 @@ public class App {
 	public static void main(String[] args) throws Exception {
 		App app = new App();
 		app.printCreds();
-
+		
 		if (args.length == 0) {
 			System.out.println("UI mode activated");
 			app.ui();
@@ -62,7 +62,7 @@ public class App {
 		System.out.println("Console mode activated");
 		
 		File source = new File(file);
-		File dest = new File(FileHandler.getUserDir() + "/tree.json");
+		File dest = new File(FileHandler.getUserDir() + "/temp/tree.json");
 
 		if (source.exists()) {
 			if (JSONHandler.isJSONValid(JSONHandler.read(source))) {

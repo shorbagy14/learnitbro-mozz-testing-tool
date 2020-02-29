@@ -61,7 +61,7 @@ public class Coordinator {
 		String content = null;
 		String DESCRIPTION = null;
 		try {
-			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/tree.json"));
+			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/tree.json"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

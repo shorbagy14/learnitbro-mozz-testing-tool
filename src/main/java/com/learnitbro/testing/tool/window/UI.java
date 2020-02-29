@@ -336,7 +336,7 @@ public class UI extends JPanel implements ActionListener {
 
 				String content = null;
 				try {
-					content = JSONHandler.read(new File(FileHandler.getUserDir() + "/tree.json"));
+					content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/tree.json"));
 				} catch (Exception ex) {
 					throw new ReadFileException("Can't read file", ex);
 				}
@@ -501,6 +501,6 @@ public class UI extends JPanel implements ActionListener {
 
 		String jsonString = gson.toJson(root);
 		System.out.println(jsonString);
-		JSONHandler.write(new File(FileHandler.getUserDir() + "/tree.json"), jsonString);
+		JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/tree.json"), jsonString);
 	}
 }

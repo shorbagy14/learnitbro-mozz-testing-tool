@@ -3,6 +3,5 @@
 /.classpath
 /.settings
 /.project
-/object.json
-/tree.json
+/temp
 *.html

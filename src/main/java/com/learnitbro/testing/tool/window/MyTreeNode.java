@@ -51,7 +51,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 	public boolean isUuidExist(String uuid) {
 		String content = null;
 		try {
-			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/object.json"));
+			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/node.json"));
 		} catch (Exception e) {
 			throw new ReadFileException("Can't read file", e);
 		}
@@ -70,7 +70,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 	public boolean isMatch(String jTextFieldName) {
 		String content = null;
 		try {
-			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/object.json"));
+			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/node.json"));
 		} catch (Exception e) {
 			throw new ReadFileException("Can't read file", e);
 		}
@@ -168,7 +168,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 
 		all.put(jo);
 //		System.out.println(all.toString(1));
-		JSONHandler.write(new File(FileHandler.getUserDir() + "/object.json"), all.toString(1));
+		JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/node.json"), all.toString(1));
 	}
 }
 

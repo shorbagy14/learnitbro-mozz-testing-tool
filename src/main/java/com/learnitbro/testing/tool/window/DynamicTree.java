@@ -105,7 +105,7 @@ public class DynamicTree extends JPanel {
 			}
 
 //			System.out.println(MyTreeNode.all.toString());
-			JSONHandler.write(new File(FileHandler.getUserDir() + "/object.json"), MyTreeNode.all.toString(1));
+			JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/node.json"), MyTreeNode.all.toString(1));
 
 			if (parent != null) {
 				treeModel.removeNodeFromParent(currentNode);
@@ -127,7 +127,7 @@ public class DynamicTree extends JPanel {
 			MyTreeNode.all = new JSONArray();
 		}
 		
-		JSONHandler.write(new File(FileHandler.getUserDir() + "/object.json"), MyTreeNode.all.toString(1));
+		JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/node.json"), MyTreeNode.all.toString(1));
 
 	}
 
