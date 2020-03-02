@@ -54,14 +54,6 @@
     ]
   },
   {
-    "name": "Sleep",
-    "category": "action",
-    "platform": "web",
-    "require": [
-      "time"
-    ]
-  },
-  {
     "name": "Input Text",
     "category": "action",
     "platform": "web",
@@ -175,6 +167,14 @@
     ]
   },
   {
+    "name": "Sleep",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time"
+    ]
+  },
+  {
     "name": "Page To Load",
     "category": "wait",
     "platform": "web",
@@ -192,7 +192,7 @@
     ]
   },
   {
-    "name": "Visibility",
+    "name": "Visible",
     "category": "wait",
     "platform": "web",
     "require": [
@@ -210,7 +210,7 @@
     ]
   },
   {
-    "name": "Invisibility",
+    "name": "Invisible",
     "category": "wait",
     "platform": "web",
     "require": [

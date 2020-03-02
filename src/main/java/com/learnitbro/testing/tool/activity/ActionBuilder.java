@@ -30,14 +30,6 @@ public class ActionBuilder {
 			js = ((JavascriptExecutor) driver);
 
 	}
-	
-	public void sleep(long time) {
-		try {
-			Thread.sleep(time*1000);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/////////////////////// WebDriver & WebElement Class ///////////////////////
 

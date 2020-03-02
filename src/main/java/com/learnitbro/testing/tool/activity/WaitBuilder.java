@@ -14,8 +14,6 @@ public class WaitBuilder {
 
 	private WebDriver driver;
 	private Report report;
-	private Actions actions;
-	private JavascriptExecutor js;
 
 	@SuppressWarnings("unused")
 	private WaitBuilder() {
@@ -26,11 +24,19 @@ public class WaitBuilder {
 	public WaitBuilder(WebDriver driver, Report report) {
 		this.driver = driver;
 		this.report = report;
-		if (actions == null)
-			actions = new Actions(driver);
-		if (js == null)
-			js = ((JavascriptExecutor) driver);
 
+	}
+	
+	/**
+	 * 
+	 * @param time
+	 */
+	public void sleep(long time) {
+		try {
+			Thread.sleep(time*1000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

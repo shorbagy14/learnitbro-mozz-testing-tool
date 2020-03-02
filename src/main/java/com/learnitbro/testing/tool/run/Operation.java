@@ -10,10 +10,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import com.learnitbro.testing.tool.reporting.Report;
 import com.learnitbro.testing.tool.stream.StreamHandler;
 import com.learnitbro.testing.tool.App;
+import com.learnitbro.testing.tool.events.WebEventListener;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -22,6 +24,7 @@ public class Operation {
 	private WebDriver driver;
 	private String driverType;
 	private Report report;
+//	private WebEventListener eventListener;
 
 	public Operation(String driverType) {
 		this.driverType = driverType;
@@ -82,19 +85,15 @@ public class Operation {
 
 	public WebDriver setupDriver(boolean headless) {
 		System.out.println("Driver type: " + driverType);
-//		DesiredCapabilities caps = new DesiredCapabilities();
-//		LoggingPreferences logPrefs = new LoggingPreferences();
-//		logPrefs.enable(LogType.BROWSER, Level.ALL);
-//		logPrefs.enable(LogType.DRIVER, Level.ALL);
-//		logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
-//		caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+
+//		eventListener = new WebEventListener(report);
+		
 		switch (driverType.toLowerCase()) {
 		case "chrome":
 //			WebDriverManager.chromedriver().setup();
 			WebDriverManager.chromedriver().version("79").setup();
 
 			ChromeOptions chromeOptions = new ChromeOptions();
-//			chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
 			chromeOptions.addArguments("window-size=1200x600");
 			chromeOptions.addArguments("--disable-dev-shm-usage");
 			if (headless) {
@@ -127,6 +126,9 @@ public class Operation {
 		
 		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		
+//		EventFiringWebDriver driver = new EventFiringWebDriver(driver);
+//		driver.register(eventListener);
 
 		
 		App app = new App();

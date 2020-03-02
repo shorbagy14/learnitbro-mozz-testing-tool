@@ -11,8 +11,6 @@ public class AssertBuilder {
 
 	private WebDriver driver;
 	private Report report;
-	private Actions actions;
-	private JavascriptExecutor js;
 
 	@SuppressWarnings("unused")
 	private AssertBuilder() {
@@ -23,10 +21,6 @@ public class AssertBuilder {
 	public AssertBuilder(WebDriver driver, Report report) {
 		this.driver = driver;
 		this.report = report;
-		if (actions == null)
-			actions = new Actions(driver);
-		if (js == null)
-			js = ((JavascriptExecutor) driver);
 
 	}
 

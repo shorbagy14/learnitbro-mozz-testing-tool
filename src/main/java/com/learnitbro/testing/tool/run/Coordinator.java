@@ -122,9 +122,6 @@ public class Coordinator {
 		case "clear":
 			a.clear(locator);
 			break;
-		case "sleep":
-			a.sleep(time);
-			break;
 		case "upload":
 			a.upload(locator, file);
 			break;
@@ -187,7 +184,10 @@ public class Coordinator {
 		setValues(run);
 
 		switch (userObject.toLowerCase()) {
-		case "Page To Load":
+		case "sleep":
+			a.sleep(time);
+			break;
+		case "page to load":
 			a.pageToLoad(time);
 			break;
 		case "presence":
