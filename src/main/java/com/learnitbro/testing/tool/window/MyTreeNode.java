@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -30,6 +31,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 	private String name;
 	private String parentName;
 	private String grandparentName;
+//	private String category;
 
 	private DefaultMutableTreeNode node;
 
@@ -67,7 +69,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		return false;
 	}
 
-	public boolean isMatch(String jTextFieldName) {
+	boolean isMatch(String value) {
 		String content = null;
 		try {
 			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/node.json"));
@@ -85,7 +87,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 			int parentIndex = item.getInt("parentIndex");
 			int grandparentIndex = item.getInt("grandparentIndex");
 
-			boolean isUuidMatch = uuid.equalsIgnoreCase(jTextFieldName);
+			boolean isUuidMatch = uuid.equalsIgnoreCase(value);
 			boolean isNameMatch = name.equalsIgnoreCase(node.getUserObject().toString());
 
 			boolean isIndexMatch = index == getIndex();
@@ -106,6 +108,14 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 	public String getName() {
 		return name;
 	}
+
+//	public void setCategory(String category) {
+//		this.category = category;
+//	}
+//	
+//	public String getCategory() {
+//		return category;
+//	}
 
 	public void setParentName(String parentName) {
 		this.parentName = parentName;
@@ -215,22 +225,25 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 		return jsonObject;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void setLevel(MyTreeNode myNode, JsonObject jsonObject) {
 		for (Component item : UI.generalPanel.getComponents()) {
 			if (item.toString().contains("JTextField")) {
 				String uuid = ((JTextField) item).getName();
 				if (myNode.isMatch(uuid)) {
 
-					String type = ((JTextField) item).getDocument().getProperty("type").toString();
+					String type = ((JTextField) item).getClientProperty("type").toString();
+					String category = ((JTextField) item).getClientProperty("category").toString();
 					String text = ((JTextField) item).getText();
 
-					if (uuidList.contains(uuid + "-" + type))
+					if (uuidList.contains(uuid + "-" + type + "-" + category))
 						continue;
 
-					uuidList.add(uuid + "-" + type);
+					uuidList.add(uuid + "-" + type + "-" + category);
 
 					jsonObject.addProperty("uuid", uuid);
 					jsonObject.addProperty(type, text);
+					jsonObject.addProperty("category", category);
 
 				}
 			} else if (item.toString().contains("JComboBox")) {
@@ -239,13 +252,33 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 
 					String text = ((JComboBox) item).getSelectedItem().toString();
 					String type = ((JComboBox) item).getClientProperty("type").toString();
+					String category = ((JComboBox) item).getClientProperty("category").toString();
 
-					if (uuidList.contains(uuid + "-" + type))
+					if (uuidList.contains(uuid + "-" + type + "-" + category))
 						continue;
 
-					uuidList.add(uuid + "-" + type);
+					uuidList.add(uuid + "-" + type + "-" + category);
 
 					jsonObject.addProperty(type, text);
+					jsonObject.addProperty("category", category);
+				}
+			} else if (item.toString().contains("JLabel")) {
+				String uuid = ((JLabel) item).getName();
+				if (myNode.isMatch(uuid)) {
+
+					if(((JLabel) item).getClientProperty("category") == null)
+						continue;
+					
+					String category = ((JLabel) item).getClientProperty("category").toString();
+
+					if (uuidList.contains(uuid + "-" + category))
+						continue;
+
+					uuidList.add(uuid + "-" + category);
+
+					jsonObject.addProperty("category", category);
+					jsonObject.addProperty("uuid", uuid);
+
 				}
 			}
 		}

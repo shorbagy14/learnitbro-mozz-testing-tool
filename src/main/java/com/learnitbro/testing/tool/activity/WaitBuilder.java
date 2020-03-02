@@ -2,7 +2,6 @@ package com.learnitbro.testing.tool.activity;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -39,6 +38,7 @@ public class WaitBuilder {
 	 * @param timeOut
 	 */
 	public void pageToLoad(int timeOut) {
+		report.info("Waiting for page to load for a maxium of " + timeOut + " seconds");
 		new WebDriverWait(driver, timeOut)
 				.until(m -> ((JavascriptExecutor) m).executeScript("return document.readyState").equals("complete"));
 	}
@@ -49,6 +49,7 @@ public class WaitBuilder {
 	 * @param timeOut
 	 */
 	public void presence(By locator, int timeOut) {
+		report.info("Waiting for element " + locator + " to be presence for a maximum of " + timeOut + " seconds");
 		WebDriverWait waiting = new WebDriverWait(driver, timeOut);
 		waiting.until(ExpectedConditions.presenceOfElementLocated((locator)));
 	}
@@ -59,6 +60,7 @@ public class WaitBuilder {
 	 * @param timeOut
 	 */
 	public void visibility(By locator, int timeOut) {
+		report.info("Waiting for element " + locator + " to be visible for a maximum of " + timeOut + " seconds");
 		WebDriverWait waiting = new WebDriverWait(driver, timeOut);
 		waiting.until(ExpectedConditions.visibilityOfElementLocated((locator)));
 	}
@@ -69,6 +71,7 @@ public class WaitBuilder {
 	 * @param timeOut
 	 */
 	public void clickable(By locator, int timeOut) {
+		report.info("Waiting for element " + locator + " to be clickable for a maximum of " + timeOut + " seconds");
 		WebDriverWait waiting = new WebDriverWait(driver, timeOut);
 		waiting.until(ExpectedConditions.elementToBeClickable(locator));
 	}
@@ -79,6 +82,7 @@ public class WaitBuilder {
 	 * @param timeOut
 	 */
 	public void invisibility(By locator, int timeOut) {
+		report.info("Waiting for element " + locator + " to be invisible for a maximum of " + timeOut + " seconds");
 		WebDriverWait waiting = new WebDriverWait(driver, timeOut);
 		waiting.until(ExpectedConditions.invisibilityOfElementLocated((locator)));
 	}
@@ -89,6 +93,7 @@ public class WaitBuilder {
 	 * @param timeOut
 	 */
 	public void selected(By locator, int timeOut) {
+		report.info("Waiting for element " + locator + " to be selected for a maximum of " + timeOut + " seconds");
 		WebDriverWait waiting = new WebDriverWait(driver, timeOut);
 		waiting.until(ExpectedConditions.elementToBeSelected((locator)));
 	}
@@ -99,6 +104,7 @@ public class WaitBuilder {
 	 * @param timeOut
 	 */
 	public void titleContains(String title, int timeOut) {
+		report.info("Waiting for title to contain " + title + " for a maximum of " + timeOut + " seconds");
 		WebDriverWait waiting = new WebDriverWait(driver, timeOut);
 		waiting.until(ExpectedConditions.titleContains(title));
 	}
@@ -108,7 +114,8 @@ public class WaitBuilder {
 	 * @param title
 	 * @param timeOut
 	 */
-	public void titleIs(String title, int timeOut) {
+	public void titleToBe(String title, int timeOut) {
+		report.info("Waiting for title to be " + title + " for a maximum of " + timeOut + " seconds");
 		WebDriverWait waiting = new WebDriverWait(driver, timeOut);
 		waiting.until(ExpectedConditions.titleIs(title));
 	}
@@ -119,6 +126,7 @@ public class WaitBuilder {
 	 * @param timeOut
 	 */
 	public void urlContains(String url, int timeOut) {
+		report.info("Waiting for url to contain " + url + " for a maximum of " + timeOut + " seconds");
 		WebDriverWait waiting = new WebDriverWait(driver, timeOut);
 		waiting.until(ExpectedConditions.urlContains(url));
 	}
@@ -129,6 +137,7 @@ public class WaitBuilder {
 	 * @param timeOut
 	 */
 	public void urlToBe(String url, int timeOut) {
+		report.info("Waiting for url to be " + url + " for a maximum of " + timeOut + " seconds");
 		WebDriverWait waiting = new WebDriverWait(driver, timeOut);
 		waiting.until(ExpectedConditions.urlToBe(url));
 	}
@@ -138,6 +147,7 @@ public class WaitBuilder {
 	 * @param timeOut
 	 */
 	public void alertIsPresent(int timeOut) {
+		report.info("Waiting for alert to present for a maximum of " + timeOut + " seconds");
 		WebDriverWait waiting = new WebDriverWait(driver, timeOut);
 		waiting.until(ExpectedConditions.alertIsPresent());
 	}
@@ -150,6 +160,8 @@ public class WaitBuilder {
 	 * @param timeOut
 	 */
 	public void attributeToBe(By locator, String attribute, String value, int timeOut) {
+		report.info("Waiting for element " + locator + " to have an attribute " + attribute + " to be " + value
+				+ " for a maximum of " + timeOut + " seconds");
 		WebDriverWait waiting = new WebDriverWait(driver, timeOut);
 		waiting.until(ExpectedConditions.attributeToBe(locator, attribute, value));
 	}
@@ -162,6 +174,8 @@ public class WaitBuilder {
 	 * @param timeOut
 	 */
 	public void attributeContains(By locator, String attribute, String value, int timeOut) {
+		report.info("Waiting for element " + locator + " to have an attribute " + attribute + " to contain " + value
+				+ " for a maximum of " + timeOut + " seconds");
 		WebDriverWait waiting = new WebDriverWait(driver, timeOut);
 		waiting.until(ExpectedConditions.attributeContains(locator, attribute, value));
 	}

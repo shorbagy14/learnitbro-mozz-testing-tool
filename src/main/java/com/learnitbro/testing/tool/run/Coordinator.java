@@ -98,6 +98,7 @@ public class Coordinator {
 	public void steps(JSONObject run) {
 		checkActions(run);
 		checkAsserts(run);
+		checkWaits(run);
 	}
 
 	private void checkActions(JSONObject run) {
@@ -168,13 +169,13 @@ public class Coordinator {
 		setValues(run);
 
 		switch (userObject.toLowerCase()) {
-		case "Displayed":
+		case "displayed":
 			Assert.assertTrue(a.isDisplayed(locator));
 			break;
-		case "Enabled":
+		case "enabled":
 			Assert.assertTrue(a.isEnabled(locator));
 			break;
-		case "Selected":
+		case "selected":
 			Assert.assertTrue(a.isSelected(locator));
 			break;
 		}
@@ -186,8 +187,44 @@ public class Coordinator {
 		setValues(run);
 
 		switch (userObject.toLowerCase()) {
-		case "link":
+		case "Page To Load":
 			a.pageToLoad(time);
+			break;
+		case "presence":
+			a.presence(locator, time);
+			break;
+		case "visble":
+			a.visibility(locator, time);
+			break;
+		case "clickable":
+			a.clickable(locator, time);
+			break;
+		case "invisble":
+			a.invisibility(locator, time);
+			break;
+		case "selected":
+			a.selected(locator, time);
+			break;
+		case "title contains":
+			a.titleContains(text, time);
+			break;
+		case "title to be":
+			a.titleToBe(text, time);
+			break;
+		case "url contains":
+			a.urlContains(url, time);
+			break;
+		case "url to be":
+			a.urlToBe(url, time);
+			break;
+		case "attribute contains":
+			// FIX THIS
+			a.attributeContains(locator, text, text, time);
+//			a.attributeContains(locator, text[0], text[1], time);
+			break;
+		case "attribute to be":
+			a.attributeToBe(locator, text, text, time);
+//			a.attributeToBe(locator, text[0], text[1], time);
 			break;
 		}
 	}

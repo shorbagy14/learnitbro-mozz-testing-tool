@@ -1,12 +1,8 @@
 package com.learnitbro.testing.tool.activity;
 
-
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
@@ -35,9 +31,9 @@ public class ActionBuilder {
 
 	}
 	
-	public void sleep(long Time) {
+	public void sleep(long time) {
 		try {
-			Thread.sleep(Time);
+			Thread.sleep(time*1000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -67,7 +63,7 @@ public class ActionBuilder {
 	 * navigate forward
 	 */
 	public void forward() {
-		driver.navigate().forward();;
+		driver.navigate().forward();
 		report.info("Navigating forward");
 	}
 	

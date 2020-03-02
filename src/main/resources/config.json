@@ -237,7 +237,7 @@
     ]
   },
   {
-    "name": "Title Is",
+    "name": "Title To Be",
     "category": "wait",
     "platform": "web",
     "require": [
@@ -247,6 +247,15 @@
   },
   {
     "name": "URL Contains",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "url"
+    ]
+  },
+  {
+    "name": "URL To Be",
     "category": "wait",
     "platform": "web",
     "require": [

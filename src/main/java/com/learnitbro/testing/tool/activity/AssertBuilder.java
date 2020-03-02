@@ -79,7 +79,9 @@ public class AssertBuilder {
 	 * @return true or false (boolean)
 	 */
 	public boolean isDisplayed(By locator) {
-		return driver.findElement(locator).isDisplayed();
+		boolean isTrue = driver.findElement(locator).isDisplayed();
+		report.info("Element of " + locator + " is displayed : " + isTrue);
+		return isTrue;
 	}
 	
 	/**
@@ -89,7 +91,9 @@ public class AssertBuilder {
 	 * @return true or false (boolean)
 	 */
 	public boolean isEnabled(By locator) {
-		return driver.findElement(locator).isEnabled();
+		boolean isTrue = driver.findElement(locator).isEnabled();
+		report.info("Element of " + locator + " is enabled : " + isTrue);
+		return isTrue;
 	}
 	
 	/**
@@ -99,7 +103,9 @@ public class AssertBuilder {
 	 * @return true or false (boolean)
 	 */
 	public boolean isSelected(By locator) {
-		return driver.findElement(locator).isSelected();
+		boolean isTrue = driver.findElement(locator).isSelected();
+		report.info("Element of " + locator + " is selected : " + isTrue);
+		return isTrue;
 	}
 
 	/**
