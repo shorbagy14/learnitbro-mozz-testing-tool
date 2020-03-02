@@ -34,8 +34,16 @@ public class ActionBuilder {
 			js = ((JavascriptExecutor) driver);
 
 	}
+	
+	public void sleep(long Time) {
+		try {
+			Thread.sleep(Time);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	//////////// ACTIONS ////////////
+	/////////////////////// WebDriver & WebElement Class ///////////////////////
 
 	/**
 	 * navigate to url
@@ -48,38 +56,44 @@ public class ActionBuilder {
 	}
 
 	/**
-	 * navigate to url
-	 * 
-	 * @param url
-	 */
-	public void navigateToUrl(String url) {
-		driver.navigate().to(url);
-		report.info("Navigating to " + url);
-	}
-
-	/**
 	 * navigate back
 	 */
 	public void back() {
 		driver.navigate().back();
 		report.info("Navigating back");
 	}
+	
+	/**
+	 * navigate forward
+	 */
+	public void forward() {
+		driver.navigate().forward();;
+		report.info("Navigating forward");
+	}
+	
+	/**
+	 * refresh
+	 */
+	public void refresh() {
+		driver.navigate().refresh();
+		report.info("Page refresh");
+	}
 
 	/**
-	 * Close current tab
+	 * close current tab
 	 */
 	public void close() {
 		driver.close();
 		report.info("Close current tab");
 	}
 
-	/**
-	 * Close browser
-	 */
-	public void quit() {
-		driver.quit();
-		report.info("Close browser");
-	}
+//	/**
+//	 * Close browser
+//	 */
+//	public void quit() {
+//		driver.quit();
+//		report.info("Close browser");
+//	}
 
 	/**
 	 * clicks the element
@@ -130,108 +144,76 @@ public class ActionBuilder {
 		driver.findElement(locator).sendKeys(value);
 		report.info("Uploading " + locator + " on " + value);
 	}
+	
+	/////////////////////// Actions Class ///////////////////////
 
 	/**
-	 * double click on element
+	 * Click and hold the element
+	 * 
+	 * @param locator
+	 *
+	 */
+	public void clickAndHold(By locator) {
+		actions.clickAndHold(driver.findElement(locator)).build().perform();
+		report.info("Click and hold on " + locator);
+	}
+	
+	/**
+	 * Releasing mouse click and hold on element
+	 * 
+	 * @param locator
+	 *
+	 */
+	public void release() {
+		actions.release().build().perform();
+		report.info("Releasing mouse click and hold");
+	}
+
+	/**
+	 * Drag and drop on element
+	 * 
+	 * @param source
+	 * @param target
+	 */
+	public void dragAndDrop(By source, By target) {
+		actions.dragAndDrop(driver.findElement(source), driver.findElement(target)).build().perform();
+		report.info("Drag and drop on " + source + " to " + target);
+	}
+
+	/**
+	 * Hover on element
+	 * 
+	 * @param locator
+	 * 
+	 */
+	public void hover(By locator) {
+		actions.moveToElement(driver.findElement(locator)).build().perform();
+		report.info("Hover on " + locator);
+	}
+
+	/**
+	 * Context click the element
+	 * 
+	 * @param locaor
+	 * 
+	 */
+	public void contextClick(By locator) {
+		actions.contextClick(driver.findElement(locator)).build().perform();
+		report.info("Context click on " + locator);
+	}
+
+	/**
+	 * Double click on element
 	 * 
 	 * @param locator
 	 */
 	public void doubleClick(By locator) {
-		WebElement target = driver.findElement(locator);
-		actions.doubleClick(target).build().perform();
-		report.info("Double clicking on " + locator);
+		actions.doubleClick(driver.findElement(locator)).build().perform();
+		report.info("Double click on " + locator);
 	}
 
-	public void sleep(long Time) {
-		try {
-			Thread.sleep(Time);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	//////////// RETURNS ////////////
-
-	/**
-	 * Returns the text of element
-	 * 
-	 * @param locator
-	 * @return text (String)
-	 */
-	public String getText(By locator) {
-		String text = driver.findElement(locator).getText();
-		report.info("Getting text of " + locator + " to be " + text);
-		return text;
-	}
-
-	/**
-	 * Returns Attribute value
-	 * 
-	 * @param locator
-	 * @param attribute(String)
-	 * @return text (String)
-	 */
-
-	public String getAttributeValue(By locator, String attribute) {
-		String text = driver.findElement(locator).getAttribute(attribute);
-		report.info("Getting value of Attribute" + attribute + " to be " + text);
-		return text;
-	}
-
-	/**
-	 * Returns the Page source
-	 * 
-	 * 
-	 * @return text (String)
-	 */
-	public String getPageSource() {
-		String source = driver.getPageSource();
-		report.info("Page source is " + source);
-		return source;
-	}
-
-	//////////// CHECKS ////////////
-
-	/**
-	 * Returns if element text contains certain value
-	 * 
-	 * @param locator
-	 * @param value   (String)
-	 * @return true or false (boolean)
-	 */
-	public boolean textContains(By locator, String value) {
-		boolean isTrue = getText(locator).contains(value);
-		report.info("Text of " + locator + " contains " + value + " : " + isTrue);
-		return isTrue;
-	}
-
-	/**
-	 * Returns if element text is equal to certain value
-	 * 
-	 * @param locator
-	 * @param value   (String)
-	 * @return true or false (boolean)
-	 */
-	public boolean textEqual(By locator, String value) {
-		boolean isTrue = getText(locator).equals(value);
-		report.info("Text of " + locator + " is same as " + value + " : " + isTrue);
-		return isTrue;
-	}
-
-	/**
-	 * Get list of elements
-	 * 
-	 * @param locator
-	 * @return element(List)
-	 */
-	public List<WebElement> getWebElements(By locator) {
-
-		List<WebElement> list = driver.findElements(locator);
-		report.info("Web Elements list is  " + list);
-		return list;
-	}
-
-	/////////////////// Select from Drop Down////////////////////////
+	/////////////////// Select Class ////////////////////////
+	
 	/**
 	 * Select element in dropdown using visible text
 	 * 
@@ -260,63 +242,11 @@ public class ActionBuilder {
 	 * Select element in drop down using index
 	 * 
 	 * @param locator
-	 * @param index   (String)
+	 * @param index   (Integer)
 	 */
-	public void selectDropdownByindex(By locator, String index) {
+	public void selectDropdownByIndex(By locator, int index) {
 		Select select = new Select(driver.findElement(locator));
-		select.selectByIndex(Integer.parseInt(index));
-		report.info("Selecting  element at index  " + index + "  from drop down");
-	}
-
-	/////////////////////// Action class operations///////////////////
-
-	/**
-	 * Click and hold the element
-	 * 
-	 * @param locator
-	 *
-	 */
-	public void clickAndHold(By locator) {
-		actions.clickAndHold(driver.findElement(locator)).build().perform();
-		;
-		report.info("Click and hold the " + locator);
-	}
-
-	/**
-	 * Drag and drop the element
-	 * 
-	 * @param source
-	 * @param target
-	 */
-	public void dragAndDrop(By source, By target) {
-		WebElement s = driver.findElement(source);
-		WebElement t = driver.findElement(target);
-		actions.dragAndDrop(s, t).build().perform();
-		report.info("Drag and drop the element " + source + " to " + target);
-	}
-
-	/**
-	 * Move mouse to the element
-	 * 
-	 * @param locator
-	 * 
-	 */
-	public void moveToElement(By locator) {
-
-		WebElement webelement = driver.findElement(locator);
-		actions.moveToElement(webelement).build().perform();
-		report.info("Move the mouse to the element " + locator);
-	}
-
-	/**
-	 * Context click the element
-	 * 
-	 * @param locaor
-	 * 
-	 */
-	public void contextClick(By locator) {
-
-		actions.contextClick(driver.findElement(locator)).build().perform();
-		report.info("Context click on the element " + locator);
+		select.selectByIndex(index);
+		report.info("Selecting element at index  " + index + "  from drop down");
 	}
 }

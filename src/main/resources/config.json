@@ -3,22 +3,23 @@
     "name": "Test Suite",
     "category": "suite",
     "platform": "all",
-    "require": ["browserName", "headless", "platform"
+    "require": [
+      "browserName",
+      "headless",
+      "platform"
     ]
   },
   {
     "name": "Category",
     "category": "add",
     "platform": "all",
-    "require": [
-    ]
+    "require": []
   },
   {
     "name": "Test Case",
     "category": "add",
     "platform": "all",
-    "require": [
-    ]
+    "require": []
   },
   {
     "name": "Click",
@@ -34,6 +35,14 @@
     "platform": "web",
     "require": [
       "url"
+    ]
+  },
+  {
+    "name": "Submit",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
     ]
   },
   {
@@ -53,7 +62,7 @@
     ]
   },
   {
-    "name": "Send Keys",
+    "name": "Input Text",
     "category": "action",
     "platform": "web",
     "require": [
@@ -62,7 +71,111 @@
     ]
   },
   {
-    "name": "Page to Load",
+    "name": "Upload",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator",
+      "file"
+    ]
+  },
+  {
+    "name": "Back",
+    "category": "action",
+    "platform": "web",
+    "require": []
+  },
+  {
+    "name": "Forward",
+    "category": "action",
+    "platform": "web",
+    "require": []
+  },
+  {
+    "name": "Refresh",
+    "category": "action",
+    "platform": "web",
+    "require": []
+  },
+  {
+    "name": "Close",
+    "category": "action",
+    "platform": "web",
+    "require": []
+  },
+  {
+    "name": "Click And Hold",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Release",
+    "category": "action",
+    "platform": "web",
+    "require": []
+  },
+  {
+    "name": "Drag And Drop",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator",
+      "locator"
+    ]
+  },
+  {
+    "name": "Hover",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Context Click",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Double Click",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Displayed",
+    "category": "assert",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Enabled",
+    "category": "assert",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Selected",
+    "category": "assert",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Page To Load",
     "category": "wait",
     "platform": "web",
     "require": [
@@ -70,11 +183,12 @@
     ]
   },
   {
-    "name": "Clickable Element",
+    "name": "Clickable",
     "category": "wait",
     "platform": "web",
     "require": [
-      "time", "locator"
+      "time",
+      "locator"
     ]
   }
 ]

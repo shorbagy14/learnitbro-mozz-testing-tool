@@ -8,14 +8,22 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.learnitbro.testing.tool.file.FileHandler;
-import com.learnitbro.testing.tool.file.JSONHandler;
+import com.learnitbro.testing.tool.file.URLHandler;
 import com.learnitbro.testing.tool.reporting.Email;
 import com.learnitbro.testing.tool.reporting.Report;
+import com.learnitbro.testing.tool.web.ElementHandler;
 import com.learnitbro.testing.tool.activity.ActionBuilder;
+import com.learnitbro.testing.tool.activity.AssertBuilder;
 
 public class Coordinator {
-	
-	public static String emailList = "shorbagy14@gmail.com";
+
+	private String text = null;
+	private String url = null;
+	private String file = null;
+	private By locator = null;
+	private int time = 0;
+
+	private String emailList = "shorbagy14@gmail.com";
 
 	private WebDriver driver;
 //	private SoftAssert softAssert;
@@ -82,36 +90,18 @@ public class Coordinator {
 
 	/**
 	 * Create steps here
+	 * 
 	 * @param run (JSONObject)
 	 */
 	public void steps(JSONObject run) {
 		checkActions(run);
+		checkAsserts(run);
 	}
-	
+
 	private void checkActions(JSONObject run) {
 		ActionBuilder a = new ActionBuilder(driver, report);
 		String userObject = run.getString("userObject");
-		
-		String text = null;
-		String url = null;
-		By locator = null;
-		int time = 0;
-		
-		if(run.has("url"))
-			url = run.getString("url");
-		
-		if(run.has("text"))
-			text = run.getString("text");
-		
-		if(run.has("locator")) {
-			String locatorType = run.getString("locatorType");
-			String locatorValue = run.getString("locator");
-			locator = getLocator(locatorType, locatorValue);
-		}
-		
-		if(run.has("time")) {
-			time = Integer.valueOf(run.getString("time"));
-		}
+		setValues(run);
 
 		switch (userObject.toLowerCase()) {
 		case "link":
@@ -120,8 +110,11 @@ public class Coordinator {
 		case "click":
 			a.click(locator);
 			break;
-		case "send keys":
+		case "input text":
 			a.inputText(locator, text);
+			break;
+		case "submit":
+			a.submit(locator);
 			break;
 		case "clear":
 			a.clear(locator);
@@ -130,29 +123,81 @@ public class Coordinator {
 			a.sleep(time);
 			break;
 		case "upload":
-			a.upload(locator, text);
+			a.upload(locator, file);
+			break;
+		case "back":
+			a.back();
+			break;
+		case "forward":
+			a.forward();
+			break;
+		case "refresh":
+			a.refresh();
+			break;
+		case "close":
+			a.close();
+			break;
+		case "click and hold":
+			a.close();
+			break;
+		case "release":
+			a.close();
+			break;
+		case "drag and drop":
+			// FIX THIS
+			a.dragAndDrop(locator, locator);
+			break;
+		case "hover":
+			a.hover(locator);
+			break;
+		case "context click":
+			a.contextClick(locator);
+			break;
+		case "double click":
+			a.doubleClick(locator);
 			break;
 		}
 	}
 	
-	/**
-	 * Returns the locator based on type in JSON
-	 * 
-	 * @param type - locator type
-	 * @param text - locator value
-	 * @return locator
-	 */
-	private By getLocator(String type, String text) {
-		if(type.equals("xpath"))
-			return By.xpath(text);
-		else if(type.equals("class"))
-			return By.className(text);
-		else if(type.equals("css"))
-			return By.cssSelector(text);
-		else if(type.equals("name"))
-			return By.name(text);
-		else if(type.equals("id"))
-			return By.id(text);
-		return null;
+	private void checkAsserts(JSONObject run) {
+		AssertBuilder a = new AssertBuilder(driver, report);
+		String userObject = run.getString("userObject");
+		setValues(run);
+
+		switch (userObject.toLowerCase()) {
+		case "Displayed":
+			a.isDisplayed(locator);
+			break;
+		case "Enabled":
+			a.isEnabled(locator);
+			break;
+		case "Selected":
+			a.isSelected(locator);
+			break;
+		}
+	}
+
+	private void setValues(JSONObject run) {
+		text = null;
+		url = null;
+		file = null;
+		locator = null;
+		time = 0;
+
+		if (run.has("text"))
+			text = run.getString("text");
+		else if (run.has("text")) {
+			file = run.getString("file");
+			FileHandler.isValidFile(new File(file));
+		} else if (run.has("url")) {
+			url = run.getString("url");
+			URLHandler.isURLValid(url);
+		} else if (run.has("locator")) {
+			String locatorType = run.getString("locatorType");
+			String locatorValue = run.getString("locator");
+			locator = ElementHandler.getLocator(locatorType, locatorValue);
+		} else if (run.has("time")) {
+			time = Integer.valueOf(run.getString("time"));
+		}
 	}
 }

@@ -1,4 +1,4 @@
-package com.learnitbro.testing.tool.activity;
+package com.learnitbro.testing.tool.web;
 
 import java.util.List;
 
@@ -6,17 +6,17 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class Element {
+public class ElementHandler {
 	
 	private WebDriver driver;
 
 	@SuppressWarnings("unused")
-	private Element() {
+	private ElementHandler() {
 		// Leave Empty -- Always keep this constructor private
 		throw new NullPointerException("You forgot to pass the driver to this class: " + this.getClass().getName());
 	}
 
-	public Element(WebDriver driver) {
+	public ElementHandler(WebDriver driver) {
 		this.driver = driver;
 	}
 	
@@ -29,6 +29,17 @@ public class Element {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Get list of elements
+	 * 
+	 * @param locator
+	 * @return element(List)
+	 */
+	public List<WebElement> getWebElements(By locator) {
+		List<WebElement> list = driver.findElements(locator);
+		return list;
 	}
 	
 	public boolean isElementDisplayed(By locator) {
@@ -45,5 +56,26 @@ public class Element {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+	
+	/**
+	 * Returns the locator based on type in JSON
+	 * 
+	 * @param type - locator type
+	 * @param text - locator value
+	 * @return locator
+	 */
+	public static By getLocator(String type, String text) {
+		if(type.equals("xpath"))
+			return By.xpath(text);
+		else if(type.equals("class"))
+			return By.className(text);
+		else if(type.equals("css"))
+			return By.cssSelector(text);
+		else if(type.equals("name"))
+			return By.name(text);
+		else if(type.equals("id"))
+			return By.id(text);
+		return null;
 	}
 }

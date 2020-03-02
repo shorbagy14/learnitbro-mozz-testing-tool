@@ -51,10 +51,10 @@ public class JSONHandler {
 	public static boolean isJSONValid(String body) {
 	    try {
 	        new JSONObject(body);
-	    } catch (JSONException ex) {
+	    } catch (JSONException ex1) {
 	        try {
 	            new JSONArray(body);
-	        } catch (JSONException ex1) {
+	        } catch (JSONException ex2) {
 	            return false;
 	        }
 	    }

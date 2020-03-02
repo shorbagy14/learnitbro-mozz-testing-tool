@@ -139,8 +139,9 @@ public class UI extends JPanel implements ActionListener {
 		lblGeneralText.add(mntmLoad);
 
 		List<String> action = new ArrayList<String>();
-		List<String> wait = new ArrayList<String>();
-		List<String> add = new ArrayList<String>();
+		List<String> waiting = new ArrayList<String>();
+		List<String> asserting = new ArrayList<String>();
+		List<String> adding = new ArrayList<String>();
 
 		JSONArray arr = new JSONArray(config);
 		for (int x = 0; x < arr.length(); x++) {
@@ -150,27 +151,25 @@ public class UI extends JPanel implements ActionListener {
 			if (objCat.equalsIgnoreCase("action"))
 				action.add(objName);
 			else if (objCat.equalsIgnoreCase("wait"))
-				wait.add(objName);
+				waiting.add(objName);
 			else if (objCat.equalsIgnoreCase("add"))
-				add.add(objName);
+				adding.add(objName);
+			else if (objCat.equalsIgnoreCase("assert"))
+				adding.add(objName);
 
 		}
 
 		// Add Menu
 		final JMenu mnAdd = new JMenu("Add");
 		menuBar.add(mnAdd);
-		for (int x = 0; x < add.size(); x++) {
-			JMenuItem mntm = new JMenuItem(add.get(x));
+		for (int x = 0; x < adding.size(); x++) {
+			JMenuItem mntm = new JMenuItem(adding.get(x));
 			mnAdd.add(mntm);
 			mntm.setActionCommand(ADD_COMMAND);
 			mntm.addActionListener(this);
 		}
 		disableMenuItems(mnAdd);
 		enableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
-
-//		// Condition Menu
-//		JMenu mnCondition = new JMenu("Condition");
-//		menuBar.add(mnCondition);
 
 		/**
 		 * Condition Menu - To be added
@@ -190,21 +189,24 @@ public class UI extends JPanel implements ActionListener {
 		// Wait Menu
 		JMenu mnWait = new JMenu("Wait");
 		menuBar.add(mnWait);
-		for (int x = 0; x < wait.size(); x++) {
-			JMenuItem mntm = new JMenuItem(wait.get(x));
+		for (int x = 0; x < waiting.size(); x++) {
+			JMenuItem mntm = new JMenuItem(waiting.get(x));
 			mnWait.add(mntm);
 			mntm.setActionCommand(ADD_COMMAND);
 			mntm.addActionListener(this);
 		}
 		disableMenuItems(mnWait);
 
-//		// Assert Menu
-//		JMenu mnAssert = new JMenu("Assert");
-//		menuBar.add(mnAssert);
-
-		/**
-		 * Assert Menu - To be added
-		 */
+		// Assert Menu
+		JMenu mnAssert = new JMenu("Assert");
+		menuBar.add(mnAssert);
+		for (int x = 0; x < asserting.size(); x++) {
+			JMenuItem mntm = new JMenuItem(asserting.get(x));
+			mnAssert.add(mntm);
+			mntm.setActionCommand(ADD_COMMAND);
+			mntm.addActionListener(this);
+		}
+		disableMenuItems(mnAssert);
 
 		// End of Menu Bar ---->
 
