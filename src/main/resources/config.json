@@ -183,12 +183,105 @@
     ]
   },
   {
+    "name": "Presence",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator"
+    ]
+  },
+  {
+    "name": "Visibility",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator"
+    ]
+  },
+  {
     "name": "Clickable",
     "category": "wait",
     "platform": "web",
     "require": [
       "time",
       "locator"
+    ]
+  },
+  {
+    "name": "Invisibility",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator"
+    ]
+  },
+  {
+    "name": "Selected",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator"
+    ]
+  },
+  {
+    "name": "Title Contains",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "text"
+    ]
+  },
+  {
+    "name": "Title Is",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "text"
+    ]
+  },
+  {
+    "name": "URL Contains",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "url"
+    ]
+  },
+  {
+    "name": "Alert Is Present",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time"
+    ]
+  },
+  {
+    "name": "Attribute To Be",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator",
+      "text",
+      "text"
+    ]
+  },
+  {
+    "name": "Attribute Contains",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator",
+      "text",
+      "text"
     ]
   }
 ]

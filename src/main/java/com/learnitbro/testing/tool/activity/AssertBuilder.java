@@ -72,14 +72,32 @@ public class AssertBuilder {
 
 	//////////// CHECKS ////////////
 	
+	/**
+	 * Returns if element is displayed
+	 * 
+	 * @param locator
+	 * @return true or false (boolean)
+	 */
 	public boolean isDisplayed(By locator) {
 		return driver.findElement(locator).isDisplayed();
 	}
 	
+	/**
+	 * Returns if element is enabled
+	 * 
+	 * @param locator
+	 * @return true or false (boolean)
+	 */
 	public boolean isEnabled(By locator) {
 		return driver.findElement(locator).isEnabled();
 	}
 	
+	/**
+	 * Returns if element is selected
+	 * 
+	 * @param locator
+	 * @return true or false (boolean)
+	 */
 	public boolean isSelected(By locator) {
 		return driver.findElement(locator).isSelected();
 	}

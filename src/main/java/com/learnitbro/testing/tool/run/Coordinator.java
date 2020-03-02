@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
 import com.learnitbro.testing.tool.file.FileHandler;
 import com.learnitbro.testing.tool.file.URLHandler;
@@ -14,6 +15,7 @@ import com.learnitbro.testing.tool.reporting.Report;
 import com.learnitbro.testing.tool.web.ElementHandler;
 import com.learnitbro.testing.tool.activity.ActionBuilder;
 import com.learnitbro.testing.tool.activity.AssertBuilder;
+import com.learnitbro.testing.tool.activity.WaitBuilder;
 
 public class Coordinator {
 
@@ -146,6 +148,7 @@ public class Coordinator {
 		case "drag and drop":
 			// FIX THIS
 			a.dragAndDrop(locator, locator);
+			// a.dragAndDrop(locator[0], locator[1]);
 			break;
 		case "hover":
 			a.hover(locator);
@@ -166,13 +169,25 @@ public class Coordinator {
 
 		switch (userObject.toLowerCase()) {
 		case "Displayed":
-			a.isDisplayed(locator);
+			Assert.assertTrue(a.isDisplayed(locator));
 			break;
 		case "Enabled":
-			a.isEnabled(locator);
+			Assert.assertTrue(a.isEnabled(locator));
 			break;
 		case "Selected":
-			a.isSelected(locator);
+			Assert.assertTrue(a.isSelected(locator));
+			break;
+		}
+	}
+	
+	private void checkWaits(JSONObject run) {
+		WaitBuilder a = new WaitBuilder(driver, report);
+		String userObject = run.getString("userObject");
+		setValues(run);
+
+		switch (userObject.toLowerCase()) {
+		case "link":
+			a.pageToLoad(time);
 			break;
 		}
 	}
