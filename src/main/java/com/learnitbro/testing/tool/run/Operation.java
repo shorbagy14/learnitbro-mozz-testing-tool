@@ -10,12 +10,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import com.learnitbro.testing.tool.reporting.Report;
 import com.learnitbro.testing.tool.stream.StreamHandler;
 import com.learnitbro.testing.tool.App;
-import com.learnitbro.testing.tool.events.WebEventListener;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 

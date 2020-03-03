@@ -1,9 +1,7 @@
 package com.learnitbro.testing.tool.activity;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.Actions;
 
 import com.learnitbro.testing.tool.reporting.Report;
 
