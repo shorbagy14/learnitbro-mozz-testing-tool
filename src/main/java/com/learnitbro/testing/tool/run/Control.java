@@ -24,13 +24,12 @@ public class Control {
 		}
 		
 		JSONObject obj = new JSONObject(content);
-		browser = obj.getString("browserName");
-		headless = Boolean.valueOf(obj.getString("headless"));
+		browser = obj.getJSONArray("browserName").getString(0);
+		headless = Boolean.valueOf(obj.getJSONArray("headless").getString(0));
 		
 		Operation operation = new Operation(browser);
 		operation.setupReport();
 		operation.setupDriver(headless);
 		operation.setupTest(obj);
 	}
-
 }

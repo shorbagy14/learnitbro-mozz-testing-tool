@@ -4,13 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.font.TextAttribute;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.swing.JFrame;
@@ -349,13 +347,15 @@ public class UI extends JPanel implements ActionListener {
 		}
 
 		JSONObject suite = new JSONObject(content);
+		DefaultMutableTreeNode p0;
 		treePanel.setRootUserObject(suite.getString("userObject"));
-		addNode(0, "suite", suite.getString("userObject"), treePanel.getDefaultMutableTreeNode());
+		p0 = treePanel.getDefaultMutableTreeNode();
+		setValues(p0, suite);	
 
-		JSONArray category = suite.getJSONArray("children");
-		for (int x = 0; x < category.length(); x++) {
+		JSONArray group = suite.getJSONArray("children");
+		for (int x = 0; x < group.length(); x++) {
 			DefaultMutableTreeNode p1;
-			JSONObject cat = category.getJSONObject(x);
+			JSONObject cat = group.getJSONObject(x);
 			p1 = treePanel.addObject(null, cat.getString("userObject"));
 			addNode(1, "category", cat.getString("userObject"), p1);
 
@@ -507,7 +507,6 @@ public class UI extends JPanel implements ActionListener {
 
 		MyTreeNode myNode = new MyTreeNode(node);
 		myNode.setUUID(uuid);
-		myNode.setName(name);
 		
 		JLabel lblTop = new JLabel();
 		lblTop.setHorizontalAlignment(SwingConstants.CENTER);

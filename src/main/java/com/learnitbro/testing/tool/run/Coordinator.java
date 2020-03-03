@@ -19,11 +19,14 @@ import com.learnitbro.testing.tool.activity.WaitBuilder;
 
 public class Coordinator {
 
-	private String text = null;
-	private String url = null;
-	private String file = null;
-	private By locator = null;
-	private int time = 0;
+	private JSONArray text = null;
+	private JSONArray url = null;
+	private JSONArray file = null;
+	private JSONArray locator = null;
+	private JSONArray locatorValue = null;
+	private JSONArray locatorType = null;
+	private JSONArray time = null;
+	private JSONArray timeValue = null;
 
 	private String emailList = "shorbagy14@gmail.com";
 
@@ -108,22 +111,22 @@ public class Coordinator {
 
 		switch (userObject.toLowerCase()) {
 		case "link":
-			a.link(url);
+			a.link(url.getString(0));
 			break;
 		case "click":
-			a.click(locator);
+			a.click((By) locator.get(0));
 			break;
 		case "input text":
-			a.inputText(locator, text);
+			a.inputText((By) locator.get(0), text.getString(0));
 			break;
 		case "submit":
-			a.submit(locator);
+			a.submit((By) locator.get(0));
 			break;
 		case "clear":
-			a.clear(locator);
+			a.clear((By) locator.get(0));
 			break;
 		case "upload":
-			a.upload(locator, file);
+			a.upload((By) locator.get(0), file.getString(0));
 			break;
 		case "back":
 			a.back();
@@ -144,22 +147,20 @@ public class Coordinator {
 			a.close();
 			break;
 		case "drag and drop":
-			// FIX THIS
-			a.dragAndDrop(locator, locator);
-			// a.dragAndDrop(locator[0], locator[1]);
+			a.dragAndDrop((By) locator.get(0), (By) locator.get(1));
 			break;
 		case "hover":
-			a.hover(locator);
+			a.hover((By) locator.get(0));
 			break;
 		case "context click":
-			a.contextClick(locator);
+			a.contextClick((By) locator.get(0));
 			break;
 		case "double click":
-			a.doubleClick(locator);
+			a.doubleClick((By) locator.get(0));
 			break;
 		}
 	}
-	
+
 	private void checkAsserts(JSONObject run) {
 		AssertBuilder a = new AssertBuilder(driver, report);
 		String userObject = run.getString("userObject");
@@ -167,17 +168,17 @@ public class Coordinator {
 
 		switch (userObject.toLowerCase()) {
 		case "displayed":
-			Assert.assertTrue(a.isDisplayed(locator));
+			Assert.assertTrue(a.isDisplayed((By) locator.get(0)));
 			break;
 		case "enabled":
-			Assert.assertTrue(a.isEnabled(locator));
+			Assert.assertTrue(a.isEnabled((By) locator.get(0)));
 			break;
 		case "selected":
-			Assert.assertTrue(a.isSelected(locator));
+			Assert.assertTrue(a.isSelected((By) locator.get(0)));
 			break;
 		}
 	}
-	
+
 	private void checkWaits(JSONObject run) {
 		WaitBuilder a = new WaitBuilder(driver, report);
 		String userObject = run.getString("userObject");
@@ -185,71 +186,87 @@ public class Coordinator {
 
 		switch (userObject.toLowerCase()) {
 		case "sleep":
-			a.sleep(time);
+			a.sleep(time.getInt(0));
 			break;
 		case "page to load":
-			a.pageToLoad(time);
+			a.pageToLoad(time.getInt(0));
 			break;
 		case "presence":
-			a.presence(locator, time);
+			a.presence((By) locator.get(0), time.getInt(0));
 			break;
 		case "visble":
-			a.visibility(locator, time);
+			a.visibility((By) locator.get(0), time.getInt(0));
 			break;
 		case "clickable":
-			a.clickable(locator, time);
+			a.clickable((By) locator.get(0), time.getInt(0));
 			break;
 		case "invisble":
-			a.invisibility(locator, time);
+			a.invisibility((By) locator.get(0), time.getInt(0));
 			break;
 		case "selected":
-			a.selected(locator, time);
+			a.selected((By) locator.get(0), time.getInt(0));
 			break;
 		case "title contains":
-			a.titleContains(text, time);
+			a.titleContains(text.getString(0), time.getInt(0));
 			break;
 		case "title to be":
-			a.titleToBe(text, time);
+			a.titleToBe(text.getString(0), time.getInt(0));
 			break;
 		case "url contains":
-			a.urlContains(url, time);
+			a.urlContains(url.getString(0), time.getInt(0));
 			break;
 		case "url to be":
-			a.urlToBe(url, time);
+			a.urlToBe(url.getString(0), time.getInt(0));
 			break;
 		case "attribute contains":
-			// FIX THIS
-			a.attributeContains(locator, text, text, time);
-//			a.attributeContains(locator, text[0], text[1], time);
+			a.attributeContains((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
 			break;
 		case "attribute to be":
-			a.attributeToBe(locator, text, text, time);
-//			a.attributeToBe(locator, text[0], text[1], time);
+			a.attributeToBe((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
 			break;
 		}
 	}
 
 	private void setValues(JSONObject run) {
-		text = null;
-		url = null;
-		file = null;
-		locator = null;
-		time = 0;
+		restValues();
 
 		if (run.has("text"))
-			text = run.getString("text");
-		else if (run.has("text")) {
-			file = run.getString("file");
-			FileHandler.isValidFile(new File(file));
-		} else if (run.has("url")) {
-			url = run.getString("url");
-			URLHandler.isURLValid(url);
-		} else if (run.has("locator")) {
-			String locatorType = run.getString("locatorType");
-			String locatorValue = run.getString("locator");
-			locator = ElementHandler.getLocator(locatorType, locatorValue);
-		} else if (run.has("time")) {
-			time = Integer.valueOf(run.getString("time"));
+			text = run.getJSONArray("text");
+		
+		if (run.has("file")) {
+			file = run.getJSONArray("file");
+			for (int x = 0; x < file.length(); x++)
+				FileHandler.isValidFile(new File(file.getString(x)));
 		}
+		
+		if (run.has("url")) {
+			url = run.getJSONArray("url");
+			for (int x = 0; x < url.length(); x++)
+				URLHandler.isURLValid(url.getString(x));
+		}
+		
+		if (run.has("locator")) {
+			locatorType = run.getJSONArray("locatorType");
+			locatorValue = run.getJSONArray("locator");
+			for (int x = 0; x < locatorValue.length(); x++)
+				locator.put(ElementHandler.getLocator(locatorType.getString(x), locatorValue.getString(x)));
+		}  
+		
+		if (run.has("time")) {
+			timeValue = run.getJSONArray("time");
+			for (int x = 0; x < timeValue.length(); x++)
+				time.put(Integer.valueOf(timeValue.getString(x)));
+		}
+	}
+
+	private void restValues() {
+		text = new JSONArray();
+		url = new JSONArray();
+		file = new JSONArray();
+		locator = new JSONArray();
+		locatorValue = new JSONArray();
+		locatorType = new JSONArray();
+		time = new JSONArray();
+		timeValue = new JSONArray();
 	}
 }

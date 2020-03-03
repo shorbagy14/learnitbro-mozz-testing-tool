@@ -10,7 +10,7 @@
     ]
   },
   {
-    "name": "Category",
+    "name": "Group",
     "category": "add",
     "platform": "all",
     "require": []

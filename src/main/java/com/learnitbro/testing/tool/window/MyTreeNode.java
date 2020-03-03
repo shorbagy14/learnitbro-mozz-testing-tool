@@ -29,11 +29,6 @@ import com.learnitbro.testing.tool.file.JSONHandler;
 public class MyTreeNode extends DefaultMutableTreeNode {
 
 	private String uuid;
-	private String name;
-	private String parentName;
-	private String grandparentName;
-//	private String category;
-
 	private DefaultMutableTreeNode node;
 
 	static JSONArray all = new JSONArray();
@@ -82,60 +77,22 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		for (int i = 0; i < array.length(); i++) {
 			JSONObject item = array.getJSONObject(i);
 			String uuid = item.getString("uuid");
-			String name = item.getString("name");
 
 			int index = item.getInt("index");
 			int parentIndex = item.getInt("parentIndex");
 			int grandparentIndex = item.getInt("grandparentIndex");
 
 			boolean isUuidMatch = uuid.equalsIgnoreCase(value);
-			boolean isNameMatch = name.equalsIgnoreCase(node.getUserObject().toString());
 
 			boolean isIndexMatch = index == getIndex();
 			boolean isParentIndexMatch = parentIndex == getParentIndex();
 			boolean isGrandParentIndexMatch = grandparentIndex == getGrandParentIndex();
 
-			if (isUuidMatch && isNameMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch)
+			if (isUuidMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch)
 				return true;
 		}
 
 		return false;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-//	public void setCategory(String category) {
-//		this.category = category;
-//	}
-//	
-//	public String getCategory() {
-//		return category;
-//	}
-
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
-	}
-
-	public Object getParentName() {
-		if (parentName == null)
-			return JSONObject.NULL;
-		return parentName;
-	}
-
-	public void setGrandParentName(String grandparentName) {
-		this.grandparentName = grandparentName;
-	}
-
-	public Object getGrandParentName() {
-		if (grandparentName == null)
-			return JSONObject.NULL;
-		return grandparentName;
 	}
 
 	public int getIndex() {
@@ -181,13 +138,11 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 
 		JSONObject jo = new JSONObject();
 		jo.put("uuid", getUUID());
-		jo.put("name", getName());
 		jo.put("index", getIndex());
 		jo.put("parentIndex", getParentIndex());
 		jo.put("grandparentIndex", getGrandParentIndex());
 
 		all.put(jo);
-//		System.out.println(all.toString(1));
 		JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/node.json"), all.toString(1));
 	}
 }
@@ -275,7 +230,7 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 					if(!type.equalsIgnoreCase(t)) {
 						arr = new JsonArray();
 					} 
-
+					
 					t = type;
 					arr.add(text);
 
