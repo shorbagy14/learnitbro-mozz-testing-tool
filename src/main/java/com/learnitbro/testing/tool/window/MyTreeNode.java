@@ -16,6 +16,7 @@ import javax.swing.tree.TreeNode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
@@ -227,6 +228,9 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 
 	@SuppressWarnings("rawtypes")
 	private void setLevel(MyTreeNode myNode, JsonObject jsonObject) {
+		JsonArray arr = null;
+		String t = null;
+		
 		for (Component item : UI.generalPanel.getComponents()) {
 			if (item.toString().contains("JTextField")) {
 				String uuid = ((JTextField) item).getName();
@@ -234,16 +238,24 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 
 					String type = ((JTextField) item).getClientProperty("type").toString();
 					String category = ((JTextField) item).getClientProperty("category").toString();
+					String index = ((JTextField) item).getClientProperty("index").toString();
 					String text = ((JTextField) item).getText();
 
-					if (uuidList.contains(uuid + "-" + type + "-" + category))
+					if (uuidList.contains(uuid + "-" + type + "-" + category + "-" + index))
 						continue;
 
-					uuidList.add(uuid + "-" + type + "-" + category);
+					uuidList.add(uuid + "-" + type + "-" + category + "-" + index);
+					
+					if(!type.equalsIgnoreCase(t)) {
+						arr = new JsonArray();
+					} 
+
+					t = type;
+					arr.add(text);
 
 					jsonObject.addProperty("uuid", uuid);
-					jsonObject.addProperty(type, text);
 					jsonObject.addProperty("category", category);
+					jsonObject.add(type, arr);
 
 				}
 			} else if (item.toString().contains("JComboBox")) {
@@ -253,22 +265,31 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 					String text = ((JComboBox) item).getSelectedItem().toString();
 					String type = ((JComboBox) item).getClientProperty("type").toString();
 					String category = ((JComboBox) item).getClientProperty("category").toString();
+					String index = ((JComboBox) item).getClientProperty("index").toString();
 
-					if (uuidList.contains(uuid + "-" + type + "-" + category))
+					if (uuidList.contains(uuid + "-" + type + "-" + category + "-" + index))
 						continue;
 
-					uuidList.add(uuid + "-" + type + "-" + category);
+					uuidList.add(uuid + "-" + type + "-" + category + "-" + index);
+					
+					if(!type.equalsIgnoreCase(t)) {
+						arr = new JsonArray();
+					} 
 
-					jsonObject.addProperty(type, text);
+					t = type;
+					arr.add(text);
+
+					jsonObject.addProperty("uuid", uuid);
 					jsonObject.addProperty("category", category);
+					jsonObject.add(type, arr);
 				}
 			} else if (item.toString().contains("JLabel")) {
 				String uuid = ((JLabel) item).getName();
 				if (myNode.isMatch(uuid)) {
 
-					if(((JLabel) item).getClientProperty("category") == null)
+					if (((JLabel) item).getClientProperty("category") == null)
 						continue;
-					
+
 					String category = ((JLabel) item).getClientProperty("category").toString();
 
 					if (uuidList.contains(uuid + "-" + category))

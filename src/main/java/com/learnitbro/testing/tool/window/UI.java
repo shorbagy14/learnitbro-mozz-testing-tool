@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -389,14 +390,16 @@ public class UI extends JPanel implements ActionListener {
 				if (myNode.isMatch(uuid)) {
 					JTextField jtf = ((JTextField) item);
 					String type = jtf.getClientProperty("type").toString();
-					jtf.setText(run.getString(type));
+					int index = Integer.parseInt(jtf.getClientProperty("index").toString());
+					jtf.setText(run.getJSONArray(type).getString(index));
 				}
 			} else if (item.toString().contains("JComboBox")) {
 				String uuid = ((JComboBox) item).getName();
 				if (myNode.isMatch(uuid)) {
 					JComboBox jcb = ((JComboBox) item);
 					String type = jcb.getClientProperty("type").toString();
-					jcb.setSelectedItem(run.getString(type));
+					int index = Integer.parseInt(jcb.getClientProperty("index").toString());
+					jcb.setSelectedItem(run.getJSONArray(type).getString(index));
 				}
 			}
 		}
@@ -525,9 +528,12 @@ public class UI extends JPanel implements ActionListener {
 
 				if (objCategory.equalsIgnoreCase("suite")) {
 					int posX = 0;
+					
+					List<String> list = new ArrayList<String>();
 					for (int y = 0; y < req.length(); y++) {
 
 						String v = req.getString(y);
+						list.add(v);
 
 						JLabel lbl = new JLabel();
 						lbl.setHorizontalAlignment(SwingConstants.CENTER);
@@ -552,6 +558,7 @@ public class UI extends JPanel implements ActionListener {
 						jcb.setBounds(40 + posX, 60, 100, 25);
 						jcb.putClientProperty("type", v);
 						jcb.putClientProperty("category", objCategory);
+						jcb.putClientProperty("index", Collections.frequency(list, v) - 1);
 						generalPanel.add(jcb);
 
 						posX += 250;
@@ -568,16 +575,19 @@ public class UI extends JPanel implements ActionListener {
 						lblTop.putClientProperty("category", objCategory);
 					}
 					
+					List<String> list = new ArrayList<String>();
 					for (int y = 0; y < req.length(); y++) {
 
 						String v = req.getString(y);
-
+						list.add(v);
+						
 						JTextField jtf = new JTextField();
 						jtf.setBounds(150, 55 + posY, 450, 35);
 						jtf.setColumns(10);
 						jtf.setName(uuid);
 						jtf.putClientProperty("type", v);
 						jtf.putClientProperty("category", objCategory);
+						jtf.putClientProperty("index", Collections.frequency(list, v) - 1);
 						generalPanel.add(jtf);
 
 						JLabel lbl = new JLabel();
@@ -594,6 +604,7 @@ public class UI extends JPanel implements ActionListener {
 							jcb.setBounds(40, 60 + posY, 100, 25);
 							jcb.putClientProperty("type", "locatorType");
 							jcb.putClientProperty("category", objCategory);
+							jcb.putClientProperty("index", Collections.frequency(list, v) - 1);
 							generalPanel.add(jcb);
 						}
 

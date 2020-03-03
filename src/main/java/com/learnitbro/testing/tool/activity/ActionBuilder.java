@@ -26,8 +26,6 @@ public class ActionBuilder {
 		this.report = report;
 		if (actions == null)
 			actions = new Actions(driver);
-		if (js == null)
-			js = ((JavascriptExecutor) driver);
 
 	}
 
@@ -50,7 +48,7 @@ public class ActionBuilder {
 		driver.navigate().back();
 		report.info("Navigating back");
 	}
-	
+
 	/**
 	 * navigate forward
 	 */
@@ -58,7 +56,7 @@ public class ActionBuilder {
 		driver.navigate().forward();
 		report.info("Navigating forward");
 	}
-	
+
 	/**
 	 * refresh
 	 */
@@ -71,8 +69,8 @@ public class ActionBuilder {
 	 * close current tab
 	 */
 	public void close() {
-		driver.close();
 		report.info("Close current tab");
+		driver.close();
 	}
 
 //	/**
@@ -89,8 +87,8 @@ public class ActionBuilder {
 	 * @param locator : xpath
 	 */
 	public void click(By locator) {
-		driver.findElement(locator).click();
 		report.info("Clicking on " + locator);
+		driver.findElement(locator).click();
 	}
 
 	/**
@@ -99,8 +97,8 @@ public class ActionBuilder {
 	 * @param locator : xpath
 	 */
 	public void clear(By locator) {
-		driver.findElement(locator).clear();
 		report.info("Clearing field on " + locator);
+		driver.findElement(locator).clear();
 	}
 
 	/**
@@ -109,8 +107,8 @@ public class ActionBuilder {
 	 * @param locator : xpath
 	 */
 	public void submit(By locator) {
-		driver.findElement(locator).submit();
 		report.info("Submitting field on " + locator);
+		driver.findElement(locator).submit();
 	}
 
 	/**
@@ -119,8 +117,8 @@ public class ActionBuilder {
 	 * @param locator : xpath
 	 */
 	public void inputText(By locator, String value) {
-		driver.findElement(locator).sendKeys(value);
 		report.info("Input text of " + locator + " on " + value);
+		driver.findElement(locator).sendKeys(value);
 	}
 
 	/**
@@ -129,10 +127,10 @@ public class ActionBuilder {
 	 * @param locator : xpath
 	 */
 	public void upload(By locator, String value) {
-		driver.findElement(locator).sendKeys(value);
 		report.info("Uploading " + locator + " on " + value);
+		driver.findElement(locator).sendKeys(value);
 	}
-	
+
 	/////////////////////// Actions Class ///////////////////////
 
 	/**
@@ -142,10 +140,10 @@ public class ActionBuilder {
 	 *
 	 */
 	public void clickAndHold(By locator) {
-		actions.clickAndHold(driver.findElement(locator)).build().perform();
 		report.info("Click and hold on " + locator);
+		actions.clickAndHold(driver.findElement(locator)).build().perform();
 	}
-	
+
 	/**
 	 * Releasing mouse click and hold on element
 	 * 
@@ -153,8 +151,8 @@ public class ActionBuilder {
 	 *
 	 */
 	public void release() {
-		actions.release().build().perform();
 		report.info("Releasing mouse click and hold");
+		actions.release().build().perform();
 	}
 
 	/**
@@ -164,8 +162,8 @@ public class ActionBuilder {
 	 * @param target
 	 */
 	public void dragAndDrop(By source, By target) {
-		actions.dragAndDrop(driver.findElement(source), driver.findElement(target)).build().perform();
 		report.info("Drag and drop on " + source + " to " + target);
+		actions.dragAndDrop(driver.findElement(source), driver.findElement(target)).build().perform();
 	}
 
 	/**
@@ -175,8 +173,8 @@ public class ActionBuilder {
 	 * 
 	 */
 	public void hover(By locator) {
-		actions.moveToElement(driver.findElement(locator)).build().perform();
 		report.info("Hover on " + locator);
+		actions.moveToElement(driver.findElement(locator)).build().perform();
 	}
 
 	/**
@@ -186,8 +184,8 @@ public class ActionBuilder {
 	 * 
 	 */
 	public void contextClick(By locator) {
-		actions.contextClick(driver.findElement(locator)).build().perform();
 		report.info("Context click on " + locator);
+		actions.contextClick(driver.findElement(locator)).build().perform();
 	}
 
 	/**
@@ -196,12 +194,12 @@ public class ActionBuilder {
 	 * @param locator
 	 */
 	public void doubleClick(By locator) {
-		actions.doubleClick(driver.findElement(locator)).build().perform();
 		report.info("Double click on " + locator);
+		actions.doubleClick(driver.findElement(locator)).build().perform();
 	}
 
 	/////////////////// Select Class ////////////////////////
-	
+
 	/**
 	 * Select element in dropdown using visible text
 	 * 
@@ -209,9 +207,9 @@ public class ActionBuilder {
 	 * @param text    (String)
 	 */
 	public void selectDropdownByVisibleText(By locator, String text) {
+		report.info("Selecting " + text + " from drop down");
 		Select select = new Select(driver.findElement(locator));
 		select.selectByVisibleText(text);
-		report.info("Selecting  " + text + "  from drop down");
 	}
 
 	/**
@@ -221,9 +219,9 @@ public class ActionBuilder {
 	 * @param value   (String)
 	 */
 	public void selectDropdownByValue(By locator, String value) {
+		report.info("Selecting " + value + " from drop down");
 		Select select = new Select(driver.findElement(locator));
 		select.selectByValue(value);
-		report.info("Selecting  " + value + "  from drop down");
 	}
 
 	/**
@@ -233,8 +231,8 @@ public class ActionBuilder {
 	 * @param index   (Integer)
 	 */
 	public void selectDropdownByIndex(By locator, int index) {
+		report.info("Selecting element at index " + index + " from drop down");
 		Select select = new Select(driver.findElement(locator));
 		select.selectByIndex(index);
-		report.info("Selecting element at index  " + index + "  from drop down");
 	}
 }
