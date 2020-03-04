@@ -81,14 +81,16 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 			int index = item.getInt("index");
 			int parentIndex = item.getInt("parentIndex");
 			int grandparentIndex = item.getInt("grandparentIndex");
+			int superparentIndex = item.getInt("superparentIndex");
 
 			boolean isUuidMatch = uuid.equalsIgnoreCase(value);
 
 			boolean isIndexMatch = index == getIndex();
 			boolean isParentIndexMatch = parentIndex == getParentIndex();
 			boolean isGrandParentIndexMatch = grandparentIndex == getGrandParentIndex();
+			boolean isSuperParentIndexMatch = superparentIndex == getSuperParentIndex();
 
-			if (isUuidMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch)
+			if (isUuidMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch && isSuperParentIndexMatch)
 				return true;
 		}
 
@@ -113,6 +115,10 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		return getParentTreeNode().getParent();
 	}
 
+	public TreeNode getSuperParentTreeNode() {
+		return getGrandParentTreeNode().getParent();
+	}
+
 	public int getParentIndex() {
 		if (getTreeNode() == null)
 			return -1;
@@ -134,6 +140,21 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		return getGrandParentTreeNode().getIndex(getParentTreeNode());
 	}
 
+	public int getSuperParentIndex() {
+		if (getTreeNode() == null)
+			return -1;
+
+		if (getParentTreeNode() == null)
+			return -1;
+
+		if (getGrandParentTreeNode() != null) {
+			if (getSuperParentTreeNode() == null)
+				return -1;
+		} else
+			return -1;
+		return getSuperParentTreeNode().getIndex(getGrandParentTreeNode());
+	}
+
 	public void build() {
 
 		JSONObject jo = new JSONObject();
@@ -141,6 +162,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		jo.put("index", getIndex());
 		jo.put("parentIndex", getParentIndex());
 		jo.put("grandparentIndex", getGrandParentIndex());
+		jo.put("superparentIndex", getSuperParentIndex());
 
 		all.put(jo);
 		JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/node.json"), all.toString(1));
@@ -158,12 +180,14 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 
 		if (src.getLevel() == 0) {
 			jsonObject.addProperty("level", "suite");
-			setLevel(myNode, jsonObject);
 		} else if (src.getLevel() == 1) {
-			jsonObject.addProperty("level", "category");
+			jsonObject.addProperty("level", "configuration");
+			setLevel(myNode, jsonObject);
 		} else if (src.getLevel() == 2) {
-			jsonObject.addProperty("level", "testCase");
+			jsonObject.addProperty("level", "group");
 		} else if (src.getLevel() == 3) {
+			jsonObject.addProperty("level", "testCase");
+		} else if (src.getLevel() == 4) {
 			jsonObject.addProperty("level", "input");
 			src.setAllowsChildren(false);
 			setLevel(myNode, jsonObject);
@@ -185,7 +209,7 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 	private void setLevel(MyTreeNode myNode, JsonObject jsonObject) {
 		JsonArray arr = null;
 		String t = null;
-		
+
 		for (Component item : UI.generalPanel.getComponents()) {
 			if (item.toString().contains("JTextField")) {
 				String uuid = ((JTextField) item).getName();
@@ -200,10 +224,10 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 						continue;
 
 					uuidList.add(uuid + "-" + type + "-" + category + "-" + index);
-					
-					if(!type.equalsIgnoreCase(t)) {
+
+					if (!type.equalsIgnoreCase(t)) {
 						arr = new JsonArray();
-					} 
+					}
 
 					t = type;
 					arr.add(text);
@@ -226,11 +250,11 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 						continue;
 
 					uuidList.add(uuid + "-" + type + "-" + category + "-" + index);
-					
-					if(!type.equalsIgnoreCase(t)) {
+
+					if (!type.equalsIgnoreCase(t)) {
 						arr = new JsonArray();
-					} 
-					
+					}
+
 					t = type;
 					arr.add(text);
 

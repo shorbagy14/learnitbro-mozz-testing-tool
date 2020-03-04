@@ -1,5 +1,6 @@
 package com.learnitbro.testing.tool.window;
 
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.io.File;
@@ -70,25 +71,30 @@ public class DynamicTree extends JPanel {
 
 			int parentIndex = -1;
 			int grandparentIndex = -1;
+			int superparentIndex = -1;
 
 			for (int x = 0; x < MyTreeNode.all.length(); x++) {
 				JSONObject value = (JSONObject) MyTreeNode.all.get(x);
 
-				boolean isNameMatch = currentNode.toString().equalsIgnoreCase(value.getString("name").toString());
 				boolean isIndexMatch = n.getIndex() == value.getInt("index");
 
 				boolean isParentIndexMatch = true;
 				boolean isGrandParentIndexMatch = true;
+				boolean isSuperParentIndexMatch = true;
 				if (n.getParentTreeNode() != null) {
 					isParentIndexMatch = n.getParentIndex() == value.getInt("parentIndex");
 					if (n.getGrandParentTreeNode() != null) {
 						isGrandParentIndexMatch = n.getGrandParentIndex() == value.getInt("grandparentIndex");
+						if (n.getSuperParentTreeNode() != null) {
+							isSuperParentIndexMatch = n.getSuperParentIndex() == value.getInt("superparentIndex");
+						}
 					}
 				}
 
-				if (isNameMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch) {
+				if (isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch && isSuperParentIndexMatch) {
 					parentIndex = value.getInt("parentIndex");
 					grandparentIndex = value.getInt("grandparentIndex");
+					superparentIndex = value.getInt("superparentIndex");
 
 					MyTreeNode.all.remove(x);
 					System.out.println("Removing this node : " + currentNode);
@@ -98,8 +104,8 @@ public class DynamicTree extends JPanel {
 			int k = 0;
 			for (int y = 0; y < MyTreeNode.all.length(); y++) {
 				JSONObject value = MyTreeNode.all.getJSONObject(y);
-				if (parentIndex == value.getInt("parentIndex")
-						&& grandparentIndex == value.getInt("grandparentIndex")) {
+				if (parentIndex == value.getInt("parentIndex") && grandparentIndex == value.getInt("grandparentIndex")
+						&& superparentIndex == value.getInt("superparentIndex")) {
 					value.put("index", k);
 					k++;
 //					System.out.println(value);

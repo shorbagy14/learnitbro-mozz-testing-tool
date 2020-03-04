@@ -3,6 +3,12 @@
     "name": "Test Suite",
     "category": "suite",
     "platform": "all",
+    "require": []
+  },
+  {
+  	"name": "Configuration",
+    "category": "configuration",
+    "platform": "all",
     "require": [
       "browserName",
       "headless",
@@ -11,13 +17,13 @@
   },
   {
     "name": "Group",
-    "category": "add",
+    "category": "group",
     "platform": "all",
     "require": []
   },
   {
     "name": "Test Case",
-    "category": "add",
+    "category": "test",
     "platform": "all",
     "require": []
   },

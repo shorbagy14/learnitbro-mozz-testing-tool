@@ -22,7 +22,8 @@ public class Control {
 			e.printStackTrace();
 		}
 		
-		JSONObject obj = new JSONObject(content);
+		JSONObject main = new JSONObject(content);
+		JSONObject obj = main.getJSONArray("children").getJSONObject(0);
 		browser = obj.getJSONArray("browserName").getString(0);
 		headless = Boolean.valueOf(obj.getJSONArray("headless").getString(0));
 		

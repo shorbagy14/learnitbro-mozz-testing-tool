@@ -92,6 +92,7 @@ public class UI extends JPanel implements ActionListener {
 		btnPanel.add(btnRemove);
 		btnRemove.setActionCommand(REMOVE_COMMAND);
 		btnRemove.addActionListener(this);
+		btnRemove.setEnabled(false);
 
 		JButton btnLaunch = new JButton("Launch");
 		btnLaunch.setBounds(543, 18, 136, 29);
@@ -122,8 +123,6 @@ public class UI extends JPanel implements ActionListener {
 		treePanel.setBackground(Color.WHITE);
 		treePanel.setBounds(0, 0, 276, 607);
 		frame.getContentPane().add(treePanel);
-//		treePanel.setRootUserObject("Test Suite");
-		addNode(0, "suite", "Test Suite", treePanel.getDefaultMutableTreeNode());
 
 		// End of Tree Panel ---->
 		// <---- Menu Bar
@@ -150,8 +149,9 @@ public class UI extends JPanel implements ActionListener {
 			JSONObject obj = arr.getJSONObject(x);
 			String objName = obj.getString("name");
 			String objCat = obj.getString("category");
-			
-			if (objCat.equalsIgnoreCase("add"))
+
+			if (objCat.equalsIgnoreCase("configuration") || objCat.equalsIgnoreCase("group")
+					|| objCat.equalsIgnoreCase("test"))
 				adding.add(objName);
 			else if (objCat.equalsIgnoreCase("wait"))
 				waiting.add(objName);
@@ -159,7 +159,6 @@ public class UI extends JPanel implements ActionListener {
 				asserting.add(objName);
 			else if (objCat.equalsIgnoreCase("action"))
 				action.add(objName);
-
 
 		}
 
@@ -250,17 +249,22 @@ public class UI extends JPanel implements ActionListener {
 				}
 
 				int level = treePanel.getSelectedNodeLevel();
-				if (level == 0 || level == 1) {
-					disableMenuItems(mnAction);
+				if (level == 0 || level == 1 || level == 2) {
 					if (level == 0) {
 						enableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
 						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(1));
-					} else {
+						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(2));
+					} else if (level == 1) {
 						enableMenuItem((JMenuItem) mnAdd.getMenuComponent(1));
 						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
+						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(2));
+					} else {
+						enableMenuItem((JMenuItem) mnAdd.getMenuComponent(2));
+						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
+						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(1));
 					}
 
-				} else if (level == 2) {
+				} else if (level == 3) {
 					enableMenuItems(mnAction);
 					enableMenuItems(mnWait);
 					enableMenuItems(mnAssert);
@@ -312,11 +316,11 @@ public class UI extends JPanel implements ActionListener {
 					generalPanel.setVisible(false);
 					return;
 				}
-
-				if (node.getChildCount() == 0)
-					btnRemove.setEnabled(true);
-				else
+				
+				if (node.getChildCount() != 0 || node.isRoot())
 					btnRemove.setEnabled(false);
+				else
+					btnRemove.setEnabled(true);
 
 				/* retrieve the node that was selected */
 				// Object nodeInfo = node.getUserObject();
@@ -327,7 +331,7 @@ public class UI extends JPanel implements ActionListener {
 
 				setVisibilty(myNode);
 
-				if (level == 3) {
+				if (level == 0 || level == 1 || level == 4) {
 					treePanel.getJTree().setEditable(false);
 				} else {
 //					generalPanel.setVisible(false);
@@ -347,47 +351,54 @@ public class UI extends JPanel implements ActionListener {
 		}
 
 		JSONObject suite = new JSONObject(content);
-		DefaultMutableTreeNode p0;
-		treePanel.setRootUserObject(suite.getString("userObject"));
-		p0 = treePanel.getDefaultMutableTreeNode();
-		setValues(p0, suite);	
+//		DefaultMutableTreeNode p0;
+//		treePanel.setRootUserObject(suite.getString("userObject"));
+//		p0 = treePanel.getDefaultMutableTreeNode();
 
-		JSONArray group = suite.getJSONArray("children");
-		for (int x = 0; x < group.length(); x++) {
+		JSONArray configCase = suite.getJSONArray("children");
+		for (int z = 0; z < configCase.length(); z++) {
 			DefaultMutableTreeNode p1;
-			JSONObject cat = group.getJSONObject(x);
-			p1 = treePanel.addObject(null, cat.getString("userObject"));
-			addNode(1, "category", cat.getString("userObject"), p1);
-
-			JSONArray testCase = cat.getJSONArray("children");
-			for (int y = 0; y < testCase.length(); y++) {
+			JSONObject config = configCase.getJSONObject(z);
+			p1 = treePanel.addObject(null, config.getString("userObject"));
+			addNode(1, "configuration", config.getString("userObject"), p1);
+			setValues(p1, config);
+			JSONArray groupCase = config.getJSONArray("children");
+			for (int x = 0; x < groupCase.length(); x++) {
 				DefaultMutableTreeNode p2;
-				JSONObject test = testCase.getJSONObject(y);
-				p2 = treePanel.addObject(p1, test.getString("userObject"));
-				addNode(2, "testCase", test.getString("userObject"), p2);
-				JSONArray input = test.getJSONArray("children");
-				try {
-					for (int i = 0; i < input.length(); i++) {
-						DefaultMutableTreeNode p3;
-						JSONObject run = input.getJSONObject(i);
-						p3 = treePanel.addObject(p2, run.getString("userObject"));
-						addNode(3, run.getString("category"), run.getString("userObject"), p3);
-						setValues(p3, run);	
+				JSONObject group = groupCase.getJSONObject(x);
+				p2 = treePanel.addObject(p1, group.getString("userObject"));
+				addNode(2, "group", group.getString("userObject"), p2);
+
+				JSONArray testCase = group.getJSONArray("children");
+				for (int y = 0; y < testCase.length(); y++) {
+					DefaultMutableTreeNode p3;
+					JSONObject test = testCase.getJSONObject(y);
+					p3 = treePanel.addObject(p2, test.getString("userObject"));
+					addNode(3, "testCase", test.getString("userObject"), p3);
+					JSONArray input = test.getJSONArray("children");
+					try {
+						for (int i = 0; i < input.length(); i++) {
+							DefaultMutableTreeNode p4;
+							JSONObject run = input.getJSONObject(i);
+							p4 = treePanel.addObject(p3, run.getString("userObject"));
+							addNode(4, run.getString("category"), run.getString("userObject"), p4);
+							setValues(p4, run);
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
 					}
-				} catch (Exception ex) {
-					ex.printStackTrace();
 				}
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	private void setValues(DefaultMutableTreeNode p3, JSONObject run) {
 		for (Component item : UI.generalPanel.getComponents()) {
 			MyTreeNode myNode = new MyTreeNode(p3);
 			if (item.toString().contains("JTextField")) {
 				String uuid = ((JTextField) item).getName();
-				if (myNode.isMatch(uuid)) {
+				if (myNode.isMatch(uuid) || (myNode.getLevel() == 0 && run.has("browserName"))) {
 					JTextField jtf = ((JTextField) item);
 					String type = jtf.getClientProperty("type").toString();
 					int index = Integer.parseInt(jtf.getClientProperty("index").toString());
@@ -395,7 +406,7 @@ public class UI extends JPanel implements ActionListener {
 				}
 			} else if (item.toString().contains("JComboBox")) {
 				String uuid = ((JComboBox) item).getName();
-				if (myNode.isMatch(uuid)) {
+				if (myNode.isMatch(uuid) || (myNode.getLevel() == 0 && run.has("browserName"))) {
 					JComboBox jcb = ((JComboBox) item);
 					String type = jcb.getClientProperty("type").toString();
 					int index = Integer.parseInt(jcb.getClientProperty("index").toString());
@@ -507,7 +518,7 @@ public class UI extends JPanel implements ActionListener {
 
 		MyTreeNode myNode = new MyTreeNode(node);
 		myNode.setUUID(uuid);
-		
+
 		JLabel lblTop = new JLabel();
 		lblTop.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTop.setBounds(258, 0, 160, 15);
@@ -523,11 +534,11 @@ public class UI extends JPanel implements ActionListener {
 			String objCategory = obj.getString("category");
 			JSONArray req = obj.getJSONArray("require");
 
-			if (level == 0) {
+			if (level == 1) {
 
-				if (objCategory.equalsIgnoreCase("suite")) {
+				if (objCategory.equalsIgnoreCase("configuration")) {
 					int posX = 0;
-					
+
 					List<String> list = new ArrayList<String>();
 					for (int y = 0; y < req.length(); y++) {
 
@@ -565,21 +576,21 @@ public class UI extends JPanel implements ActionListener {
 				}
 			}
 
-			else if (level == 3) {
+			else if (level == 4) {
 
 				if (objName.equalsIgnoreCase(name) && objCategory.equalsIgnoreCase(category)) {
 					int posY = 20;
-					
-					if(req.length() == 0) {
+
+					if (req.length() == 0) {
 						lblTop.putClientProperty("category", objCategory);
 					}
-					
+
 					List<String> list = new ArrayList<String>();
 					for (int y = 0; y < req.length(); y++) {
 
 						String v = req.getString(y);
 						list.add(v);
-						
+
 						JTextField jtf = new JTextField();
 						jtf.setBounds(150, 55 + posY, 450, 35);
 						jtf.setColumns(10);
