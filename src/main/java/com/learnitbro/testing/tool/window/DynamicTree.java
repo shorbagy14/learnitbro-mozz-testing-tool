@@ -38,6 +38,7 @@ public class DynamicTree extends JPanel {
 
 		tree = new JTree(treeModel);
 		tree.setEditable(true);
+		tree.setCellRenderer(new MyTreeCellRenderer());
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setShowsRootHandles(true);
 
