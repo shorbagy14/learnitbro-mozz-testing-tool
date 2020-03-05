@@ -3,6 +3,8 @@
 ### Description: 
 It allows to test any website
 
+![](images/demo.png)
+
 ### Summary:
 This tool allows to create Selenium tests using a user interface in JAVA
 
