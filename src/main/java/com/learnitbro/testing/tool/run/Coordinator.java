@@ -1,22 +1,34 @@
 package com.learnitbro.testing.tool.run;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.asserts.SoftAssert;
+import org.testng.Assert;
 
 import com.learnitbro.testing.tool.file.FileHandler;
-import com.learnitbro.testing.tool.file.JSONHandler;
+import com.learnitbro.testing.tool.file.URLHandler;
 import com.learnitbro.testing.tool.reporting.Email;
 import com.learnitbro.testing.tool.reporting.Report;
-import com.learnitbro.testing.tool.App;
-import com.learnitbro.testing.tool.activity.Action;
+import com.learnitbro.testing.tool.web.ElementHandler;
+import com.learnitbro.testing.tool.activity.ActionBuilder;
+import com.learnitbro.testing.tool.activity.AssertBuilder;
+import com.learnitbro.testing.tool.activity.WaitBuilder;
 
 public class Coordinator {
+
+	private JSONArray text = null;
+	private JSONArray url = null;
+	private JSONArray file = null;
+	private JSONArray locator = null;
+	private JSONArray locatorValue = null;
+	private JSONArray locatorType = null;
+	private JSONArray time = null;
+	private JSONArray timeValue = null;
+
+	private String emailList = "shorbagy14@gmail.com";
 
 	private WebDriver driver;
 //	private SoftAssert softAssert;
@@ -36,9 +48,9 @@ public class Coordinator {
 		email = new Email();
 	}
 
-	public void runTests() {
+	public void runTests(JSONObject obj) {
 		try {
-			build();
+			build(obj);
 		} catch (Exception | AssertionError e) {
 			throw new RuntimeException("Test has failed. Refer to the report");
 		} finally {
@@ -46,7 +58,7 @@ public class Coordinator {
 			report.flush();
 			String info = " - " + Control.browser.toUpperCase();
 			email.sendAttachmentInEmail("Test Report - " + report.getTime() + info,
-					"This is an automated email. Here is the report for the test. Mohamed Elshorbagy", App.emailList,
+					"This is an automated email. Here is the report for the test. Mohamed Elshorbagy", emailList,
 					report.getAllReports());
 			// softAssert.assertAll();
 		}
@@ -55,29 +67,21 @@ public class Coordinator {
 	/**
 	 * building the steps from JSON to selenium
 	 */
-	public void build() {
-		String content = null;
+	public void build(JSONObject obj) {
 		String DESCRIPTION = null;
-		try {
-			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/tree.json"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		JSONObject obj = new JSONObject(content);
-		JSONArray category = (JSONArray) obj.get("children");
+		JSONArray category = obj.getJSONArray("children");
 		for (int x = 0; x < category.length(); x++) {
-			JSONObject cat = (JSONObject) category.get(x);
-			DESCRIPTION = (String) cat.get("userObject");
+			JSONObject cat = category.getJSONObject(x);
+			DESCRIPTION = cat.getString("userObject");
 			report.createTest(DESCRIPTION);
-			JSONArray testCase = (JSONArray) cat.get("children");
+			JSONArray testCase = cat.getJSONArray("children");
 			for (int y = 0; y < testCase.length(); y++) {
-				JSONObject test = (JSONObject) testCase.get(y);
+				JSONObject test = testCase.getJSONObject(y);
 				report.info((String) test.get("userObject"));
-				JSONArray input = (JSONArray) test.get("children");
+				JSONArray input = test.getJSONArray("children");
 				try {
 					for (int i = 0; i < input.length(); i++) {
-						JSONObject run = (JSONObject) input.get(i);
+						JSONObject run = input.getJSONObject(i);
 						steps(run);
 					}
 					report.pass(DESCRIPTION + " - PASS");
@@ -91,41 +95,184 @@ public class Coordinator {
 
 	/**
 	 * Create steps here
+	 * 
 	 * @param run (JSONObject)
 	 */
 	public void steps(JSONObject run) {
-		Action a = new Action(driver, report);
+		checkActions(run);
+		checkAsserts(run);
+		checkWaits(run);
+	}
+
+	private void checkActions(JSONObject run) {
+		ActionBuilder a = new ActionBuilder(driver, report);
 		String userObject = run.getString("userObject");
-		
-		String text = null;
-		String url = null;
-		By locator = null;
-		
-		if(run.has("url"))
-			url = run.getString("url");
-		
-		if(run.has("text"))
-			text = run.getString("text");
-		
-		if(run.has("locator"))
-			locator = By.xpath(run.getString("locator"));
+		setValues(run);
 
 		switch (userObject.toLowerCase()) {
 		case "link":
-			a.link(url);
+			a.link(url.getString(0));
 			break;
 		case "click":
-			a.click(locator);
+			a.click((By) locator.get(0));
 			break;
-		case "send keys":
-			a.inputText(locator, text);
+		case "input text":
+			a.inputText((By) locator.get(0), text.getString(0));
+			break;
+		case "submit":
+			a.submit((By) locator.get(0));
 			break;
 		case "clear":
-			a.clear(locator);
+			a.clear((By) locator.get(0));
 			break;
 		case "upload":
-			a.upload(locator, text);
+			a.upload((By) locator.get(0), file.getString(0));
+			break;
+		case "back":
+			a.back();
+			break;
+		case "forward":
+			a.forward();
+			break;
+		case "refresh":
+			a.refresh();
+			break;
+		case "close":
+			a.close();
+			break;
+		case "click and hold":
+			a.close();
+			break;
+		case "release":
+			a.close();
+			break;
+		case "drag and drop":
+			a.dragAndDrop((By) locator.get(0), (By) locator.get(1));
+			break;
+		case "hover":
+			a.hover((By) locator.get(0));
+			break;
+		case "context click":
+			a.contextClick((By) locator.get(0));
+			break;
+		case "double click":
+			a.doubleClick((By) locator.get(0));
 			break;
 		}
+	}
+
+	private void checkAsserts(JSONObject run) {
+		AssertBuilder a = new AssertBuilder(driver, report);
+		String userObject = run.getString("userObject");
+		setValues(run);
+
+		switch (userObject.toLowerCase()) {
+		case "displayed":
+			Assert.assertTrue(a.isDisplayed((By) locator.get(0)));
+			break;
+		case "enabled":
+			Assert.assertTrue(a.isEnabled((By) locator.get(0)));
+			break;
+		case "selected":
+			Assert.assertTrue(a.isSelected((By) locator.get(0)));
+			break;
+		case "text contains":
+			Assert.assertTrue(a.textContains((By) locator.get(0), text.getString(0)));
+			break;
+		case "text equals":
+			Assert.assertTrue(a.textEquals((By) locator.get(0), text.getString(0)));
+			break;
+		}
+	}
+
+	private void checkWaits(JSONObject run) {
+		WaitBuilder a = new WaitBuilder(driver, report);
+		String userObject = run.getString("userObject");
+		setValues(run);
+
+		switch (userObject.toLowerCase()) {
+		case "sleep":
+			a.sleep(time.getInt(0));
+			break;
+		case "page to load":
+			a.pageToLoad(time.getInt(0));
+			break;
+		case "presence":
+			a.presence((By) locator.get(0), time.getInt(0));
+			break;
+		case "visble":
+			a.visibility((By) locator.get(0), time.getInt(0));
+			break;
+		case "clickable":
+			a.clickable((By) locator.get(0), time.getInt(0));
+			break;
+		case "invisble":
+			a.invisibility((By) locator.get(0), time.getInt(0));
+			break;
+		case "selected":
+			a.selected((By) locator.get(0), time.getInt(0));
+			break;
+		case "title contains":
+			a.titleContains(text.getString(0), time.getInt(0));
+			break;
+		case "title to be":
+			a.titleToBe(text.getString(0), time.getInt(0));
+			break;
+		case "url contains":
+			a.urlContains(url.getString(0), time.getInt(0));
+			break;
+		case "url to be":
+			a.urlToBe(url.getString(0), time.getInt(0));
+			break;
+		case "attribute contains":
+			a.attributeContains((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
+			break;
+		case "attribute to be":
+			a.attributeToBe((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
+			break;
+		}
+	}
+
+	private void setValues(JSONObject run) {
+		restValues();
+
+		if (run.has("text"))
+			text = run.getJSONArray("text");
+		
+		if (run.has("file")) {
+			file = run.getJSONArray("file");
+			for (int x = 0; x < file.length(); x++)
+				FileHandler.isValidFile(new File(file.getString(x)));
+		}
+		
+		if (run.has("url")) {
+			url = run.getJSONArray("url");
+			for (int x = 0; x < url.length(); x++)
+				URLHandler.isURLValid(url.getString(x));
+		}
+		
+		if (run.has("locator")) {
+			locatorType = run.getJSONArray("locatorType");
+			locatorValue = run.getJSONArray("locator");
+			for (int x = 0; x < locatorValue.length(); x++)
+				locator.put(ElementHandler.getLocator(locatorType.getString(x), locatorValue.getString(x)));
+		}  
+		
+		if (run.has("time")) {
+			timeValue = run.getJSONArray("time");
+			for (int x = 0; x < timeValue.length(); x++)
+				time.put(Integer.valueOf(timeValue.getString(x)));
+		}
+	}
+
+	private void restValues() {
+		text = new JSONArray();
+		url = new JSONArray();
+		file = new JSONArray();
+		locator = new JSONArray();
+		locatorValue = new JSONArray();
+		locatorType = new JSONArray();
+		time = new JSONArray();
+		timeValue = new JSONArray();
 	}
 }

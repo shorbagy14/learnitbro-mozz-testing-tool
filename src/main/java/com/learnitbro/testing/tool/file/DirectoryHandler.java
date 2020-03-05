@@ -4,7 +4,7 @@ import java.io.File;
 
 public class DirectoryHandler {
 	
-	public File create(String path) {
+	public static File create(String path) {
 		File folder = new File(path);
 		if (!folder.exists()) {
 			File parent = folder.getParentFile();

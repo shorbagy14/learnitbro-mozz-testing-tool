@@ -22,8 +22,7 @@ public class FileHandler {
 	public String getDownloadedFileAsString(String FILE_NAME, String FILE_URL) throws IOException {
 		BufferedInputStream in = new BufferedInputStream(new URL(FILE_URL).openStream());
 		String dir = System.getProperty("user.dir");
-		DirectoryHandler d = new DirectoryHandler();
-		d.create(String.format("%s/assets/", dir));
+		DirectoryHandler.create(String.format("%s/assets/", dir));
 		String outputfile = String.format("%s/assets%s", dir, FILE_NAME);
 		
 		FileOutputStream fileOutputStream = new FileOutputStream(outputfile);

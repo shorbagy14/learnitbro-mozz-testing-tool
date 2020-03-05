@@ -35,11 +35,10 @@ public class Report {
 	}
 
 	public void setExtentReports(String details) {
-		DirectoryHandler d = new DirectoryHandler();
 		String dir = System.getProperty("user.dir");
 		
 		setTime();
-		location = d.create(String.format("%s/reports/report-%s-%s", dir, details, timeStamp)).getPath();
+		location = DirectoryHandler.create(String.format("%s/reports/report-%s-%s", dir, details, timeStamp)).getPath();
 
 		ExtentLoggerReporter logger = new ExtentLoggerReporter(location);
 		ExtentHtmlReporter html = new ExtentHtmlReporter(location + "/report.html");
@@ -150,9 +149,8 @@ public class Report {
 
 	public void takeScreenshot(WebDriver driver) {
 		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-		DirectoryHandler d = new DirectoryHandler();
 		String location = "/output/screenshot";
-		String path = String.format("%s/%s.png", d.create(location), System.currentTimeMillis());
+		String path = String.format("%s/%s.png", DirectoryHandler.create(location), System.currentTimeMillis());
 		String dir = System.getProperty("user.dir");
 		File file = new File(dir + path);
 		try {

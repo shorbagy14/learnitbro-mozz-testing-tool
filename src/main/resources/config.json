@@ -2,23 +2,30 @@
   {
     "name": "Test Suite",
     "category": "suite",
-    "platform": "web",
+    "platform": "all",
+    "require": []
+  },
+  {
+  	"name": "Configuration",
+    "category": "configuration",
+    "platform": "all",
     "require": [
+      "browserName",
+      "headless",
+      "platform"
     ]
   },
   {
-    "name": "Category",
-    "category": "add",
-    "platform": "web",
-    "require": [
-    ]
+    "name": "Group",
+    "category": "group",
+    "platform": "all",
+    "require": []
   },
   {
     "name": "Test Case",
-    "category": "add",
-    "platform": "web",
-    "require": [
-    ]
+    "category": "test",
+    "platform": "all",
+    "require": []
   },
   {
     "name": "Click",
@@ -37,6 +44,14 @@
     ]
   },
   {
+    "name": "Submit",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
     "name": "Clear",
     "category": "action",
     "platform": "web",
@@ -45,7 +60,7 @@
     ]
   },
   {
-    "name": "Send Keys",
+    "name": "Input Text",
     "category": "action",
     "platform": "web",
     "require": [
@@ -54,19 +69,250 @@
     ]
   },
   {
-    "name": "Page to Load",
-    "category": "wait",
+    "name": "Upload",
+    "category": "action",
     "platform": "web",
     "require": [
-      "time", "locator"
+      "locator",
+      "file"
     ]
   },
   {
-    "name": "Clickable Element",
+    "name": "Back",
+    "category": "action",
+    "platform": "web",
+    "require": []
+  },
+  {
+    "name": "Forward",
+    "category": "action",
+    "platform": "web",
+    "require": []
+  },
+  {
+    "name": "Refresh",
+    "category": "action",
+    "platform": "web",
+    "require": []
+  },
+  {
+    "name": "Close",
+    "category": "action",
+    "platform": "web",
+    "require": []
+  },
+  {
+    "name": "Click And Hold",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Release",
+    "category": "action",
+    "platform": "web",
+    "require": []
+  },
+  {
+    "name": "Drag And Drop",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator",
+      "locator"
+    ]
+  },
+  {
+    "name": "Hover",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Context Click",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Double Click",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Displayed",
+    "category": "assert",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Enabled",
+    "category": "assert",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Selected",
+    "category": "assert",
+    "platform": "web",
+    "require": [
+      "locator"
+    ]
+  },
+  {
+    "name": "Text Contains",
+    "category": "assert",
+    "platform": "web",
+    "require": [
+      "locator","text"
+    ]
+  },
+  {
+    "name": "Text Equals",
+    "category": "assert",
+    "platform": "web",
+    "require": [
+      "locator","text"
+    ]
+  },
+  {
+    "name": "Sleep",
     "category": "wait",
     "platform": "web",
     "require": [
-      "time", "locator"
+      "time"
+    ]
+  },
+  {
+    "name": "Page To Load",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time"
+    ]
+  },
+  {
+    "name": "Presence",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator"
+    ]
+  },
+  {
+    "name": "Visible",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator"
+    ]
+  },
+  {
+    "name": "Clickable",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator"
+    ]
+  },
+  {
+    "name": "Invisible",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator"
+    ]
+  },
+  {
+    "name": "Selected",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator"
+    ]
+  },
+  {
+    "name": "Title Contains",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "text"
+    ]
+  },
+  {
+    "name": "Title To Be",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "text"
+    ]
+  },
+  {
+    "name": "URL Contains",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "url"
+    ]
+  },
+  {
+    "name": "URL To Be",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "url"
+    ]
+  },
+  {
+    "name": "Alert Is Present",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time"
+    ]
+  },
+  {
+    "name": "Attribute To Be",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator",
+      "text",
+      "text"
+    ]
+  },
+  {
+    "name": "Attribute Contains",
+    "category": "wait",
+    "platform": "web",
+    "require": [
+      "time",
+      "locator",
+      "text",
+      "text"
     ]
   }
 ]

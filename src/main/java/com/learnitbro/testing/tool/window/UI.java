@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,8 +17,10 @@ import javax.swing.SwingConstants;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -25,7 +28,6 @@ import javax.swing.JMenuItem;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,74 +50,8 @@ public class UI extends JPanel implements ActionListener {
 
 	public JFrame frame;
 	private DynamicTree treePanel;
-
-	String config;
-
 	static JPanel generalPanel;
-
-	public void actionPerformed(ActionEvent e) {
-		String command = e.getActionCommand();
-
-		if (ADD_COMMAND.equals(command)) {
-			// Add button clicked
-			String name = ((JMenuItem) e.getSource()).getText();
-			DefaultMutableTreeNode node = treePanel.addObject(name);
-			addNode(node.getLevel(), name, node);
-
-		} else if (REMOVE_COMMAND.equals(command)) {
-			// Remove button clicked
-			treePanel.removeCurrentNode();
-		} else if (LAUNCH_COMMAND.equals(command)) {
-			saveTree();
-			Control control = new Control();
-			control.start();
-		}
-	}
-
-	private void addNode(int level, String name, DefaultMutableTreeNode node) {
-
-		UUID uuid = UUID.randomUUID();
-
-		MyTreeNode myNode = new MyTreeNode(node);
-		myNode.setUUID(uuid.toString());
-		myNode.setName(name);
-
-		if (level == 3) {
-			JSONArray arr = new JSONArray(config);
-			for (int x = 0; x < arr.length(); x++) {
-				JSONObject obj = arr.getJSONObject(x);
-				String objName = obj.getString("name");
-				JSONArray req = obj.getJSONArray("require");
-
-				if (objName.equalsIgnoreCase(name)) {
-					int a = 100;
-					for (int y = 0; y < req.length(); y++) {
-
-						JTextField jtf = new JTextField();
-						jtf.setBounds(89, 53 + a, 513, 35);
-						jtf.setColumns(10);
-						jtf.setName(uuid.toString());
-
-						JLabel lbl = new JLabel();
-						lbl.setHorizontalAlignment(SwingConstants.CENTER);
-						lbl.setBounds(275, 25 + a, 161, 16);
-						lbl.setName(uuid.toString());
-
-						a += 100;
-
-						String v = req.getString(y);
-						lbl.setText(v);
-						jtf.getDocument().putProperty("type", v);
-
-						generalPanel.add(lbl);
-						generalPanel.add(jtf);
-					}
-				}
-			}
-		}
-
-		myNode.build();
-	}
+	String config;
 
 	/**
 	 * Create the application.
@@ -133,11 +69,6 @@ public class UI extends JPanel implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
-
-		treePanel = new DynamicTree();
-		treePanel.setBackground(Color.WHITE);
-		treePanel.setBounds(0, 0, 276, 607);
-		frame.getContentPane().add(treePanel);
 
 		config = StreamHandler.inputStreamTextBuilder(getClass().getResourceAsStream("/config.json"));
 
@@ -160,6 +91,7 @@ public class UI extends JPanel implements ActionListener {
 		btnPanel.add(btnRemove);
 		btnRemove.setActionCommand(REMOVE_COMMAND);
 		btnRemove.addActionListener(this);
+		btnRemove.setEnabled(false);
 
 		JButton btnLaunch = new JButton("Launch");
 		btnLaunch.setBounds(543, 18, 136, 29);
@@ -184,6 +116,14 @@ public class UI extends JPanel implements ActionListener {
 
 		// End of General Panel ---->
 
+		// <---- Tree Panel
+
+		treePanel = new DynamicTree();
+		treePanel.setBackground(Color.WHITE);
+		treePanel.setBounds(0, 0, 276, 607);
+		frame.getContentPane().add(treePanel);
+
+		// End of Tree Panel ---->
 		// <---- Menu Bar
 
 		JMenuBar menuBar = new JMenuBar();
@@ -199,38 +139,40 @@ public class UI extends JPanel implements ActionListener {
 		lblGeneralText.add(mntmLoad);
 
 		List<String> action = new ArrayList<String>();
-		List<String> wait = new ArrayList<String>();
-		List<String> add = new ArrayList<String>();
+		List<String> waiting = new ArrayList<String>();
+		List<String> asserting = new ArrayList<String>();
+		List<String> adding = new ArrayList<String>();
 
 		JSONArray arr = new JSONArray(config);
 		for (int x = 0; x < arr.length(); x++) {
 			JSONObject obj = arr.getJSONObject(x);
 			String objName = obj.getString("name");
 			String objCat = obj.getString("category");
-			if (objCat.equalsIgnoreCase("action"))
-				action.add(objName);
+
+			if (objCat.equalsIgnoreCase("configuration") || objCat.equalsIgnoreCase("group")
+					|| objCat.equalsIgnoreCase("test"))
+				adding.add(objName);
 			else if (objCat.equalsIgnoreCase("wait"))
-				wait.add(objName);
-			else if (objCat.equalsIgnoreCase("add"))
-				add.add(objName);
+				waiting.add(objName);
+			else if (objCat.equalsIgnoreCase("assert"))
+				asserting.add(objName);
+			else if (objCat.equalsIgnoreCase("action"))
+				action.add(objName);
 
 		}
 
 		// Add Menu
 		final JMenu mnAdd = new JMenu("Add");
 		menuBar.add(mnAdd);
-		for (int x = 0; x < add.size(); x++) {
-			JMenuItem mntm = new JMenuItem(add.get(x));
+		for (int x = 0; x < adding.size(); x++) {
+			JMenuItem mntm = new JMenuItem(adding.get(x));
+			mntm.putClientProperty("category", adding.get(x));
 			mnAdd.add(mntm);
 			mntm.setActionCommand(ADD_COMMAND);
 			mntm.addActionListener(this);
 		}
 		disableMenuItems(mnAdd);
 		enableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
-
-//		// Condition Menu
-//		JMenu mnCondition = new JMenu("Condition");
-//		menuBar.add(mnCondition);
 
 		/**
 		 * Condition Menu - To be added
@@ -241,6 +183,7 @@ public class UI extends JPanel implements ActionListener {
 		menuBar.add(mnAction);
 		for (int x = 0; x < action.size(); x++) {
 			JMenuItem mntm = new JMenuItem(action.get(x));
+			mntm.putClientProperty("category", "action");
 			mnAction.add(mntm);
 			mntm.setActionCommand(ADD_COMMAND);
 			mntm.addActionListener(this);
@@ -248,23 +191,28 @@ public class UI extends JPanel implements ActionListener {
 		disableMenuItems(mnAction);
 
 		// Wait Menu
-		JMenu mnWait = new JMenu("Wait");
+		final JMenu mnWait = new JMenu("Wait");
 		menuBar.add(mnWait);
-		for (int x = 0; x < wait.size(); x++) {
-			JMenuItem mntm = new JMenuItem(wait.get(x));
+		for (int x = 0; x < waiting.size(); x++) {
+			JMenuItem mntm = new JMenuItem(waiting.get(x));
+			mntm.putClientProperty("category", "wait");
 			mnWait.add(mntm);
 			mntm.setActionCommand(ADD_COMMAND);
 			mntm.addActionListener(this);
 		}
 		disableMenuItems(mnWait);
 
-//		// Assert Menu
-//		JMenu mnAssert = new JMenu("Assert");
-//		menuBar.add(mnAssert);
-
-		/**
-		 * Assert Menu - To be added
-		 */
+		// Assert Menu
+		final JMenu mnAssert = new JMenu("Assert");
+		menuBar.add(mnAssert);
+		for (int x = 0; x < asserting.size(); x++) {
+			JMenuItem mntm = new JMenuItem(asserting.get(x));
+			mntm.putClientProperty("category", "assert");
+			mnAssert.add(mntm);
+			mntm.setActionCommand(ADD_COMMAND);
+			mntm.addActionListener(this);
+		}
+		disableMenuItems(mnAssert);
 
 		// End of Menu Bar ---->
 
@@ -291,25 +239,40 @@ public class UI extends JPanel implements ActionListener {
 			}
 
 			public void checkTreePanel() {
+
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePanel.getJTree()
+						.getLastSelectedPathComponent();
+				if (node != null) {
+					MyTreeNode myNode = new MyTreeNode(node);
+					setVisibilty(myNode);
+				}
+
 				int level = treePanel.getSelectedNodeLevel();
-				if (level == 0 || level == 1) {
-					disableMenuItems(mnAction);
+				if (level == 0 || level == 1 || level == 2) {
 					if (level == 0) {
 						enableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
 						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(1));
-					} else {
+						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(2));
+					} else if (level == 1) {
 						enableMenuItem((JMenuItem) mnAdd.getMenuComponent(1));
 						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
+						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(2));
+					} else {
+						enableMenuItem((JMenuItem) mnAdd.getMenuComponent(2));
+						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
+						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(1));
 					}
 
-				} else if (level == 2) {
+				} else if (level == 3) {
 					enableMenuItems(mnAction);
 					enableMenuItems(mnWait);
+					enableMenuItems(mnAssert);
 					disableMenuItems(mnAdd);
 				} else {
 					disableMenuItems(mnAction);
 					disableMenuItems(mnWait);
 					disableMenuItems(mnAdd);
+					disableMenuItems(mnAssert);
 				}
 			}
 		};
@@ -324,67 +287,24 @@ public class UI extends JPanel implements ActionListener {
 		// Load Tree
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				String content = null;
-				try {
-					content = JSONHandler.read(new File(FileHandler.getUserDir() + "/tree.json"));
-				} catch (Exception ex) {
-					throw new ReadFileException("Can't read file", ex);
-				}
-
 				Object root = treePanel.getTreeModel().getRoot();
 				int count = treePanel.getTreeModel().getChildCount(root);
-//				System.out.println(count);
 				if (count != 0) {
-					// ADD REMOVE FUNCTION
 					treePanel.removeAll();
 					UI.generalPanel.removeAll();
 				}
+				loadTree();
 
-				JSONObject obj = new JSONObject(content);
-				JSONArray category = obj.getJSONArray("children");
-				for (int x = 0; x < category.length(); x++) {
-					DefaultMutableTreeNode p1;
-					JSONObject cat = category.getJSONObject(x);
-					p1 = treePanel.addObject(null, cat.getString("userObject"));
-					addNode(1, cat.getString("userObject"), p1);
-
-					JSONArray testCase = cat.getJSONArray("children");
-					for (int y = 0; y < testCase.length(); y++) {
-						DefaultMutableTreeNode p2;
-						JSONObject test = testCase.getJSONObject(y);
-						p2 = treePanel.addObject(p1, test.getString("userObject"));
-						addNode(2, test.getString("userObject"), p2);
-						JSONArray input = test.getJSONArray("children");
-						try {
-							for (int i = 0; i < input.length(); i++) {
-								DefaultMutableTreeNode p3;
-								JSONObject run = input.getJSONObject(i);
-								p3 = treePanel.addObject(p2, run.getString("userObject"));
-								addNode(3, run.getString("userObject"), p3);
-
-								for (Component item : UI.generalPanel.getComponents()) {
-									if (item.toString().contains("JTextField")) {
-										MyTreeNode myNode = new MyTreeNode(p3);
-										String uuid = ((JTextField) item).getName();
-										if (myNode.isMatch(uuid)) {
-											JTextField jtf = ((JTextField) item);
-											String type = jtf.getDocument().getProperty("type").toString();
-											jtf.setText(run.getString(type));
-										}
-									}
-								}
-							}
-						} catch (Exception ex) {
-							ex.printStackTrace();
-						}
-					}
-				}
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePanel.getDefaultMutableTreeNode();
+				MyTreeNode myNode = new MyTreeNode(node);
+				setVisibilty(myNode);
+//				generalPanel.setVisible(false);
 			}
 		});
 
 		treePanel.getJTree().addMouseListener(mouseListener);
 
+		// Handles changes in the tree (Control what the user see based on selection)
 		treePanel.getJTree().addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePanel.getJTree()
@@ -396,81 +316,168 @@ public class UI extends JPanel implements ActionListener {
 					return;
 				}
 
-				if (node.getChildCount() == 0)
-					btnRemove.setEnabled(true);
-				else
+				if (node.getChildCount() != 0 || node.isRoot())
 					btnRemove.setEnabled(false);
+				else
+					btnRemove.setEnabled(true);
 
 				/* retrieve the node that was selected */
 				// Object nodeInfo = node.getUserObject();
 				int level = node.getLevel();
 
 				MyTreeNode myNode = new MyTreeNode(node);
-//				System.out.println(myNode);
+//				System.out.println(myNode);				
 
-				if (level == 3) {
-					generalPanel.setVisible(true);
+				setVisibilty(myNode);
+
+				if (level == 0 || level == 1 || level == 4) {
 					treePanel.getJTree().setEditable(false);
-					for (Component item : UI.generalPanel.getComponents()) {
-						if (item.toString().contains("JTextField")) {
-							String name = ((JTextField) item).getName();
-//							System.out.println(name);
-
-							if (myNode.isMatch(name)) {
-								((JTextField) item).setVisible(true);
-							} else {
-								((JTextField) item).setVisible(false);
-							}
-						} else if (item.toString().contains("JLabel")) {
-							String name = ((JLabel) item).getName();
-							if (myNode.isMatch(name)) {
-								((JLabel) item).setVisible(true);
-							} else {
-								((JLabel) item).setVisible(false);
-							}
-						}
-					}
 				} else {
-					generalPanel.setVisible(false);
+//					generalPanel.setVisible(false);
 					treePanel.getJTree().setEditable(true);
 				}
 			}
 		});
 	}
 
-	public void listNodes(TreeNode node) {
-		int count = node.getChildCount();
-		for (int x = 0; x < count; x++) {
-			if (node.getChildAt(x).getChildCount() == 0) {
-				System.out.println(node.getChildAt(x));
-			} else {
-				System.out.println(node.getChildAt(x));
-				listNodes(node.getChildAt(x));
+	private void loadTree() {
+
+		String content = null;
+		try {
+			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/tree.json"));
+		} catch (Exception ex) {
+			throw new ReadFileException("Can't read file", ex);
+		}
+
+		JSONObject suite = new JSONObject(content);
+//		DefaultMutableTreeNode p0;
+//		treePanel.setRootUserObject(suite.getString("userObject"));
+//		p0 = treePanel.getDefaultMutableTreeNode();
+
+		JSONArray configCase = suite.getJSONArray("children");
+		for (int z = 0; z < configCase.length(); z++) {
+			DefaultMutableTreeNode p1;
+			JSONObject config = configCase.getJSONObject(z);
+			p1 = treePanel.addObject(null, config.getString("userObject"));
+			addNode(1, "configuration", config.getString("userObject"), p1);
+			setValues(p1, config);
+			JSONArray groupCase = config.getJSONArray("children");
+			for (int x = 0; x < groupCase.length(); x++) {
+				DefaultMutableTreeNode p2;
+				JSONObject group = groupCase.getJSONObject(x);
+				p2 = treePanel.addObject(p1, group.getString("userObject"));
+				addNode(2, "group", group.getString("userObject"), p2);
+
+				JSONArray testCase = group.getJSONArray("children");
+				for (int y = 0; y < testCase.length(); y++) {
+					DefaultMutableTreeNode p3;
+					JSONObject test = testCase.getJSONObject(y);
+					p3 = treePanel.addObject(p2, test.getString("userObject"));
+					addNode(3, "testCase", test.getString("userObject"), p3);
+					JSONArray input = test.getJSONArray("children");
+					try {
+						for (int i = 0; i < input.length(); i++) {
+							DefaultMutableTreeNode p4;
+							JSONObject run = input.getJSONObject(i);
+							p4 = treePanel.addObject(p3, run.getString("userObject"));
+							addNode(4, run.getString("category"), run.getString("userObject"), p4);
+							setValues(p4, run);
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
 			}
 		}
 	}
 
-	public void disableMenuItems(JMenu menu) {
+	@SuppressWarnings("rawtypes")
+	private void setValues(DefaultMutableTreeNode p3, JSONObject run) {
+		for (Component item : UI.generalPanel.getComponents()) {
+			MyTreeNode myNode = new MyTreeNode(p3);
+			if (item.toString().contains("JTextField")) {
+				String uuid = ((JTextField) item).getName();
+				if (myNode.isMatch(uuid) || (myNode.getLevel() == 0 && run.has("browserName"))) {
+					JTextField jtf = ((JTextField) item);
+					String type = jtf.getClientProperty("type").toString();
+					int index = Integer.parseInt(jtf.getClientProperty("index").toString());
+					jtf.setText(run.getJSONArray(type).getString(index));
+				}
+			} else if (item.toString().contains("JComboBox")) {
+				String uuid = ((JComboBox) item).getName();
+				if (myNode.isMatch(uuid) || (myNode.getLevel() == 0 && run.has("browserName"))) {
+					JComboBox jcb = ((JComboBox) item);
+					String type = jcb.getClientProperty("type").toString();
+					int index = Integer.parseInt(jcb.getClientProperty("index").toString());
+					jcb.setSelectedItem(run.getJSONArray(type).getString(index));
+				}
+			}
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void setVisibilty(MyTreeNode myNode) {
+
+		generalPanel.setVisible(true);
+		for (Component item : UI.generalPanel.getComponents()) {
+			if (item.toString().contains("JTextField")) {
+				String uuid = ((JTextField) item).getName();
+				if (myNode.isMatch(uuid)) {
+					((JTextField) item).setVisible(true);
+				} else {
+					((JTextField) item).setVisible(false);
+				}
+			} else if (item.toString().contains("JLabel")) {
+				String uuid = ((JLabel) item).getName();
+				if (myNode.isMatch(uuid)) {
+					((JLabel) item).setVisible(true);
+				} else {
+					((JLabel) item).setVisible(false);
+				}
+			} else if (item.toString().contains("JComboBox")) {
+				String uuid = ((JComboBox) item).getName();
+				if (myNode.isMatch(uuid)) {
+					((JComboBox) item).setVisible(true);
+				} else {
+					((JComboBox) item).setVisible(false);
+				}
+			}
+		}
+	}
+
+//	private void listNodes(TreeNode node) {
+//		int count = node.getChildCount();
+//		for (int x = 0; x < count; x++) {
+//			if (node.getChildAt(x).getChildCount() == 0) {
+//				System.out.println(node.getChildAt(x));
+//			} else {
+//				System.out.println(node.getChildAt(x));
+//				listNodes(node.getChildAt(x));
+//			}
+//		}
+//	}
+
+	private void disableMenuItems(JMenu menu) {
 		for (int x = 0; x < menu.getItemCount(); x++) {
 			menu.getItem(x).setEnabled(false);
 		}
 	}
 
-	public void enableMenuItems(JMenu menu) {
+	private void enableMenuItems(JMenu menu) {
 		for (int x = 0; x < menu.getItemCount(); x++) {
 			menu.getItem(x).setEnabled(true);
 		}
 	}
 
-	public void enableMenuItem(JMenuItem menuItem) {
+	private void enableMenuItem(JMenuItem menuItem) {
 		menuItem.setEnabled(true);
 	}
 
-	public void disableMenuItem(JMenuItem menuItem) {
+	private void disableMenuItem(JMenuItem menuItem) {
 		menuItem.setEnabled(false);
 	}
 
-	public void saveTree() {
+	private void saveTree() {
 		Object root = treePanel.getTreeModel().getRoot();
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(DefaultMutableTreeNode.class, new DefaultMutableTreeNodeSerializer())
@@ -480,6 +487,143 @@ public class UI extends JPanel implements ActionListener {
 
 		String jsonString = gson.toJson(root);
 		System.out.println(jsonString);
-		JSONHandler.write(new File(FileHandler.getUserDir() + "/tree.json"), jsonString);
+		JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/tree.json"), jsonString);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		String command = e.getActionCommand();
+
+		if (ADD_COMMAND.equals(command)) {
+			// Add button clicked
+			String name = ((JMenuItem) e.getSource()).getText();
+			DefaultMutableTreeNode node = treePanel.addObject(name);
+			String category = ((JMenuItem) e.getSource()).getClientProperty("category").toString();
+			int level = node.getLevel();
+			addNode(level, category, name, node);
+
+		} else if (REMOVE_COMMAND.equals(command)) {
+			// Remove button clicked
+			treePanel.removeCurrentNode();
+		} else if (LAUNCH_COMMAND.equals(command)) {
+			saveTree();
+			Control control = new Control();
+			control.start();
+		}
+	}
+
+	private void addNode(int level, String category, String name, DefaultMutableTreeNode node) {
+
+		String uuid = UUID.randomUUID().toString();
+
+		MyTreeNode myNode = new MyTreeNode(node);
+		myNode.setUUID(uuid);
+
+		JLabel lblTop = new JLabel();
+		lblTop.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTop.setBounds(258, 0, 160, 15);
+		lblTop.setFont(lblTop.getFont().deriveFont(Font.BOLD, 14f));
+		lblTop.setName(uuid);
+		lblTop.setText(name);
+
+		JSONArray arr = new JSONArray(config);
+		for (int x = 0; x < arr.length(); x++) {
+
+			JSONObject obj = arr.getJSONObject(x);
+			String objName = obj.getString("name");
+			String objCategory = obj.getString("category");
+			JSONArray req = obj.getJSONArray("require");
+
+			if (level == 1) {
+
+				if (objCategory.equalsIgnoreCase("configuration")) {
+					int posX = 0;
+
+					List<String> list = new ArrayList<String>();
+					for (int y = 0; y < req.length(); y++) {
+
+						String v = req.getString(y);
+						list.add(v);
+
+						JLabel lbl = new JLabel();
+						lbl.setHorizontalAlignment(SwingConstants.CENTER);
+						lbl.setBounds(10 + posX, 25, 160, 15);
+						lbl.setName(uuid);
+						lbl.setText(v);
+						generalPanel.add(lbl);
+
+						JComboBox<String> jcb = null;
+						if (v.equals("browserName")) {
+							jcb = new JComboBox<String>(
+									new String[] { "chrome", "firefox", "edge", "ie", "safari", "opera" });
+						} else if (v.equals("headless")) {
+							jcb = new JComboBox<String>(new String[] { "false", "true" });
+						} else if (v.equals("platform")) {
+							jcb = new JComboBox<String>(new String[] { "web" });
+						} else {
+							throw new IllegalArgumentException("Wrong argument in the configuration file");
+						}
+
+						jcb.setName(uuid);
+						jcb.setBounds(40 + posX, 60, 100, 25);
+						jcb.putClientProperty("type", v);
+						jcb.putClientProperty("category", objCategory);
+						jcb.putClientProperty("index", Collections.frequency(list, v) - 1);
+						generalPanel.add(jcb);
+
+						posX += 250;
+					}
+				}
+			}
+
+			else if (level == 4) {
+
+				if (objName.equalsIgnoreCase(name) && objCategory.equalsIgnoreCase(category)) {
+					int posY = 20;
+
+					if (req.length() == 0) {
+						lblTop.putClientProperty("category", objCategory);
+					}
+
+					List<String> list = new ArrayList<String>();
+					for (int y = 0; y < req.length(); y++) {
+
+						String v = req.getString(y);
+						list.add(v);
+
+						JTextField jtf = new JTextField();
+						jtf.setBounds(150, 55 + posY, 450, 35);
+						jtf.setColumns(10);
+						jtf.setName(uuid);
+						jtf.putClientProperty("type", v);
+						jtf.putClientProperty("category", objCategory);
+						jtf.putClientProperty("index", Collections.frequency(list, v) - 1);
+						generalPanel.add(jtf);
+
+						JLabel lbl = new JLabel();
+						lbl.setHorizontalAlignment(SwingConstants.CENTER);
+						lbl.setBounds(260, 25 + posY, 160, 15);
+						lbl.setName(uuid);
+						lbl.setText(v);
+						generalPanel.add(lbl);
+
+						if (v.equals("locator")) {
+							JComboBox<String> jcb = new JComboBox<String>(
+									new String[] { "xpath", "css", "class", "id", "name" });
+							jcb.setName(uuid);
+							jcb.setBounds(40, 60 + posY, 100, 25);
+							jcb.putClientProperty("type", "locatorType");
+							jcb.putClientProperty("category", objCategory);
+							jcb.putClientProperty("index", Collections.frequency(list, v) - 1);
+							generalPanel.add(jcb);
+						}
+
+						posY += 100;
+					}
+				}
+			}
+		}
+
+		generalPanel.add(lblTop);
+		myNode.build();
 	}
 }

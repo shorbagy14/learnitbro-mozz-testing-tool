@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -14,6 +16,7 @@ import javax.swing.tree.TreeNode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
@@ -26,10 +29,6 @@ import com.learnitbro.testing.tool.file.JSONHandler;
 public class MyTreeNode extends DefaultMutableTreeNode {
 
 	private String uuid;
-	private String name;
-	private String parentName;
-	private String grandparentName;
-
 	private DefaultMutableTreeNode node;
 
 	static JSONArray all = new JSONArray();
@@ -50,7 +49,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 	public boolean isUuidExist(String uuid) {
 		String content = null;
 		try {
-			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/object.json"));
+			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/node.json"));
 		} catch (Exception e) {
 			throw new ReadFileException("Can't read file", e);
 		}
@@ -66,10 +65,10 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		return false;
 	}
 
-	public boolean isMatch(String jTextFieldName) {
+	boolean isMatch(String value) {
 		String content = null;
 		try {
-			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/object.json"));
+			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/node.json"));
 		} catch (Exception e) {
 			throw new ReadFileException("Can't read file", e);
 		}
@@ -78,76 +77,61 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		for (int i = 0; i < array.length(); i++) {
 			JSONObject item = array.getJSONObject(i);
 			String uuid = item.getString("uuid");
-			String name = item.getString("name");
 
 			int index = item.getInt("index");
 			int parentIndex = item.getInt("parentIndex");
 			int grandparentIndex = item.getInt("grandparentIndex");
+			int superparentIndex = item.getInt("superparentIndex");
 
-			boolean isUuidMatch = uuid.equalsIgnoreCase(jTextFieldName);
-			boolean isNameMatch = name.equalsIgnoreCase(node.getUserObject().toString());
+			boolean isUuidMatch = uuid.equalsIgnoreCase(value);
 
-			boolean isIndexMatch = index == node.getParent().getIndex(node);
-			boolean isParentIndexMatch = parentIndex == node.getParent().getParent().getIndex(node.getParent());
-			boolean isGrandParentIndexMatch = grandparentIndex == node.getParent().getParent().getParent()
-					.getIndex(node.getParent().getParent());
+			boolean isIndexMatch = index == getIndex();
+			boolean isParentIndexMatch = parentIndex == getParentIndex();
+			boolean isGrandParentIndexMatch = grandparentIndex == getGrandParentIndex();
+			boolean isSuperParentIndexMatch = superparentIndex == getSuperParentIndex();
 
-			if (isUuidMatch && isNameMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch)
+			if (isUuidMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch && isSuperParentIndexMatch)
 				return true;
 		}
 
 		return false;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
-	}
-
-	public Object getParentName() {
-		if (parentName == null)
-			return JSONObject.NULL;
-		return parentName;
-	}
-
-	public void setGrandParentName(String grandparentName) {
-		this.grandparentName = grandparentName;
-	}
-
-	public Object getGrandParentName() {
-		if (grandparentName == null)
-			return JSONObject.NULL;
-		return grandparentName;
-	}
-
-	private int getIndex() {
-		if (node.getParent() == null)
+	public int getIndex() {
+		if (getTreeNode() == null)
 			return -1;
-		return node.getParent().getIndex(node);
+		return getTreeNode().getIndex(node);
 	}
 
-	private TreeNode getParentTreeNode() {
-		return node.getParent().getParent();
+	public TreeNode getTreeNode() {
+		return node.getParent();
 	}
 
-	private TreeNode getGrandParentTreeNode() {
+	public TreeNode getParentTreeNode() {
+		return getTreeNode().getParent();
+	}
+
+	public TreeNode getGrandParentTreeNode() {
 		return getParentTreeNode().getParent();
 	}
 
-	private int getParentIndex() {
-		if (getParentTreeNode() == null)
-			return -1;
-		return getParentTreeNode().getIndex(node.getParent());
+	public TreeNode getSuperParentTreeNode() {
+		return getGrandParentTreeNode().getParent();
 	}
 
-	private int getGrandParentIndex() {
+	public int getParentIndex() {
+		if (getTreeNode() == null)
+			return -1;
+
+		if (getParentTreeNode() == null)
+			return -1;
+		return getParentTreeNode().getIndex(getTreeNode());
+	}
+
+	public int getGrandParentIndex() {
+		if (getTreeNode() == null)
+			return -1;
+
 		if (getParentTreeNode() != null) {
 			if (getGrandParentTreeNode() == null)
 				return -1;
@@ -156,18 +140,32 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		return getGrandParentTreeNode().getIndex(getParentTreeNode());
 	}
 
+	public int getSuperParentIndex() {
+		if (getTreeNode() == null)
+			return -1;
+
+		if (getParentTreeNode() == null)
+			return -1;
+
+		if (getGrandParentTreeNode() != null) {
+			if (getSuperParentTreeNode() == null)
+				return -1;
+		} else
+			return -1;
+		return getSuperParentTreeNode().getIndex(getGrandParentTreeNode());
+	}
+
 	public void build() {
 
 		JSONObject jo = new JSONObject();
 		jo.put("uuid", getUUID());
-		jo.put("name", getName());
 		jo.put("index", getIndex());
 		jo.put("parentIndex", getParentIndex());
 		jo.put("grandparentIndex", getGrandParentIndex());
-		
+		jo.put("superparentIndex", getSuperParentIndex());
+
 		all.put(jo);
-//		System.out.println(all.toString(1));
-		JSONHandler.write(new File(FileHandler.getUserDir() + "/object.json"), all.toString(1));
+		JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/node.json"), all.toString(1));
 	}
 }
 
@@ -183,31 +181,17 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 		if (src.getLevel() == 0) {
 			jsonObject.addProperty("level", "suite");
 		} else if (src.getLevel() == 1) {
-			jsonObject.addProperty("level", "category");
+			jsonObject.addProperty("level", "configuration");
+			setLevel(myNode, jsonObject);
 		} else if (src.getLevel() == 2) {
-			jsonObject.addProperty("level", "testCase");
+			jsonObject.addProperty("level", "group");
 		} else if (src.getLevel() == 3) {
+			jsonObject.addProperty("level", "testCase");
+		} else if (src.getLevel() == 4) {
 			jsonObject.addProperty("level", "input");
 			src.setAllowsChildren(false);
-			for (Component item : UI.generalPanel.getComponents()) {
-				if (item.toString().contains("JTextField")) {
-					String uuid = ((JTextField) item).getName();
-					if (myNode.isMatch(uuid)) {
+			setLevel(myNode, jsonObject);
 
-						String type = ((JTextField) item).getDocument().getProperty("type").toString();
-						String text = ((JTextField) item).getText();
-
-						if (uuidList.contains(uuid + "-" + type))
-							continue;
-
-						uuidList.add(uuid + "-" + type);
-
-						jsonObject.addProperty("uuid", uuid);
-						jsonObject.addProperty(type, text);
-					
-					}
-				}
-			}
 		} else {
 			src.setAllowsChildren(true);
 		}
@@ -219,5 +203,84 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 		}
 
 		return jsonObject;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void setLevel(MyTreeNode myNode, JsonObject jsonObject) {
+		JsonArray arr = null;
+		String t = null;
+
+		for (Component item : UI.generalPanel.getComponents()) {
+			if (item.toString().contains("JTextField")) {
+				String uuid = ((JTextField) item).getName();
+				if (myNode.isMatch(uuid)) {
+
+					String type = ((JTextField) item).getClientProperty("type").toString();
+					String category = ((JTextField) item).getClientProperty("category").toString();
+					String index = ((JTextField) item).getClientProperty("index").toString();
+					String text = ((JTextField) item).getText();
+
+					if (uuidList.contains(uuid + "-" + type + "-" + category + "-" + index))
+						continue;
+
+					uuidList.add(uuid + "-" + type + "-" + category + "-" + index);
+
+					if (!type.equalsIgnoreCase(t)) {
+						arr = new JsonArray();
+					}
+
+					t = type;
+					arr.add(text);
+
+					jsonObject.addProperty("uuid", uuid);
+					jsonObject.addProperty("category", category);
+					jsonObject.add(type, arr);
+
+				}
+			} else if (item.toString().contains("JComboBox")) {
+				String uuid = ((JComboBox) item).getName();
+				if (myNode.isMatch(uuid)) {
+
+					String text = ((JComboBox) item).getSelectedItem().toString();
+					String type = ((JComboBox) item).getClientProperty("type").toString();
+					String category = ((JComboBox) item).getClientProperty("category").toString();
+					String index = ((JComboBox) item).getClientProperty("index").toString();
+
+					if (uuidList.contains(uuid + "-" + type + "-" + category + "-" + index))
+						continue;
+
+					uuidList.add(uuid + "-" + type + "-" + category + "-" + index);
+
+					if (!type.equalsIgnoreCase(t)) {
+						arr = new JsonArray();
+					}
+
+					t = type;
+					arr.add(text);
+
+					jsonObject.addProperty("uuid", uuid);
+					jsonObject.addProperty("category", category);
+					jsonObject.add(type, arr);
+				}
+			} else if (item.toString().contains("JLabel")) {
+				String uuid = ((JLabel) item).getName();
+				if (myNode.isMatch(uuid)) {
+
+					if (((JLabel) item).getClientProperty("category") == null)
+						continue;
+
+					String category = ((JLabel) item).getClientProperty("category").toString();
+
+					if (uuidList.contains(uuid + "-" + category))
+						continue;
+
+					uuidList.add(uuid + "-" + category);
+
+					jsonObject.addProperty("category", category);
+					jsonObject.addProperty("uuid", uuid);
+
+				}
+			}
+		}
 	}
 }
