@@ -176,6 +176,12 @@ public class Coordinator {
 		case "selected":
 			Assert.assertTrue(a.isSelected((By) locator.get(0)));
 			break;
+		case "text contains":
+			Assert.assertTrue(a.textContains((By) locator.get(0), text.getString(0)));
+			break;
+		case "text equals":
+			Assert.assertTrue(a.textEquals((By) locator.get(0), text.getString(0)));
+			break;
 		}
 	}
 

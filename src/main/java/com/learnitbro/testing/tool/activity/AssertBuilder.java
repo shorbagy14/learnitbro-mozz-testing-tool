@@ -30,7 +30,7 @@ public class AssertBuilder {
 	 * @param locator
 	 * @return text (String)
 	 */
-	public String getText(By locator) {
+	private String getText(By locator) {
 		String text = driver.findElement(locator).getText();
 		report.info("Getting text of " + locator + " to be " + text);
 		return text;
@@ -44,7 +44,7 @@ public class AssertBuilder {
 	 * @return text (String)
 	 */
 
-	public String getAttributeValue(By locator, String attribute) {
+	private String getAttributeValue(By locator, String attribute) {
 		String text = driver.findElement(locator).getAttribute(attribute);
 		report.info("Getting value of Attribute" + attribute + " to be " + text);
 		return text;
@@ -56,7 +56,7 @@ public class AssertBuilder {
 	 * 
 	 * @return text (String)
 	 */
-	public String getPageSource() {
+	private String getPageSource() {
 		String source = driver.getPageSource();
 		report.info("Page source is " + source);
 		return source;
@@ -120,7 +120,7 @@ public class AssertBuilder {
 	 * @param value   (String)
 	 * @return true or false (boolean)
 	 */
-	public boolean textEqual(By locator, String value) {
+	public boolean textEquals(By locator, String value) {
 		boolean isTrue = getText(locator).equals(value);
 		report.info("Text of " + locator + " is same as " + value + " : " + isTrue);
 		return isTrue;

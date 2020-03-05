@@ -315,7 +315,7 @@ public class UI extends JPanel implements ActionListener {
 					generalPanel.setVisible(false);
 					return;
 				}
-				
+
 				if (node.getChildCount() != 0 || node.isRoot())
 					btnRemove.setEnabled(false);
 				else
@@ -326,7 +326,7 @@ public class UI extends JPanel implements ActionListener {
 				int level = node.getLevel();
 
 				MyTreeNode myNode = new MyTreeNode(node);
-//				System.out.println(myNode);
+//				System.out.println(myNode);				
 
 				setVisibilty(myNode);
 

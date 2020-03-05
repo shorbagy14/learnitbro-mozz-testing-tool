@@ -173,6 +173,22 @@
     ]
   },
   {
+    "name": "Text Contains",
+    "category": "assert",
+    "platform": "web",
+    "require": [
+      "locator","text"
+    ]
+  },
+  {
+    "name": "Text Equals",
+    "category": "assert",
+    "platform": "web",
+    "require": [
+      "locator","text"
+    ]
+  },
+  {
     "name": "Sleep",
     "category": "wait",
     "platform": "web",
