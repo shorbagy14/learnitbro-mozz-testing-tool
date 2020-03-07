@@ -143,7 +143,7 @@ public class VideoBuilder {
 	 * @return
 	 */
 	public boolean timeEquals(By locator, double time) {
-		boolean isTrue = getVolume(locator) == time;
+		boolean isTrue = getTime(locator) == time;
 		report.info("Video of " + locator + " time is equal to " + time + " : " + isTrue);
 		return isTrue;
 	}
