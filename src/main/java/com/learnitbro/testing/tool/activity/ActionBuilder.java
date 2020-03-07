@@ -1,7 +1,10 @@
 package com.learnitbro.testing.tool.activity;
 
+import java.util.ArrayList;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
@@ -13,7 +16,6 @@ public class ActionBuilder {
 	private WebDriver driver;
 	private Report report;
 	private Actions actions;
-	private JavascriptExecutor js;
 
 	@SuppressWarnings("unused")
 	private ActionBuilder() {
@@ -234,5 +236,69 @@ public class ActionBuilder {
 		report.info("Selecting element at index " + index + " from drop down");
 		Select select = new Select(driver.findElement(locator));
 		select.selectByIndex(index);
+	}
+
+	/////////////////// Window Class ////////////////////////
+
+	/**
+	 * 
+	 */
+	public void maximize() {
+		driver.manage().window().maximize();
+	}
+
+	/**
+	 * 
+	 */
+	public void fullscreen() {
+		driver.manage().window().fullscreen();
+	}
+
+	/**
+	 * 
+	 */
+	public void minimize() {
+		driver.manage().window().setPosition(new Point(0, -2000));
+	}
+
+	/**
+	 * 
+	 * @param index
+	 */
+	public void switchToWindow(int index) {
+		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+		driver.switchTo().window(tabs.get(index));
+	}
+
+	/////////////////// Frame Class ////////////////////////
+
+	/**
+	 * 
+	 * @param locator
+	 */
+	public void switchToFrame(By locator) {
+		driver.switchTo().frame(driver.findElement(locator));
+	}
+	
+	/**
+	 * 
+	 * @param index
+	 */
+	public void switchToFrame(int index) {
+		driver.switchTo().frame(index);
+	}
+
+	/**
+	 * 
+	 */
+	public void switchToParentFrame() {
+		driver.switchTo().parentFrame();
+	}
+
+	/**
+	 * 
+	 */
+	public void switchToDefaultFrame() {
+		driver.switchTo().defaultContent();
 	}
 }

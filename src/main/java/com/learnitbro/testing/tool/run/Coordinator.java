@@ -15,6 +15,7 @@ import com.learnitbro.testing.tool.reporting.Report;
 import com.learnitbro.testing.tool.web.ElementHandler;
 import com.learnitbro.testing.tool.activity.ActionBuilder;
 import com.learnitbro.testing.tool.activity.AssertBuilder;
+import com.learnitbro.testing.tool.activity.JSBuilder;
 import com.learnitbro.testing.tool.activity.WaitBuilder;
 
 public class Coordinator {
@@ -106,6 +107,7 @@ public class Coordinator {
 
 	private void checkActions(JSONObject run) {
 		ActionBuilder a = new ActionBuilder(driver, report);
+		JSBuilder j = new JSBuilder(driver, report);
 		String userObject = run.getString("userObject");
 		setValues(run);
 
@@ -186,49 +188,49 @@ public class Coordinator {
 	}
 
 	private void checkWaits(JSONObject run) {
-		WaitBuilder a = new WaitBuilder(driver, report);
+		WaitBuilder w = new WaitBuilder(driver, report);
 		String userObject = run.getString("userObject");
 		setValues(run);
 
 		switch (userObject.toLowerCase()) {
 		case "sleep":
-			a.sleep(time.getInt(0));
+			w.sleep(time.getInt(0));
 			break;
 		case "page to load":
-			a.pageToLoad(time.getInt(0));
+			w.pageToLoad(time.getInt(0));
 			break;
 		case "presence":
-			a.presence((By) locator.get(0), time.getInt(0));
+			w.presence((By) locator.get(0), time.getInt(0));
 			break;
 		case "visble":
-			a.visibility((By) locator.get(0), time.getInt(0));
+			w.visibility((By) locator.get(0), time.getInt(0));
 			break;
 		case "clickable":
-			a.clickable((By) locator.get(0), time.getInt(0));
+			w.clickable((By) locator.get(0), time.getInt(0));
 			break;
 		case "invisble":
-			a.invisibility((By) locator.get(0), time.getInt(0));
+			w.invisibility((By) locator.get(0), time.getInt(0));
 			break;
 		case "selected":
-			a.selected((By) locator.get(0), time.getInt(0));
+			w.selected((By) locator.get(0), time.getInt(0));
 			break;
 		case "title contains":
-			a.titleContains(text.getString(0), time.getInt(0));
+			w.titleContains(text.getString(0), time.getInt(0));
 			break;
 		case "title to be":
-			a.titleToBe(text.getString(0), time.getInt(0));
+			w.titleToBe(text.getString(0), time.getInt(0));
 			break;
 		case "url contains":
-			a.urlContains(url.getString(0), time.getInt(0));
+			w.urlContains(url.getString(0), time.getInt(0));
 			break;
 		case "url to be":
-			a.urlToBe(url.getString(0), time.getInt(0));
+			w.urlToBe(url.getString(0), time.getInt(0));
 			break;
 		case "attribute contains":
-			a.attributeContains((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
+			w.attributeContains((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
 			break;
 		case "attribute to be":
-			a.attributeToBe((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
+			w.attributeToBe((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
 			break;
 		}
 	}
