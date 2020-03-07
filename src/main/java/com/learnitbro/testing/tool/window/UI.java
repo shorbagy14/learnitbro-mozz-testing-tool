@@ -146,6 +146,7 @@ public class UI extends JPanel implements ActionListener {
 		List<String> waiting = new ArrayList<String>();
 		List<String> asserting = new ArrayList<String>();
 		List<String> adding = new ArrayList<String>();
+		List<String> video = new ArrayList<String>();
 
 		JSONArray arr = new JSONArray(config);
 		for (int x = 0; x < arr.length(); x++) {
@@ -162,6 +163,8 @@ public class UI extends JPanel implements ActionListener {
 				asserting.add(objName);
 			else if (objCat.equalsIgnoreCase("action"))
 				action.add(objName);
+			else if (objCat.equalsIgnoreCase("video"))
+				video.add(objName);
 
 		}
 
@@ -218,6 +221,18 @@ public class UI extends JPanel implements ActionListener {
 		}
 		disableMenuItems(mnAssert);
 
+		// Video Menu
+		final JMenu mnVideo = new JMenu("Video");
+		menuBar.add(mnVideo);
+		for (int x = 0; x < video.size(); x++) {
+			JMenuItem mntm = new JMenuItem(video.get(x));
+			mntm.putClientProperty("category", "video");
+			mnVideo.add(mntm);
+			mntm.setActionCommand(ADD_COMMAND);
+			mntm.addActionListener(this);
+		}
+		disableMenuItems(mnVideo);
+
 		// End of Menu Bar ---->
 
 		MouseListener mouseListener = new MouseListener() {
@@ -273,11 +288,13 @@ public class UI extends JPanel implements ActionListener {
 					enableMenuItems(mnAction);
 					enableMenuItems(mnWait);
 					enableMenuItems(mnAssert);
+					enableMenuItems(mnVideo);
 					disableMenuItems(mnAdd);
 				} else {
 					disableMenuItems(mnAction);
 					disableMenuItems(mnWait);
 					disableMenuItems(mnAssert);
+					disableMenuItems(mnVideo);
 				}
 			}
 		};
@@ -383,7 +400,7 @@ public class UI extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "File is not a valid JSON", "Error", JOptionPane.ERROR_MESSAGE);
 				throw new JSONFileNotValidException("File is not a valid JSON");
 			}
-			
+
 			Object root = treePanel.getTreeModel().getRoot();
 			int count = treePanel.getTreeModel().getChildCount(root);
 			if (count != 0) {
@@ -639,7 +656,7 @@ public class UI extends JPanel implements ActionListener {
 					break;
 				}
 			}
-			
+
 			else if (level == 3) {
 				if (objCategory.equalsIgnoreCase("test")) {
 					break;

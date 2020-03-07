@@ -392,5 +392,115 @@
     ],
     "show": ["Timeout", "Locator", "Attribute Name", "Attribute Value"],
     "tooltip": ""
+  },
+  {
+    "name": "Pause",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator"
+    ],
+    "show": ["Locator"],
+    "tooltip": ""
+  },
+  {
+    "name": "Play",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator"
+    ],
+    "show": ["Locator"],
+    "tooltip": ""
+  },
+  {
+    "name": "Mute",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator"
+    ],
+    "show": ["Locator"],
+    "tooltip": ""
+  },
+  {
+    "name": "Unmute",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator"
+    ],
+    "show": ["Locator"],
+    "tooltip": ""
+  },
+  {
+    "name": "Replay",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator"
+    ],
+    "show": ["Locator"],
+    "tooltip": ""
+  },
+  {
+    "name": "Set Volume",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator", "time"
+    ],
+    "show": ["Locator", "Volume"],
+    "tooltip": ""
+  },
+  {
+    "name": "Set Time",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator", "time"
+    ],
+    "show": ["Locator", "Time"],
+    "tooltip": ""
+  },
+  {
+    "name": "Is Muted",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator"
+    ],
+    "show": ["Locator"],
+    "tooltip": ""
+  },
+  {
+    "name": "Is Unmuted",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator"
+    ],
+    "show": ["Locator"],
+    "tooltip": ""
+  },
+  {
+    "name": "Is Paused",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator"
+    ],
+    "show": ["Locator"],
+    "tooltip": ""
+  },
+  {
+    "name": "Is Playing",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator"
+    ],
+    "show": ["Locator"],
+    "tooltip": ""
   }
 ]

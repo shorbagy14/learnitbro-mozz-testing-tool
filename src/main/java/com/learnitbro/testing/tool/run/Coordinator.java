@@ -16,6 +16,7 @@ import com.learnitbro.testing.tool.web.ElementHandler;
 import com.learnitbro.testing.tool.activity.ActionBuilder;
 import com.learnitbro.testing.tool.activity.AssertBuilder;
 import com.learnitbro.testing.tool.activity.JSBuilder;
+import com.learnitbro.testing.tool.activity.VideoBuilder;
 import com.learnitbro.testing.tool.activity.WaitBuilder;
 
 public class Coordinator {
@@ -103,6 +104,7 @@ public class Coordinator {
 		checkActions(run);
 		checkAsserts(run);
 		checkWaits(run);
+		checkVideos(run);
 	}
 
 	private void checkActions(JSONObject run) {
@@ -235,31 +237,73 @@ public class Coordinator {
 		}
 	}
 
+	private void checkVideos(JSONObject run) {
+		VideoBuilder v = new VideoBuilder(driver, report);
+		String userObject = run.getString("userObject");
+		setValues(run);
+
+		switch (userObject.toLowerCase()) {
+		case "pause":
+			v.pause((By) locator.get(0));
+			break;
+		case "play":
+			v.play((By) locator.get(0));
+			break;
+		case "mute":
+			v.mute((By) locator.get(0));
+			break;
+		case "unmute":
+			v.unmute((By) locator.get(0));
+			break;
+		case "replay":
+			v.replay((By) locator.get(0));
+			break;
+		case "set volume":
+			v.setVolume((By) locator.get(0), time.getDouble(0));
+			break;
+		case "set time":
+			v.setVolume((By) locator.get(0), time.getDouble(0));
+			break;
+		case "is playing":
+			Assert.assertFalse(v.isPaused((By) locator.get(0)));
+			break;
+		case "is paused":
+			Assert.assertTrue(v.isPaused((By) locator.get(0)));
+			break;
+		case "is unmuted":
+			Assert.assertFalse(v.isMuted((By) locator.get(0)));
+			break;
+		case "is muted":
+			Assert.assertTrue(v.isMuted((By) locator.get(0)));
+			break;
+		}
+	}
+
 	private void setValues(JSONObject run) {
 		restValues();
 
 		if (run.has("text"))
 			text = run.getJSONArray("text");
-		
+
 		if (run.has("file")) {
 			file = run.getJSONArray("file");
 			for (int x = 0; x < file.length(); x++)
 				FileHandler.isValidFile(new File(file.getString(x)));
 		}
-		
+
 		if (run.has("url")) {
 			url = run.getJSONArray("url");
 			for (int x = 0; x < url.length(); x++)
 				URLHandler.isURLValid(url.getString(x));
 		}
-		
+
 		if (run.has("locator")) {
 			locatorType = run.getJSONArray("locatorType");
 			locatorValue = run.getJSONArray("locator");
 			for (int x = 0; x < locatorValue.length(); x++)
 				locator.put(ElementHandler.getLocator(locatorType.getString(x), locatorValue.getString(x)));
-		}  
-		
+		}
+
 		if (run.has("time")) {
 			timeValue = run.getJSONArray("time");
 			for (int x = 0; x < timeValue.length(); x++)
