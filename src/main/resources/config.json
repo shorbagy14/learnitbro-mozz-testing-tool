@@ -199,6 +199,16 @@
     "tooltip": ""
   },
   {
+    "name": "Scroll By",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "number", "number"
+    ],
+    "show": ["X Value", "Y Value"],
+    "tooltip": ""
+  },
+  {
     "name": "New Tab",
     "category": "action",
     "platform": "web",

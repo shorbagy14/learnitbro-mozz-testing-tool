@@ -179,6 +179,9 @@ public class Coordinator {
 		case "scroll into view":
 			j.scrollIntoView((By) locator.get(0));
 			break;
+		case "scroll by":
+			j.scrollBy(number.getInt(0), number.getInt(1));
+			break;
 		case "switch to window":
 			a.switchToWindow(number.getInt(0));
 			break;

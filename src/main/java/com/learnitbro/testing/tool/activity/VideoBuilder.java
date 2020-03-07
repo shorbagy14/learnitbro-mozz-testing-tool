@@ -97,6 +97,7 @@ public class VideoBuilder {
 	 * @return
 	 */
 	public boolean isMuted(By locator) {
+		report.info("Checking video is muted");
 		boolean isTrue = (boolean) js.executeScript("return arguments[0].muted", driver.findElement(locator));
 		report.info("Video of " + locator + " is muted : " + isTrue);
 		return isTrue;
@@ -108,6 +109,7 @@ public class VideoBuilder {
 	 * @return
 	 */
 	public boolean isPaused(By locator) {
+		report.info("Checking video is paused");
 		boolean isTrue = (boolean) js.executeScript("return arguments[0].paused", driver.findElement(locator));
 		report.info("Video of " + locator + " is paused : " + isTrue);
 		return isTrue;
@@ -119,6 +121,7 @@ public class VideoBuilder {
 	 * @return
 	 */
 	public boolean isLoaded(By locator) {
+		report.info("Checking video is loaded");
 		boolean isTrue = (long) js.executeScript("return arguments[0].readyState", driver.findElement(locator)) == 4;
 		report.info("Video of " + locator + " is loaded : " + isTrue);
 		return isTrue;
@@ -131,6 +134,7 @@ public class VideoBuilder {
 	 * @return
 	 */
 	public boolean volumeEquals(By locator, double time) {
+		report.info("Checking volume level");
 		boolean isTrue = getVolume(locator) == time;
 		report.info("Video of " + locator + " volume is equal to " + time + " : " + isTrue);
 		return isTrue;
@@ -143,6 +147,7 @@ public class VideoBuilder {
 	 * @return
 	 */
 	public boolean timeEquals(By locator, double time) {
+		report.info("Checking time level");
 		boolean isTrue = getTime(locator) == time;
 		report.info("Video of " + locator + " time is equal to " + time + " : " + isTrue);
 		return isTrue;

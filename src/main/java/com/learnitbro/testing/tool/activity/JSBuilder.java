@@ -26,21 +26,43 @@ public class JSBuilder {
 
 	}
 
+	/**
+	 * 
+	 * @param command
+	 */
 	public void execute(String command) {
+		report.info("Executing this command: " + command);
 		js.executeScript(command);
 	}
 
+	/**
+	 * 
+	 * @param locator
+	 * @param command
+	 */
 	public void execute(By locator, String command) {
+		report.info("Executing this command: '" + command + "' using this locator : " + locator);
 		js.executeScript(command, driver.findElement(locator));
 	}
 
-	public String getExecutedResults(String command) {
-		return js.executeScript(command).toString();
-	}
-	
-	public String getExecutedResults(By locator, String command) {
-		return js.executeScript(command, driver.findElement(locator)).toString();
-	}
+//	/**
+//	 * 
+//	 * @param command
+//	 * @return
+//	 */
+//	private String getExecutedResults(String command) {
+//		return js.executeScript(command).toString();
+//	}
+//	
+//	/**
+//	 * 
+//	 * @param locator
+//	 * @param command
+//	 * @return
+//	 */
+//	private String getExecutedResults(By locator, String command) {
+//		return js.executeScript(command, driver.findElement(locator)).toString();
+//	}
 	
 	// Scroll
 
@@ -50,6 +72,7 @@ public class JSBuilder {
 	 * @param y
 	 */
 	public void scrollBy(int x, int y) {
+		report.info("Scroll by " + x + " , " + y);
 		js.executeScript(String.format("window.scrollBy(%s,%s)", x, y));
 	}
 
@@ -58,6 +81,7 @@ public class JSBuilder {
 	 * @param locator
 	 */
 	public void scrollIntoView(By locator) {
+		report.info("Scroll into view for locator : " + locator);
 		js.executeScript("arguments[0].scrollIntoView()", driver.findElement(locator));
 	}
 	
@@ -65,6 +89,7 @@ public class JSBuilder {
 	 * 
 	 */
 	public void scrollAllTheWayUp () {
+		report.info("Scroll all the way up");
         js.executeScript("window.scrollTo(document.body.scrollHeight, 0)");
 	}
 	
@@ -72,6 +97,7 @@ public class JSBuilder {
 	 * 
 	 */
 	public void scrollAllTheWayDown () {
+		report.info("Scroll all the way down");
         js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
 	}
 	
@@ -80,6 +106,7 @@ public class JSBuilder {
 	 * @param url
 	 */
 	public void openNewTab(String url) {
+		report.info("Open new tab");
 		js.executeScript(String.format("window.open('%s','_blank')", url));
 	}
 }

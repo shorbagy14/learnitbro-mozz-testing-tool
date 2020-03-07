@@ -95,6 +95,7 @@ public class AssertBuilder {
 	 * @return true or false (boolean)
 	 */
 	public boolean isSelected(By locator) {
+		report.info("Checking locator is selected");
 		boolean isTrue = driver.findElement(locator).isSelected();
 		report.info("Element of " + locator + " is selected : " + isTrue);
 		return isTrue;
@@ -108,6 +109,7 @@ public class AssertBuilder {
 	 * @return true or false (boolean)
 	 */
 	public boolean textContains(By locator, String value) {
+		report.info("Checking text contains a value");
 		boolean isTrue = getText(locator).contains(value);
 		report.info("Text of " + locator + " contains " + value + " : " + isTrue);
 		return isTrue;
@@ -121,6 +123,7 @@ public class AssertBuilder {
 	 * @return true or false (boolean)
 	 */
 	public boolean textEquals(By locator, String value) {
+		report.info("Checking text is equal to a value");
 		boolean isTrue = getText(locator).equals(value);
 		report.info("Text of " + locator + " is same as " + value + " : " + isTrue);
 		return isTrue;
