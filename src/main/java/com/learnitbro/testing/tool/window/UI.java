@@ -126,7 +126,7 @@ public class UI extends JPanel implements ActionListener {
 		treePanel.setBackground(Color.WHITE);
 		treePanel.setBounds(0, 0, 276, 607);
 		frame.getContentPane().add(treePanel);
-
+		
 		// End of Tree Panel ---->
 		// <---- Menu Bar
 
@@ -578,8 +578,10 @@ public class UI extends JPanel implements ActionListener {
 			treePanel.removeCurrentNode();
 		} else if (LAUNCH_COMMAND.equals(command)) {
 			saveTree(null);
+			frame.setVisible(false);
 			Control control = new Control();
 			control.start();
+			frame.setVisible(true);
 		}
 	}
 

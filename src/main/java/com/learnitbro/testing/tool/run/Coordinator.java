@@ -276,6 +276,15 @@ public class Coordinator {
 		case "is muted":
 			Assert.assertTrue(v.isMuted((By) locator.get(0)));
 			break;
+		case "is loaded":
+			Assert.assertTrue(v.isLoaded((By) locator.get(0)));
+			break;
+		case "time equals":
+			Assert.assertTrue(v.timeEquals((By) locator.get(0), time.getDouble(0)));
+			break;
+		case "volume equals":
+			Assert.assertFalse(v.volumeEquals((By) locator.get(0), time.getDouble(0)));
+			break;
 		}
 	}
 

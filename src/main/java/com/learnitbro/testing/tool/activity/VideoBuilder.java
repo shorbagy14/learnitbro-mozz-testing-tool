@@ -34,7 +34,7 @@ public class VideoBuilder {
 		report.info("Pause video of " + locator);
 		js.executeScript("arguments[0].pause()", driver.findElement(locator));
 	}
-	
+
 	/**
 	 * 
 	 * @param locator
@@ -43,7 +43,7 @@ public class VideoBuilder {
 		report.info("Play video of " + locator);
 		js.executeScript("arguments[0].play()", driver.findElement(locator));
 	}
-	
+
 	/**
 	 * 
 	 * @param locator
@@ -52,7 +52,7 @@ public class VideoBuilder {
 		report.info("Mute video of " + locator);
 		js.executeScript("arguments[0].muted=true", driver.findElement(locator));
 	}
-	
+
 	/**
 	 * 
 	 * @param locator
@@ -61,7 +61,7 @@ public class VideoBuilder {
 		report.info("Unmute video of " + locator);
 		js.executeScript("arguments[0].muted=false", driver.findElement(locator));
 	}
-	
+
 	/**
 	 * 
 	 * @param locator
@@ -70,7 +70,7 @@ public class VideoBuilder {
 		report.info("Replay video of " + locator);
 		js.executeScript("arguments[0].currentTime=0", driver.findElement(locator));
 	}
-	
+
 	/**
 	 * 
 	 * @param locator
@@ -80,7 +80,7 @@ public class VideoBuilder {
 		report.info("Set video volume of " + locator + " to " + number);
 		js.executeScript(String.format("arguments[0].volume=%s", number), driver.findElement(locator));
 	}
-	
+
 	/**
 	 * 
 	 * @param locator
@@ -90,7 +90,7 @@ public class VideoBuilder {
 		report.info("Set video time of " + locator + " to " + number);
 		js.executeScript(String.format("arguments[0].currentTime=%s", number), driver.findElement(locator));
 	}
-	
+
 	/**
 	 * 
 	 * @param locator
@@ -101,7 +101,7 @@ public class VideoBuilder {
 		report.info("Video of " + locator + " is muted : " + isTrue);
 		return isTrue;
 	}
-	
+
 	/**
 	 * 
 	 * @param locator
@@ -112,32 +112,57 @@ public class VideoBuilder {
 		report.info("Video of " + locator + " is paused : " + isTrue);
 		return isTrue;
 	}
-	
-//	/**
-//	 * 
-//	 * @param locator
-//	 * @return
-//	 */
-//	public boolean isLoaded(By locator) {
-//		report.info("Video of " + locator + " is loaded : " + );
-//		return (boolean) js.executeScript("return arguments[0].readyState", driver.findElement(locator));
-//	}
-	
+
 	/**
 	 * 
 	 * @param locator
 	 * @return
 	 */
-	public double getVolume(By locator) {
+	public boolean isLoaded(By locator) {
+		boolean isTrue = (long) js.executeScript("return arguments[0].readyState", driver.findElement(locator)) == 4;
+		report.info("Video of " + locator + " is loaded : " + isTrue);
+		return isTrue;
+	}
+
+	/**
+	 * 
+	 * @param locator
+	 * @param time
+	 * @return
+	 */
+	public boolean volumeEquals(By locator, double time) {
+		boolean isTrue = getVolume(locator) == time;
+		report.info("Video of " + locator + " volume is equal to " + time + " : " + isTrue);
+		return isTrue;
+	}
+
+	/**
+	 * 
+	 * @param locator
+	 * @param time
+	 * @return
+	 */
+	public boolean timeEquals(By locator, double time) {
+		boolean isTrue = getVolume(locator) == time;
+		report.info("Video of " + locator + " time is equal to " + time + " : " + isTrue);
+		return isTrue;
+	}
+
+	/**
+	 * 
+	 * @param locator
+	 * @return
+	 */
+	private double getVolume(By locator) {
 		return (double) js.executeScript("return arguments[0].volume", driver.findElement(locator));
 	}
-	
+
 	/**
 	 * 
 	 * @param locator
 	 * @return
 	 */
-	public double getTime(By locator) {
+	private double getTime(By locator) {
 		return (double) js.executeScript("return arguments[0].currentTime", driver.findElement(locator));
 	}
 }

@@ -464,6 +464,26 @@
     "tooltip": ""
   },
   {
+    "name": "Volume Equals",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator", "time"
+    ],
+    "show": ["Locator", "Volume"],
+    "tooltip": ""
+  },
+  {
+    "name": "Time Equals",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator", "time"
+    ],
+    "show": ["Locator", "Time"],
+    "tooltip": ""
+  },
+  {
     "name": "Is Muted",
     "category": "video",
     "platform": "web",
@@ -495,6 +515,16 @@
   },
   {
     "name": "Is Playing",
+    "category": "video",
+    "platform": "web",
+    "require": [
+      "locator"
+    ],
+    "show": ["Locator"],
+    "tooltip": ""
+  },
+  {
+    "name": "Is Loaded",
     "category": "video",
     "platform": "web",
     "require": [
