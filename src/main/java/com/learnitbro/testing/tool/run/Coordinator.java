@@ -29,6 +29,8 @@ public class Coordinator {
 	private JSONArray locatorType = null;
 	private JSONArray time = null;
 	private JSONArray timeValue = null;
+	private JSONArray number = null;
+	private JSONArray numberValue = null;
 
 	private String emailList = "shorbagy14@gmail.com";
 
@@ -161,6 +163,33 @@ public class Coordinator {
 			break;
 		case "double click":
 			a.doubleClick((By) locator.get(0));
+			break;
+		case "maximize":
+			a.maximize();
+			break;
+		case "minimize":
+			a.minimize();
+			break;
+		case "fullscreen":
+			a.fullscreen();
+			break;
+		case "new tab":
+			j.openNewTab(url.getString(0));
+			break;
+		case "scroll into view":
+			j.scrollIntoView((By) locator.get(0));
+			break;
+		case "switch to window":
+			a.switchToWindow(number.getInt(0));
+			break;
+		case "switch to frame by index":
+			a.switchToFrame(number.getInt(0));
+			break;
+		case "switch to frame by locator":
+			a.switchToFrame((By) locator.get(0));
+			break;
+		case "switch to default frame":
+			a.switchToDefaultFrame();
 			break;
 		}
 	}
@@ -318,6 +347,12 @@ public class Coordinator {
 			for (int x = 0; x < timeValue.length(); x++)
 				time.put(Integer.valueOf(timeValue.getString(x)));
 		}
+		
+		if (run.has("number")) {
+			numberValue = run.getJSONArray("number");
+			for (int x = 0; x < numberValue.length(); x++)
+				number.put(Double.valueOf(numberValue.getString(x)));
+		}
 	}
 
 	private void restValues() {
@@ -329,5 +364,7 @@ public class Coordinator {
 		locatorType = new JSONArray();
 		time = new JSONArray();
 		timeValue = new JSONArray();
+		number = new JSONArray();
+		numberValue = new JSONArray();
 	}
 }

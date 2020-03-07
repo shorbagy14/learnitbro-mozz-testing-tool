@@ -594,7 +594,7 @@ public class UI extends JPanel implements ActionListener {
 
 		JLabel lblTop = new JLabel();
 		lblTop.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTop.setBounds(258, 0, 160, 15);
+		lblTop.setBounds(218, 0, 240, 15);
 		lblTop.setFont(lblTop.getFont().deriveFont(Font.BOLD, 14f));
 		lblTop.setName(uuid);
 //		lblTop.setText(name);
@@ -682,7 +682,7 @@ public class UI extends JPanel implements ActionListener {
 						list.add(v);
 
 						JTextField jtf = new JTextField();
-						jtf.setBounds(150, 55 + posY, 450, 35);
+						jtf.setBounds(150, 55 + posY, 410, 35);
 						jtf.setColumns(10);
 						jtf.setName(uuid);
 						jtf.putClientProperty("type", v);

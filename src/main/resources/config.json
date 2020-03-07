@@ -189,6 +189,82 @@
     "tooltip": ""
   },
   {
+    "name": "Scroll Into View",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "locator"
+    ],
+    "show": ["Locator"],
+    "tooltip": ""
+  },
+  {
+    "name": "New Tab",
+    "category": "action",
+    "platform": "web",
+    "require": [
+      "url"
+    ],
+    "show": ["URL Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Maximize",
+    "category": "action",
+    "platform": "web",
+    "require": [],
+    "show": [],
+    "tooltip": ""
+  },
+  {
+    "name": "Minimize",
+    "category": "action",
+    "platform": "web",
+    "require": [],
+    "show": [],
+    "tooltip": ""
+  },
+  {
+    "name": "Fullscreen",
+    "category": "action",
+    "platform": "web",
+    "require": [],
+    "show": [],
+    "tooltip": ""
+  },
+  {
+    "name": "Switch To Window",
+    "category": "action",
+    "platform": "web",
+    "require": ["number"],
+    "show": ["Index"],
+    "tooltip": ""
+  },
+   {
+    "name": "Switch To Frame By Index",
+    "category": "action",
+    "platform": "web",
+    "require": ["number"],
+    "show": ["Index"],
+    "tooltip": ""
+  },
+   {
+    "name": "Switch To Frame By Locator",
+    "category": "action",
+    "platform": "web",
+    "require": ["locator"],
+    "show": ["Locator"],
+    "tooltip": ""
+  },
+  {
+    "name": "Switch To Default Frame",
+    "category": "action",
+    "platform": "web",
+    "require": [],
+    "show": [],
+    "tooltip": ""
+  },
+  {
     "name": "Displayed",
     "category": "assert",
     "platform": "web",
