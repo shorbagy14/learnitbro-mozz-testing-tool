@@ -36,51 +36,51 @@ public class AssertBuilder {
 		return text;
 	}
 
-//	/**
-//	 * 
-//	 * @return
-//	 */
-//	private String getTitle() {
-//		String title = driver.getTitle();
-//		report.info("Title is " + title);
-//		return title;
-//	}
-//	
-//	/**
-//	 * 
-//	 * @return
-//	 */
-//	private String getUrl() {
-//		String url = driver.getCurrentUrl();
-//		report.info("URL is " + url);
-//		return url;
-//	}
-//
-//	/**
-//	 * Returns Attribute value
-//	 * 
-//	 * @param locator
-//	 * @param attribute(String)
-//	 * @return text (String)
-//	 */
-//
-//	private String getAttributeValue(By locator, String attribute) {
-//		String text = driver.findElement(locator).getAttribute(attribute);
-//		report.info("Getting value of Attribute" + attribute + " to be " + text);
-//		return text;
-//	}
-//
-//	/**
-//	 * Returns the Page source
-//	 * 
-//	 * 
-//	 * @return text (String)
-//	 */
-//	private String getPageSource() {
-//		String source = driver.getPageSource();
-//		report.info("Page source is " + source);
-//		return source;
-//	}
+	/**
+	 * 
+	 * @return
+	 */
+	private String getTitle() {
+		String title = driver.getTitle();
+		report.info("Title is " + title);
+		return title;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private String getUrl() {
+		String url = driver.getCurrentUrl();
+		report.info("URL is " + url);
+		return url;
+	}
+
+	/**
+	 * Returns Attribute value
+	 * 
+	 * @param locator
+	 * @param attribute(String)
+	 * @return text (String)
+	 */
+
+	private String getAttributeValue(By locator, String attribute) {
+		String text = driver.findElement(locator).getAttribute(attribute);
+		report.info("Getting value of Attribute" + attribute + " to be " + text);
+		return text;
+	}
+
+	/**
+	 * Returns the Page source
+	 * 
+	 * 
+	 * @return text (String)
+	 */
+	private String getPageSource() {
+		String source = driver.getPageSource();
+		report.info("Page source is " + source);
+		return source;
+	}
 
 	//////////// CHECKS ////////////
 
@@ -148,6 +148,163 @@ public class AssertBuilder {
 		report.info("Checking text is equal to a value");
 		boolean isTrue = getText(locator).equals(value);
 		report.info("Text of " + locator + " is same as " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
+	
+	//////////////////////////////////////////////// NOT ADDED YET
+	
+	/**
+	 * Returns if title contains certain value
+	 * 
+	 * @param locator
+	 * @param value   (String)
+	 * @return true or false (boolean)
+	 */
+	public boolean titleContains(String value) {
+		report.info("Checking title contains a value");
+		boolean isTrue = getTitle().contains(value);
+		report.info("Title contains " + value + " : " + isTrue);
+		return isTrue;
+	}
+
+	/**
+	 * Returns if title is equal to certain value
+	 * 
+	 * @param locator
+	 * @param value   (String)
+	 * @return true or false (boolean)
+	 */
+	public boolean titleEquals(String value) {
+		report.info("Checking title is equal to a value");
+		boolean isTrue = getTitle().equals(value);
+		report.info("Title is same as " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
+	/**
+	 * Returns if url contains certain value
+	 * 
+	 * @param locator
+	 * @param value   (String)
+	 * @return true or false (boolean)
+	 */
+	public boolean urlContains(String value) {
+		report.info("Checking url contains a value");
+		boolean isTrue = getUrl().contains(value);
+		report.info("Url of contains " + value + " : " + isTrue);
+		return isTrue;
+	}
+
+	/**
+	 * Returns if url is equal to certain value
+	 * 
+	 * @param locator
+	 * @param value   (String)
+	 * @return true or false (boolean)
+	 */
+	public boolean urlEquals(String value) {
+		report.info("Checking url is equal to a value");
+		boolean isTrue = getUrl().equals(value);
+		report.info("Url is same as " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
+	/**
+	 * Returns if url is ends with to certain value
+	 * 
+	 * @param locator
+	 * @param value   (String)
+	 * @return true or false (boolean)
+	 */
+	public boolean urlEndsWith(String value) {
+		report.info("Checking url is ends with a value");
+		boolean isTrue = getUrl().endsWith(value);
+		report.info("Url ends with " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
+	/**
+	 * Returns if url is starts with to certain value
+	 * 
+	 * @param locator
+	 * @param value   (String)
+	 * @return true or false (boolean)
+	 */
+	public boolean urlStartsWith(String value) {
+		report.info("Checking url is starts with a value");
+		boolean isTrue = getUrl().startsWith(value);
+		report.info("Url starts with " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
+	/**
+	 * Returns if page source contains certain value
+	 * 
+	 * @param locator
+	 * @param value   (String)
+	 * @return true or false (boolean)
+	 */
+	public boolean pageSourceContains(String value) {
+		report.info("Checking page source contains a value");
+		boolean isTrue = getPageSource().contains(value);
+		report.info("Page source contains " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
+	/**
+	 * 
+	 * @param locator
+	 * @param attribute
+	 * @param value
+	 * @return
+	 */
+	public boolean attributeEquals(By locator, String attribute, String value) {
+		report.info("Checking attribute of " + attribute + " is equal to a value");
+		boolean isTrue = getAttributeValue(locator, attribute).equals(value);
+		report.info("Attribute of " + locator + " is same as " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
+	/**
+	 * 
+	 * @param locator
+	 * @param attribute
+	 * @param value
+	 * @return
+	 */
+	public boolean attributeContains(By locator, String attribute, String value) {
+		report.info("Checking attribute of " + attribute + " contains a value");
+		boolean isTrue = getAttributeValue(locator, attribute).contains(value);
+		report.info("Attribute of " + locator + " contains " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
+	/**
+	 * 
+	 * @param locator
+	 * @param attribute
+	 * @param value
+	 * @return
+	 */
+	public boolean attributeStarstWith(By locator, String attribute, String value) {
+		report.info("Checking attribute of " + attribute + " starts with a value");
+		boolean isTrue = getAttributeValue(locator, attribute).startsWith(value);
+		report.info("Attribute of " + locator + " starts with " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
+	/**
+	 * 
+	 * @param locator
+	 * @param attribute
+	 * @param value
+	 * @return
+	 */
+	public boolean attributeEndstWith(By locator, String attribute, String value) {
+		report.info("Checking attribute of " + attribute + " ends with a value");
+		boolean isTrue = getAttributeValue(locator, attribute).endsWith(value);
+		report.info("Attribute of " + locator + " ends with " + value + " : " + isTrue);
 		return isTrue;
 	}
 
