@@ -36,14 +36,34 @@ public class AssertBuilder {
 		return text;
 	}
 
-	/**
-	 * Returns Attribute value
-	 * 
-	 * @param locator
-	 * @param attribute(String)
-	 * @return text (String)
-	 */
-
+//	/**
+//	 * 
+//	 * @return
+//	 */
+//	private String getTitle() {
+//		String title = driver.getTitle();
+//		report.info("Title is " + title);
+//		return title;
+//	}
+//	
+//	/**
+//	 * 
+//	 * @return
+//	 */
+//	private String getUrl() {
+//		String url = driver.getCurrentUrl();
+//		report.info("URL is " + url);
+//		return url;
+//	}
+//
+//	/**
+//	 * Returns Attribute value
+//	 * 
+//	 * @param locator
+//	 * @param attribute(String)
+//	 * @return text (String)
+//	 */
+//
 //	private String getAttributeValue(By locator, String attribute) {
 //		String text = driver.findElement(locator).getAttribute(attribute);
 //		report.info("Getting value of Attribute" + attribute + " to be " + text);
@@ -63,7 +83,7 @@ public class AssertBuilder {
 //	}
 
 	//////////// CHECKS ////////////
-	
+
 	/**
 	 * Returns if element is displayed
 	 * 
@@ -76,7 +96,7 @@ public class AssertBuilder {
 		report.info("Element of " + locator + " is displayed : " + isTrue);
 		return isTrue;
 	}
-	
+
 	/**
 	 * Returns if element is enabled
 	 * 
@@ -89,7 +109,7 @@ public class AssertBuilder {
 		report.info("Element of " + locator + " is enabled : " + isTrue);
 		return isTrue;
 	}
-	
+
 	/**
 	 * Returns if element is selected
 	 * 

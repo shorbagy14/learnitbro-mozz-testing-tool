@@ -45,6 +45,8 @@ public class MyTreeCellRenderer extends DefaultTreeCellRenderer {
 				setIcon(new ImageIcon(getClass().getResource("/assert.png")));
 			else if (getCategory(node).equalsIgnoreCase("video"))
 				setIcon(new ImageIcon(getClass().getResource("/video.png")));
+			else if (getCategory(node).equalsIgnoreCase("script"))
+				setIcon(new ImageIcon(getClass().getResource("/script.png")));
 		} else {
 			setIcon(new ImageIcon(getClass().getResource("/default.png")));
 		}

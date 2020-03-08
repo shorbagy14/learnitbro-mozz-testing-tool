@@ -15,7 +15,7 @@ import com.learnitbro.testing.tool.reporting.Report;
 import com.learnitbro.testing.tool.web.ElementHandler;
 import com.learnitbro.testing.tool.activity.ActionBuilder;
 import com.learnitbro.testing.tool.activity.AssertBuilder;
-import com.learnitbro.testing.tool.activity.JSBuilder;
+import com.learnitbro.testing.tool.activity.ScriptBuilder;
 import com.learnitbro.testing.tool.activity.VideoBuilder;
 import com.learnitbro.testing.tool.activity.WaitBuilder;
 
@@ -107,11 +107,12 @@ public class Coordinator {
 		checkAsserts(run);
 		checkWaits(run);
 		checkVideos(run);
+		checkScripts(run);
 	}
 
 	private void checkActions(JSONObject run) {
 		ActionBuilder a = new ActionBuilder(driver, report);
-		JSBuilder j = new JSBuilder(driver, report);
+		ScriptBuilder j = new ScriptBuilder(driver, report);
 		String userObject = run.getString("userObject");
 		setValues(run);
 
@@ -325,6 +326,27 @@ public class Coordinator {
 			break;
 		case "volume equals":
 			Assert.assertFalse(v.volumeEquals((By) locator.get(0), time.getDouble(0)));
+			break;
+		}
+	}
+	
+	private void checkScripts(JSONObject run) {
+		ScriptBuilder j = new ScriptBuilder(driver, report);
+		String userObject = run.getString("userObject");
+		setValues(run);
+
+		switch (userObject.toLowerCase()) {
+		case "execute js command":
+			j.executeJS(text.getString(0));
+			break;
+		case "execute js command by locator":
+			j.executeJS(text.getString(0), (By) locator.get(0));
+			break;
+		case "executed js result equals":
+			j.executedJSResultEquals(text.getString(0), text.getString(1));
+			break;
+		case "executed java file":
+			j.executeJavaFile(file.getString(0));
 			break;
 		}
 	}

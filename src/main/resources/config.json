@@ -642,5 +642,45 @@
     ],
     "show": ["Locator"],
     "tooltip": ""
+  },
+  {
+    "name": "Execute JS Command",
+    "category": "script",
+    "platform": "web",
+    "require": [
+      "text"
+    ],
+    "show": ["Command"],
+    "tooltip": ""
+  },
+  {
+    "name": "Execute JS Command By Locator",
+    "category": "script",
+    "platform": "web",
+    "require": [
+      "text", "locator"
+    ],
+    "show": ["Command", "Locator"],
+    "tooltip": ""
+  },
+  {
+    "name": "Executed JS Result Equals",
+    "category": "script",
+    "platform": "web",
+    "require": [
+      "text", "text"
+    ],
+    "show": ["Command", "Text Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Execute Java File",
+    "category": "script",
+    "platform": "web",
+    "require": [
+      "file"
+    ],
+    "show": ["File Path"],
+    "tooltip": ""
   }
 ]

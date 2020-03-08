@@ -126,7 +126,7 @@ public class UI extends JPanel implements ActionListener {
 		treePanel.setBackground(Color.WHITE);
 		treePanel.setBounds(0, 0, 276, 607);
 		frame.getContentPane().add(treePanel);
-		
+
 		// End of Tree Panel ---->
 		// <---- Menu Bar
 
@@ -147,6 +147,7 @@ public class UI extends JPanel implements ActionListener {
 		List<String> asserting = new ArrayList<String>();
 		List<String> adding = new ArrayList<String>();
 		List<String> video = new ArrayList<String>();
+		List<String> script = new ArrayList<String>();
 
 		JSONArray arr = new JSONArray(config);
 		for (int x = 0; x < arr.length(); x++) {
@@ -165,6 +166,8 @@ public class UI extends JPanel implements ActionListener {
 				action.add(objName);
 			else if (objCat.equalsIgnoreCase("video"))
 				video.add(objName);
+			else if (objCat.equalsIgnoreCase("script"))
+				script.add(objName);
 
 		}
 
@@ -233,6 +236,18 @@ public class UI extends JPanel implements ActionListener {
 		}
 		disableMenuItems(mnVideo);
 
+		// Script Menu
+		final JMenu mnScript = new JMenu("Script");
+		menuBar.add(mnScript);
+		for (int x = 0; x < script.size(); x++) {
+			JMenuItem mntm = new JMenuItem(script.get(x));
+			mntm.putClientProperty("category", "script");
+			mnScript.add(mntm);
+			mntm.setActionCommand(ADD_COMMAND);
+			mntm.addActionListener(this);
+		}
+		disableMenuItems(mnScript);
+
 		// End of Menu Bar ---->
 
 		MouseListener mouseListener = new MouseListener() {
@@ -289,12 +304,17 @@ public class UI extends JPanel implements ActionListener {
 					enableMenuItems(mnWait);
 					enableMenuItems(mnAssert);
 					enableMenuItems(mnVideo);
+					enableMenuItems(mnScript);
 					disableMenuItems(mnAdd);
-				} else {
+				} 
+				
+				if (level == 4) {
+					disableMenuItems(mnAdd);
 					disableMenuItems(mnAction);
 					disableMenuItems(mnWait);
 					disableMenuItems(mnAssert);
 					disableMenuItems(mnVideo);
+					disableMenuItems(mnScript);
 				}
 			}
 		};
