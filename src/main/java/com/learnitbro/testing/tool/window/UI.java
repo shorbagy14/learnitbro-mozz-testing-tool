@@ -594,7 +594,7 @@ public class UI extends JPanel implements ActionListener {
 
 		JLabel lblTop = new JLabel();
 		lblTop.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTop.setBounds(218, 0, 240, 15);
+		lblTop.setBounds(200, 0, 280, 15);
 		lblTop.setFont(lblTop.getFont().deriveFont(Font.BOLD, 14f));
 		lblTop.setName(uuid);
 //		lblTop.setText(name);

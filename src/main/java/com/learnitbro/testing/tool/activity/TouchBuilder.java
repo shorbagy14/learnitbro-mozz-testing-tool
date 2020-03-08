@@ -26,66 +26,73 @@ public class TouchBuilder {
 			touch = new TouchActions(driver);
 	}
 
-	/**
-	 * 
-	 * @param locator
-	 */
-	public void doubleTap(By locator) {
-		WebElement onElement = driver.findElement(locator);
-		touch.doubleTap(onElement);
-	}
-
-	/**
-	 * 
-	 * @param locator
-	 */
-	public void singleTap(By locator) {
-		WebElement onElement = driver.findElement(locator);
-		touch.singleTap(onElement);
-	}
-
-	/**
-	 * 
-	 * @param locator
-	 */
-	public void longPress(By locator) {
-		WebElement onElement = driver.findElement(locator);
-		touch.longPress(onElement);
-	}
-
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 */
-	public void up(int x, int y) {
-		touch.up(x, y);
-	}
-
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 */
-	public void down(int x, int y) {
-		touch.down(x, y);
-	}
-
-	/**
-	 * 
-	 * @param xOffset
-	 * @param yOffset
-	 */
-	public void scroll(int xOffset, int yOffset) {
-		touch.scroll(xOffset, yOffset);
-	}
-
-	/**
-	 * 
-	 * @param xSpeed
-	 * @param ySpeed
-	 */
-	public void flick(int xSpeed, int ySpeed) {
-		touch.flick(xSpeed, ySpeed);
-	}
+//	/**
+//	 * 
+//	 * @param locator
+//	 */
+//	public void doubleTap(By locator) {
+//		report.info("Double tap");
+//		WebElement onElement = driver.findElement(locator);
+//		touch.doubleTap(onElement);
+//	}
+//
+//	/**
+//	 * 
+//	 * @param locator
+//	 */
+//	public void singleTap(By locator) {
+//		report.info("Single tap");
+//		WebElement onElement = driver.findElement(locator);
+//		touch.singleTap(onElement);
+//	}
+//
+//	/**
+//	 * 
+//	 * @param locator
+//	 */
+//	public void longPress(By locator) {
+//		report.info("Long press");
+//		WebElement onElement = driver.findElement(locator);
+//		touch.longPress(onElement);
+//	}
+//
+//	/**
+//	 * 
+//	 * @param x
+//	 * @param y
+//	 */
+//	public void upGesture(int x, int y) {
+//		report.info("Up gesture");
+//		touch.up(x, y);
+//	}
+//
+//	/**
+//	 * 
+//	 * @param x
+//	 * @param y
+//	 */
+//	public void downGesture(int x, int y) {
+//		report.info("Down gesture");
+//		touch.down(x, y);
+//	}
+//
+//	/**
+//	 * 
+//	 * @param xOffset
+//	 * @param yOffset
+//	 */
+//	public void scroll(int xOffset, int yOffset) {
+//		report.info("Scroll");
+//		touch.scroll(xOffset, yOffset);
+//	}
+//
+//	/**
+//	 * 
+//	 * @param xSpeed
+//	 * @param ySpeed
+//	 */
+//	public void flick(int xSpeed, int ySpeed) {
+//		report.info("Flick");
+//		touch.flick(xSpeed, ySpeed);
+//	}
 }

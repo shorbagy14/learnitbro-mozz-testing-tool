@@ -275,6 +275,30 @@
     "tooltip": ""
   },
   {
+    "name": "Select Dropdown By Text",
+    "category": "action",
+    "platform": "web",
+    "require": ["locator", "text"],
+    "show": ["Locator", "Text Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Select Dropdown By Value",
+    "category": "action",
+    "platform": "web",
+    "require": ["locator", "text"],
+    "show": ["Locator", "Attribute Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Select Dropdown By Index",
+    "category": "action",
+    "platform": "web",
+    "require": ["locator", "number"],
+    "show": ["Locator", "Index"],
+    "tooltip": ""
+  },
+  {
     "name": "Displayed",
     "category": "assert",
     "platform": "web",

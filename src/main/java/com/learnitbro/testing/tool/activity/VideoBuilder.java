@@ -147,7 +147,7 @@ public class VideoBuilder {
 	 * @return
 	 */
 	public boolean timeEquals(By locator, double time) {
-		report.info("Checking time level");
+		report.info("Checking video current time");
 		boolean isTrue = getTime(locator) == time;
 		report.info("Video of " + locator + " time is equal to " + time + " : " + isTrue);
 		return isTrue;
@@ -159,6 +159,7 @@ public class VideoBuilder {
 	 * @return
 	 */
 	private double getVolume(By locator) {
+		report.info("Getting video volume level");
 		return (double) js.executeScript("return arguments[0].volume", driver.findElement(locator));
 	}
 
@@ -168,6 +169,7 @@ public class VideoBuilder {
 	 * @return
 	 */
 	private double getTime(By locator) {
+		report.info("Getting video current time");
 		return (double) js.executeScript("return arguments[0].currentTime", driver.findElement(locator));
 	}
 }

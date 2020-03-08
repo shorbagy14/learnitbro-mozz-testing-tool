@@ -74,14 +74,6 @@ public class ActionBuilder {
 		driver.close();
 	}
 
-//	/**
-//	 * Close browser
-//	 */
-//	public void quit() {
-//		driver.quit();
-//		report.info("Close browser");
-//	}
-
 	/**
 	 * clicks the element
 	 * 
@@ -201,41 +193,41 @@ public class ActionBuilder {
 
 	/////////////////// Select Class ////////////////////////
 
-//	/**
-//	 * Select element in dropdown using visible text
-//	 * 
-//	 * @param locator
-//	 * @param text    (String)
-//	 */
-//	public void selectDropdownByVisibleText(By locator, String text) {
-//		report.info("Selecting " + text + " from drop down");
-//		Select select = new Select(driver.findElement(locator));
-//		select.selectByVisibleText(text);
-//	}
-//
-//	/**
-//	 * Select element in drop down using value
-//	 * 
-//	 * @param locator
-//	 * @param value   (String)
-//	 */
-//	public void selectDropdownByValue(By locator, String value) {
-//		report.info("Selecting " + value + " from drop down");
-//		Select select = new Select(driver.findElement(locator));
-//		select.selectByValue(value);
-//	}
-//
-//	/**
-//	 * Select element in drop down using index
-//	 * 
-//	 * @param locator
-//	 * @param index   (Integer)
-//	 */
-//	public void selectDropdownByIndex(By locator, int index) {
-//		report.info("Selecting element at index " + index + " from drop down");
-//		Select select = new Select(driver.findElement(locator));
-//		select.selectByIndex(index);
-//	}
+	/**
+	 * Select element in dropdown using visible text
+	 * 
+	 * @param locator
+	 * @param text    (String)
+	 */
+	public void selectDropdownByText(By locator, String text) {
+		report.info("Selecting text equals" + text + " from drop down of locator : " + locator);
+		Select select = new Select(driver.findElement(locator));
+		select.selectByVisibleText(text);
+	}
+
+	/**
+	 * Select element in drop down using value
+	 * 
+	 * @param locator
+	 * @param value   (String)
+	 */
+	public void selectDropdownByValue(By locator, String text) {
+		report.info("Selecting text that has attribute value of " + text + " from drop down of locator : " + locator);
+		Select select = new Select(driver.findElement(locator));
+		select.selectByValue(text);
+	}
+
+	/**
+	 * Select element in drop down using index
+	 * 
+	 * @param locator
+	 * @param index   (Integer)
+	 */
+	public void selectDropdownByIndex(By locator, int index) {
+		report.info("Selecting element at index " + index + " from drop down of locator : " + locator);
+		Select select = new Select(driver.findElement(locator));
+		select.selectByIndex(index);
+	}
 
 	/////////////////// Window Class ////////////////////////
 
@@ -293,13 +285,13 @@ public class ActionBuilder {
 		driver.switchTo().frame(index);
 	}
 
-	/**
-	 * 
-	 */
-	public void switchToParentFrame() {
-		report.info("Switching to parent frame");
-		driver.switchTo().parentFrame();
-	}
+//	/**
+//	 * 
+//	 */
+//	public void switchToParentFrame() {
+//		report.info("Switching to parent frame");
+//		driver.switchTo().parentFrame();
+//	}
 
 	/**
 	 * 

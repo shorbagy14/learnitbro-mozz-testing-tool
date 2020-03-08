@@ -44,23 +44,23 @@ public class AssertBuilder {
 	 * @return text (String)
 	 */
 
-	private String getAttributeValue(By locator, String attribute) {
-		String text = driver.findElement(locator).getAttribute(attribute);
-		report.info("Getting value of Attribute" + attribute + " to be " + text);
-		return text;
-	}
-
-	/**
-	 * Returns the Page source
-	 * 
-	 * 
-	 * @return text (String)
-	 */
-	private String getPageSource() {
-		String source = driver.getPageSource();
-		report.info("Page source is " + source);
-		return source;
-	}
+//	private String getAttributeValue(By locator, String attribute) {
+//		String text = driver.findElement(locator).getAttribute(attribute);
+//		report.info("Getting value of Attribute" + attribute + " to be " + text);
+//		return text;
+//	}
+//
+//	/**
+//	 * Returns the Page source
+//	 * 
+//	 * 
+//	 * @return text (String)
+//	 */
+//	private String getPageSource() {
+//		String source = driver.getPageSource();
+//		report.info("Page source is " + source);
+//		return source;
+//	}
 
 	//////////// CHECKS ////////////
 	
@@ -71,6 +71,7 @@ public class AssertBuilder {
 	 * @return true or false (boolean)
 	 */
 	public boolean isDisplayed(By locator) {
+		report.info("Checking locator is displayed");
 		boolean isTrue = driver.findElement(locator).isDisplayed();
 		report.info("Element of " + locator + " is displayed : " + isTrue);
 		return isTrue;
@@ -83,6 +84,7 @@ public class AssertBuilder {
 	 * @return true or false (boolean)
 	 */
 	public boolean isEnabled(By locator) {
+		report.info("Checking locator is enabled");
 		boolean isTrue = driver.findElement(locator).isEnabled();
 		report.info("Element of " + locator + " is enabled : " + isTrue);
 		return isTrue;

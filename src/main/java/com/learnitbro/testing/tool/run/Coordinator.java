@@ -194,6 +194,15 @@ public class Coordinator {
 		case "switch to default frame":
 			a.switchToDefaultFrame();
 			break;
+		case "select dropdown by text":
+			a.selectDropdownByText((By) locator.get(0), text.getString(0));;
+			break;
+		case "select dropdown by value":
+			a.selectDropdownByValue((By) locator.get(0), text.getString(0));;
+			break;
+		case "select dropdown by index":
+			a.selectDropdownByIndex((By) locator.get(0), number.getInt(0));
+			break;
 		}
 	}
 
