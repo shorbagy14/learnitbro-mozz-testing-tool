@@ -228,6 +228,51 @@ public class Coordinator {
 		case "text equals":
 			Assert.assertTrue(a.textEquals((By) locator.get(0), text.getString(0)));
 			break;
+		case "text starts with":
+			Assert.assertTrue(a.textStartsWith((By) locator.get(0), text.getString(0)));
+			break;
+		case "text ends with":
+			Assert.assertTrue(a.textEndsWith((By) locator.get(0), text.getString(0)));
+			break;
+		case "title contains":
+			Assert.assertTrue(a.titleContains(text.getString(0)));
+			break;
+		case "title equals":
+			Assert.assertTrue(a.titleEquals(text.getString(0)));
+			break;
+		case "title starts with":
+			Assert.assertTrue(a.titleStartsWith(text.getString(0)));
+			break;
+		case "title ends with":
+			Assert.assertTrue(a.titleEndsWith(text.getString(0)));
+			break;
+		case "url contains":
+			Assert.assertTrue(a.urlContains(text.getString(0)));
+			break;
+		case "url equals":
+			Assert.assertTrue(a.urlEquals(text.getString(0)));
+			break;
+		case "url starts with":
+			Assert.assertTrue(a.urlStartsWith(text.getString(0)));
+			break;
+		case "url ends with":
+			Assert.assertTrue(a.urlEndsWith(text.getString(0)));
+			break;
+		case "page source contains":
+			Assert.assertTrue(a.pageSourceContains(text.getString(0)));
+			break;
+		case "attribute contains":
+			Assert.assertTrue(a.attributeContains((By) locator.get(0), text.getString(0), text.getString(1)));
+			break;
+		case "attribute equals":
+			Assert.assertTrue(a.attributeEquals((By) locator.get(0), text.getString(0), text.getString(1)));
+			break;
+		case "attribute starts with":
+			Assert.assertTrue(a.attributeStartsWith((By) locator.get(0), text.getString(0), text.getString(1)));
+			break;
+		case "attribute ends with":
+			Assert.assertTrue(a.attributeEndsWith((By) locator.get(0), text.getString(0), text.getString(1)));
+			break;
 		}
 	}
 

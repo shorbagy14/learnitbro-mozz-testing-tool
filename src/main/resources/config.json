@@ -349,6 +349,143 @@
     "tooltip": ""
   },
   {
+    "name": "Text Starts With",
+    "category": "assert",
+    "platform": "web",
+    "require": [
+      "locator","text"
+    ],
+    "show": ["Locator", "Text Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Text Ends With",
+    "category": "assert",
+    "platform": "web",
+    "require": [
+      "locator","text"
+    ],
+    "show": ["Locator", "Text Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Title Contains",
+    "category": "assert",
+    "platform": "web",
+    "require": ["text"
+    ],
+    "show": ["Title Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Title Equals",
+    "category": "assert",
+    "platform": "web",
+    "require": ["text"
+    ],
+    "show": ["Title Value"],
+    "tooltip": ""
+  },
+   {
+    "name": "Title Starts With",
+    "category": "assert",
+    "platform": "web",
+    "require": ["text"
+    ],
+    "show": ["Title Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Title Ends With",
+    "category": "assert",
+    "platform": "web",
+    "require": ["text"
+    ],
+    "show": ["Title Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Url Contains",
+    "category": "assert",
+    "platform": "web",
+    "require": ["text"
+    ],
+    "show": ["URL Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Url Equals",
+    "category": "assert",
+    "platform": "web",
+    "require": ["text"
+    ],
+    "show": ["URL Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Url Starts With",
+    "category": "assert",
+    "platform": "web",
+    "require": ["text"
+    ],
+    "show": ["URL Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Url Ends With",
+    "category": "assert",
+    "platform": "web",
+    "require": ["text"
+    ],
+    "show": ["URL Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Page Source Contains",
+    "category": "assert",
+    "platform": "web",
+    "require": ["text"
+    ],
+    "show": ["Text Value"],
+    "tooltip": ""
+  },
+   {
+    "name": "Attribute Contains",
+    "category": "assert",
+    "platform": "web",
+    "require": ["locator", "text", "text"
+    ],
+    "show": ["Locator", "Attribute Name", "Attribute Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Attribute Equals",
+    "category": "assert",
+    "platform": "web",
+    "require": ["locator", "text", "text"
+    ],
+    "show": ["Locator", "Attribute Name", "Attribute Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Attribute Starts With",
+    "category": "assert",
+    "platform": "web",
+    "require": ["locator", "text", "text"
+    ],
+    "show": ["Locator", "Attribute Name", "Attribute Value"],
+    "tooltip": ""
+  },
+  {
+    "name": "Attribute Ends With",
+    "category": "assert",
+    "platform": "web",
+    "require": ["locator", "text", "text"
+    ],
+    "show": ["Locator", "Attribute Name", "Attribute Value"],
+    "tooltip": ""
+  },
+  {
     "name": "Sleep",
     "category": "wait",
     "platform": "web",
@@ -446,7 +583,7 @@
     "tooltip": ""
   },
   {
-    "name": "URL Contains",
+    "name": "Url Contains",
     "category": "wait",
     "platform": "web",
     "require": [
@@ -457,7 +594,7 @@
     "tooltip": ""
   },
   {
-    "name": "URL To Be",
+    "name": "Url To Be",
     "category": "wait",
     "platform": "web",
     "require": [

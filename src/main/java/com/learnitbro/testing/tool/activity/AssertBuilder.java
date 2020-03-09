@@ -151,6 +151,34 @@ public class AssertBuilder {
 		return isTrue;
 	}
 	
+	/**
+	 * Returns if element text starts with certain value
+	 * 
+	 * @param locator
+	 * @param value   (String)
+	 * @return true or false (boolean)
+	 */
+	public boolean textStartsWith(By locator, String value) {
+		report.info("Checking text starts with a value");
+		boolean isTrue = getText(locator).startsWith(value);
+		report.info("Text of " + locator + " starts with " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
+	/**
+	 * Returns if element text ends with certain value
+	 * 
+	 * @param locator
+	 * @param value   (String)
+	 * @return true or false (boolean)
+	 */
+	public boolean textEndsWith(By locator, String value) {
+		report.info("Checking text ends with a value");
+		boolean isTrue = getText(locator).endsWith(value);
+		report.info("Text of " + locator + " ends with " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
 	
 	//////////////////////////////////////////////// NOT ADDED YET
 	
@@ -179,6 +207,34 @@ public class AssertBuilder {
 		report.info("Checking title is equal to a value");
 		boolean isTrue = getTitle().equals(value);
 		report.info("Title is same as " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
+	/**
+	 * Returns if title is ends with to certain value
+	 * 
+	 * @param locator
+	 * @param value   (String)
+	 * @return true or false (boolean)
+	 */
+	public boolean titleEndsWith(String value) {
+		report.info("Checking title is ends with a value");
+		boolean isTrue = getTitle().endsWith(value);
+		report.info("Title ends with " + value + " : " + isTrue);
+		return isTrue;
+	}
+	
+	/**
+	 * Returns if title is starts with to certain value
+	 * 
+	 * @param locator
+	 * @param value   (String)
+	 * @return true or false (boolean)
+	 */
+	public boolean titleStartsWith(String value) {
+		report.info("Checking title is starts with a value");
+		boolean isTrue = getTitle().startsWith(value);
+		report.info("Title starts with " + value + " : " + isTrue);
 		return isTrue;
 	}
 	
@@ -238,6 +294,9 @@ public class AssertBuilder {
 		return isTrue;
 	}
 	
+	
+	///////
+	
 	/**
 	 * Returns if page source contains certain value
 	 * 
@@ -287,7 +346,7 @@ public class AssertBuilder {
 	 * @param value
 	 * @return
 	 */
-	public boolean attributeStarstWith(By locator, String attribute, String value) {
+	public boolean attributeStartsWith(By locator, String attribute, String value) {
 		report.info("Checking attribute of " + attribute + " starts with a value");
 		boolean isTrue = getAttributeValue(locator, attribute).startsWith(value);
 		report.info("Attribute of " + locator + " starts with " + value + " : " + isTrue);
@@ -301,7 +360,7 @@ public class AssertBuilder {
 	 * @param value
 	 * @return
 	 */
-	public boolean attributeEndstWith(By locator, String attribute, String value) {
+	public boolean attributeEndsWith(By locator, String attribute, String value) {
 		report.info("Checking attribute of " + attribute + " ends with a value");
 		boolean isTrue = getAttributeValue(locator, attribute).endsWith(value);
 		report.info("Attribute of " + locator + " ends with " + value + " : " + isTrue);
