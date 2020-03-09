@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 import com.learnitbro.testing.tool.file.FileHandler;
 import com.learnitbro.testing.tool.file.URLHandler;
@@ -33,10 +34,8 @@ public class Coordinator {
 	private JSONArray number = null;
 	private JSONArray numberValue = null;
 
-	private String emailList = "shorbagy14@gmail.com";
-
 	private WebDriver driver;
-//	private SoftAssert softAssert;
+	private SoftAssert softAssert;
 	private Report report;
 	private Email email;
 
@@ -49,7 +48,7 @@ public class Coordinator {
 	public Coordinator(WebDriver driver, Report report) {
 		this.driver = driver;
 		this.report = report;
-//		softAssert = new SoftAssert();
+		softAssert = new SoftAssert();
 		email = new Email();
 	}
 
@@ -61,11 +60,11 @@ public class Coordinator {
 		} finally {
 			driver.quit();
 			report.flush();
-			String info = " - " + Control.browser.toUpperCase();
-			email.sendAttachmentInEmail("Test Report - " + report.getTime() + info,
-					"This is an automated email. Here is the report for the test. Mohamed Elshorbagy", emailList,
-					report.getAllReports());
-			// softAssert.assertAll();
+//			String info = " - " + Control.browser.toUpperCase();
+//			email.sendAttachmentInEmail("Test Report - " + report.getTime() + info,
+//					"This is an automated email. Here is the report for the test. Mohamed Elshorbagy", emailList,
+//					report.getAllReports());
+			softAssert.assertAll();
 		}
 	}
 
@@ -231,64 +230,64 @@ public class Coordinator {
 
 		switch (userObject.toLowerCase()) {
 		case "displayed":
-			Assert.assertTrue(a.isDisplayed((By) locator.get(0)));
+			softAssert.assertTrue(a.isDisplayed((By) locator.get(0)));
 			break;
 		case "enabled":
-			Assert.assertTrue(a.isEnabled((By) locator.get(0)));
+			softAssert.assertTrue(a.isEnabled((By) locator.get(0)));
 			break;
 		case "selected":
-			Assert.assertTrue(a.isSelected((By) locator.get(0)));
+			softAssert.assertTrue(a.isSelected((By) locator.get(0)));
 			break;
 		case "text contains":
-			Assert.assertTrue(a.textContains((By) locator.get(0), text.getString(0)));
+			softAssert.assertTrue(a.textContains((By) locator.get(0), text.getString(0)));
 			break;
 		case "text equals":
-			Assert.assertTrue(a.textEquals((By) locator.get(0), text.getString(0)));
+			softAssert.assertTrue(a.textEquals((By) locator.get(0), text.getString(0)));
 			break;
 		case "text starts with":
-			Assert.assertTrue(a.textStartsWith((By) locator.get(0), text.getString(0)));
+			softAssert.assertTrue(a.textStartsWith((By) locator.get(0), text.getString(0)));
 			break;
 		case "text ends with":
-			Assert.assertTrue(a.textEndsWith((By) locator.get(0), text.getString(0)));
+			softAssert.assertTrue(a.textEndsWith((By) locator.get(0), text.getString(0)));
 			break;
 		case "title contains":
-			Assert.assertTrue(a.titleContains(text.getString(0)));
+			softAssert.assertTrue(a.titleContains(text.getString(0)));
 			break;
 		case "title equals":
-			Assert.assertTrue(a.titleEquals(text.getString(0)));
+			softAssert.assertTrue(a.titleEquals(text.getString(0)));
 			break;
 		case "title starts with":
-			Assert.assertTrue(a.titleStartsWith(text.getString(0)));
+			softAssert.assertTrue(a.titleStartsWith(text.getString(0)));
 			break;
 		case "title ends with":
-			Assert.assertTrue(a.titleEndsWith(text.getString(0)));
+			softAssert.assertTrue(a.titleEndsWith(text.getString(0)));
 			break;
 		case "url contains":
-			Assert.assertTrue(a.urlContains(text.getString(0)));
+			softAssert.assertTrue(a.urlContains(text.getString(0)));
 			break;
 		case "url equals":
-			Assert.assertTrue(a.urlEquals(url.getString(0)));
+			softAssert.assertTrue(a.urlEquals(url.getString(0)));
 			break;
 		case "url starts with":
-			Assert.assertTrue(a.urlStartsWith(text.getString(0)));
+			softAssert.assertTrue(a.urlStartsWith(text.getString(0)));
 			break;
 		case "url ends with":
-			Assert.assertTrue(a.urlEndsWith(text.getString(0)));
+			softAssert.assertTrue(a.urlEndsWith(text.getString(0)));
 			break;
 		case "page source contains":
-			Assert.assertTrue(a.pageSourceContains(text.getString(0)));
+			softAssert.assertTrue(a.pageSourceContains(text.getString(0)));
 			break;
 		case "attribute contains":
-			Assert.assertTrue(a.attributeContains((By) locator.get(0), text.getString(0), text.getString(1)));
+			softAssert.assertTrue(a.attributeContains((By) locator.get(0), text.getString(0), text.getString(1)));
 			break;
 		case "attribute equals":
-			Assert.assertTrue(a.attributeEquals((By) locator.get(0), text.getString(0), text.getString(1)));
+			softAssert.assertTrue(a.attributeEquals((By) locator.get(0), text.getString(0), text.getString(1)));
 			break;
 		case "attribute starts with":
-			Assert.assertTrue(a.attributeStartsWith((By) locator.get(0), text.getString(0), text.getString(1)));
+			softAssert.assertTrue(a.attributeStartsWith((By) locator.get(0), text.getString(0), text.getString(1)));
 			break;
 		case "attribute ends with":
-			Assert.assertTrue(a.attributeEndsWith((By) locator.get(0), text.getString(0), text.getString(1)));
+			softAssert.assertTrue(a.attributeEndsWith((By) locator.get(0), text.getString(0), text.getString(1)));
 			break;
 		}
 	}
@@ -369,25 +368,25 @@ public class Coordinator {
 			v.setVolume((By) locator.get(0), time.getDouble(0));
 			break;
 		case "is playing":
-			Assert.assertFalse(v.isPaused((By) locator.get(0)));
+			softAssert.assertFalse(v.isPaused((By) locator.get(0)));
 			break;
 		case "is paused":
-			Assert.assertTrue(v.isPaused((By) locator.get(0)));
+			softAssert.assertTrue(v.isPaused((By) locator.get(0)));
 			break;
 		case "is unmuted":
-			Assert.assertFalse(v.isMuted((By) locator.get(0)));
+			softAssert.assertFalse(v.isMuted((By) locator.get(0)));
 			break;
 		case "is muted":
-			Assert.assertTrue(v.isMuted((By) locator.get(0)));
+			softAssert.assertTrue(v.isMuted((By) locator.get(0)));
 			break;
 		case "is loaded":
-			Assert.assertTrue(v.isLoaded((By) locator.get(0)));
+			softAssert.assertTrue(v.isLoaded((By) locator.get(0)));
 			break;
 		case "time equals":
-			Assert.assertTrue(v.timeEquals((By) locator.get(0), time.getDouble(0)));
+			softAssert.assertTrue(v.timeEquals((By) locator.get(0), time.getDouble(0)));
 			break;
 		case "volume equals":
-			Assert.assertFalse(v.volumeEquals((By) locator.get(0), time.getDouble(0)));
+			softAssert.assertFalse(v.volumeEquals((By) locator.get(0), time.getDouble(0)));
 			break;
 		}
 	}

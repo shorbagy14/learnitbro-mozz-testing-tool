@@ -96,6 +96,10 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 
 		return false;
 	}
+	
+	public int getLevel() {
+		return node.getLevel();
+	}
 
 	public int getIndex() {
 		if (getTreeNode() == null)
@@ -159,6 +163,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 
 		JSONObject jo = new JSONObject();
 		jo.put("uuid", getUUID());
+		jo.put("level", getLevel());
 		jo.put("index", getIndex());
 		jo.put("parentIndex", getParentIndex());
 		jo.put("grandparentIndex", getGrandParentIndex());

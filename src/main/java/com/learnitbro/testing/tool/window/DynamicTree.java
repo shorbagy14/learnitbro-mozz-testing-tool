@@ -1,6 +1,5 @@
 package com.learnitbro.testing.tool.window;
 
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.io.File;
@@ -46,10 +45,6 @@ public class DynamicTree extends JPanel {
 		add(scrollPane);
 	}
 
-	public void setRootUserObject(String userObject) {
-		rootNode.setUserObject(userObject);
-	}
-
 	public JTree getJTree() {
 		return tree;
 	}
@@ -68,16 +63,13 @@ public class DynamicTree extends JPanel {
 		if (currentSelection != null) {
 			DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
 			MutableTreeNode parent = (MutableTreeNode) (currentNode.getParent());
+
 			MyTreeNode n = new MyTreeNode(currentNode);
-
-			int parentIndex = -1;
-			int grandparentIndex = -1;
-			int superparentIndex = -1;
-
 			for (int x = 0; x < MyTreeNode.all.length(); x++) {
 				JSONObject value = (JSONObject) MyTreeNode.all.get(x);
 
 				boolean isIndexMatch = n.getIndex() == value.getInt("index");
+				boolean isLevelMatch = n.getLevel() == value.getInt("level");
 
 				boolean isParentIndexMatch = true;
 				boolean isGrandParentIndexMatch = true;
@@ -92,36 +84,22 @@ public class DynamicTree extends JPanel {
 					}
 				}
 
-				if (isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch && isSuperParentIndexMatch) {
-					parentIndex = value.getInt("parentIndex");
-					grandparentIndex = value.getInt("grandparentIndex");
-					superparentIndex = value.getInt("superparentIndex");
-
+				if (isLevelMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch && isSuperParentIndexMatch) {
 					MyTreeNode.all.remove(x);
-					System.out.println("Removing this node : " + currentNode);
+					break;
 				}
 			}
-
-			int k = 0;
-			for (int y = 0; y < MyTreeNode.all.length(); y++) {
-				JSONObject value = MyTreeNode.all.getJSONObject(y);
-				if (parentIndex == value.getInt("parentIndex") && grandparentIndex == value.getInt("grandparentIndex")
-						&& superparentIndex == value.getInt("superparentIndex")) {
-					value.put("index", k);
-					k++;
-//					System.out.println(value);
-				}
-			}
-
-//			System.out.println(MyTreeNode.all.toString());
+			
 			JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/node.json"), MyTreeNode.all.toString(1));
-
+			
+			System.out.println("Removing this node : " + currentNode);
 			if (parent != null) {
 				treeModel.removeNodeFromParent(currentNode);
 				return;
 			}
 		}
 
+		
 		// Either there was no selection, or the root was selected.
 		toolkit.beep();
 	}
