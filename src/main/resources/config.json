@@ -573,7 +573,7 @@
     "category": "assert",
     "platform": "web",
     "require": [
-      "text"
+      "url"
     ],
     "show": [
       "URL Value"
@@ -825,7 +825,7 @@
     "platform": "web",
     "require": [
       "time",
-      "url"
+      "text"
     ],
     "show": [
       "Timeout",
@@ -1143,6 +1143,24 @@
     "show": [
       "File Path"
     ],
+    "tooltip": "",
+    "limit": []
+  },
+  {
+    "name": "Full Page Screenshot",
+    "category": "picture",
+    "platform": "web",
+    "require": [],
+    "show": [],
+    "tooltip": "",
+    "limit": []
+  },
+   {
+    "name": "Element Screenshot",
+    "category": "picture",
+    "platform": "web",
+    "require": ["locator"],
+    "show": ["Locator"],
     "tooltip": "",
     "limit": []
   }

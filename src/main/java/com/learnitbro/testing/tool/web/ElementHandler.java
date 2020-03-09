@@ -20,6 +20,11 @@ public class ElementHandler {
 		this.driver = driver;
 	}
 	
+	/**
+	 * 
+	 * @param locator
+	 * @return
+	 */
 	public WebElement getDisplayedElement(By locator) {
 		List<WebElement> elements = driver.findElements(locator);
 		
@@ -41,7 +46,12 @@ public class ElementHandler {
 		List<WebElement> list = driver.findElements(locator);
 		return list;
 	}
-	
+
+	/**
+	 * 
+	 * @param locator
+	 * @return
+	 */
 	public boolean isElementDisplayed(By locator) {
 		try {
 			return driver.findElement(locator).isDisplayed();
@@ -50,6 +60,11 @@ public class ElementHandler {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param element
+	 * @return
+	 */
 	public boolean isElementDisplayed(WebElement element) {
 		try {
 			return element.isDisplayed();

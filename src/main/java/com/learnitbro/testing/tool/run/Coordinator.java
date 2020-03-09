@@ -15,6 +15,7 @@ import com.learnitbro.testing.tool.reporting.Report;
 import com.learnitbro.testing.tool.web.ElementHandler;
 import com.learnitbro.testing.tool.activity.ActionBuilder;
 import com.learnitbro.testing.tool.activity.AssertBuilder;
+import com.learnitbro.testing.tool.activity.PictureBuilder;
 import com.learnitbro.testing.tool.activity.ScriptBuilder;
 import com.learnitbro.testing.tool.activity.VideoBuilder;
 import com.learnitbro.testing.tool.activity.WaitBuilder;
@@ -103,11 +104,27 @@ public class Coordinator {
 	 * @param run (JSONObject)
 	 */
 	public void steps(JSONObject run) {
-		checkActions(run);
-		checkAsserts(run);
-		checkWaits(run);
-		checkVideos(run);
-		checkScripts(run);
+		String category = run.getString("category");
+		switch (category.toLowerCase()) {
+		case "action":
+			checkActions(run);
+			break;
+		case "assert":
+			checkAsserts(run);
+			break;
+		case "wait":
+			checkWaits(run);
+			break;
+		case "video":
+			checkVideos(run);
+			break;
+		case "script":
+			checkScripts(run);
+			break;
+		case "picture":
+			checkPictures(run);
+			break;
+		}
 	}
 
 	private void checkActions(JSONObject run) {
@@ -196,10 +213,10 @@ public class Coordinator {
 			a.switchToDefaultFrame();
 			break;
 		case "select dropdown by text":
-			a.selectDropdownByText((By) locator.get(0), text.getString(0));;
+			a.selectDropdownByText((By) locator.get(0), text.getString(0));
 			break;
 		case "select dropdown by value":
-			a.selectDropdownByValue((By) locator.get(0), text.getString(0));;
+			a.selectDropdownByValue((By) locator.get(0), text.getString(0));
 			break;
 		case "select dropdown by index":
 			a.selectDropdownByIndex((By) locator.get(0), number.getInt(0));
@@ -250,7 +267,7 @@ public class Coordinator {
 			Assert.assertTrue(a.urlContains(text.getString(0)));
 			break;
 		case "url equals":
-			Assert.assertTrue(a.urlEquals(text.getString(0)));
+			Assert.assertTrue(a.urlEquals(url.getString(0)));
 			break;
 		case "url starts with":
 			Assert.assertTrue(a.urlStartsWith(text.getString(0)));
@@ -310,7 +327,7 @@ public class Coordinator {
 			w.titleToBe(text.getString(0), time.getInt(0));
 			break;
 		case "url contains":
-			w.urlContains(url.getString(0), time.getInt(0));
+			w.urlContains(text.getString(0), time.getInt(0));
 			break;
 		case "url to be":
 			w.urlToBe(url.getString(0), time.getInt(0));
@@ -374,7 +391,7 @@ public class Coordinator {
 			break;
 		}
 	}
-	
+
 	private void checkScripts(JSONObject run) {
 		ScriptBuilder j = new ScriptBuilder(driver, report);
 		String userObject = run.getString("userObject");
@@ -392,6 +409,21 @@ public class Coordinator {
 			break;
 		case "executed java file":
 			j.executeJavaFile(file.getString(0));
+			break;
+		}
+	}
+
+	private void checkPictures(JSONObject run) {
+		PictureBuilder p = new PictureBuilder(driver, report);
+		String userObject = run.getString("userObject");
+		setValues(run);
+
+		switch (userObject.toLowerCase()) {
+		case "full page screenshot":
+			p.fullpageScreenshot();
+			break;
+		case "element screenshot":
+			p.elementScreenshot((By) locator.get(0));
 			break;
 		}
 	}
@@ -426,7 +458,7 @@ public class Coordinator {
 			for (int x = 0; x < timeValue.length(); x++)
 				time.put(Integer.valueOf(timeValue.getString(x)));
 		}
-		
+
 		if (run.has("number")) {
 			numberValue = run.getJSONArray("number");
 			for (int x = 0; x < numberValue.length(); x++)

@@ -148,6 +148,7 @@ public class UI extends JPanel implements ActionListener {
 		List<String> adding = new ArrayList<String>();
 		List<String> video = new ArrayList<String>();
 		List<String> script = new ArrayList<String>();
+		List<String> picture = new ArrayList<String>();
 
 		JSONArray arr = new JSONArray(config);
 		for (int x = 0; x < arr.length(); x++) {
@@ -168,6 +169,8 @@ public class UI extends JPanel implements ActionListener {
 				video.add(objName);
 			else if (objCat.equalsIgnoreCase("script"))
 				script.add(objName);
+			else if (objCat.equalsIgnoreCase("picture"))
+				picture.add(objName);
 
 		}
 
@@ -248,6 +251,18 @@ public class UI extends JPanel implements ActionListener {
 		}
 		disableMenuItems(mnScript);
 
+		// Picture Menu
+		final JMenu mnPicture = new JMenu("Picture");
+		menuBar.add(mnPicture);
+		for (int x = 0; x < picture.size(); x++) {
+			JMenuItem mntm = new JMenuItem(picture.get(x));
+			mntm.putClientProperty("category", "picture");
+			mnPicture.add(mntm);
+			mntm.setActionCommand(ADD_COMMAND);
+			mntm.addActionListener(this);
+		}
+		disableMenuItems(mnPicture);
+
 		// End of Menu Bar ---->
 
 		MouseListener mouseListener = new MouseListener() {
@@ -305,9 +320,10 @@ public class UI extends JPanel implements ActionListener {
 					enableMenuItems(mnAssert);
 					enableMenuItems(mnVideo);
 					enableMenuItems(mnScript);
+					enableMenuItems(mnPicture);
 					disableMenuItems(mnAdd);
-				} 
-				
+				}
+
 				if (level == 4) {
 					disableMenuItems(mnAdd);
 					disableMenuItems(mnAction);
@@ -315,6 +331,7 @@ public class UI extends JPanel implements ActionListener {
 					disableMenuItems(mnAssert);
 					disableMenuItems(mnVideo);
 					disableMenuItems(mnScript);
+					disableMenuItems(mnPicture);
 				}
 			}
 		};

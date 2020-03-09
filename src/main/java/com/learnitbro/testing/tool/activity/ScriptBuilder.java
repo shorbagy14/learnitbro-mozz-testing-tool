@@ -74,7 +74,7 @@ public class ScriptBuilder {
 
 	public void executeJavaFile(String path) {
 		ProcessBuilder pb = null;
-		pb = new ProcessBuilder("java", "-jar", path, driver.getWindowHandle());
+		pb = new ProcessBuilder("java", "-jar", path);
 
 		pb.redirectErrorStream(true);
 		Process p = null;
