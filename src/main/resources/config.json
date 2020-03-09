@@ -4,11 +4,14 @@
     "category": "suite",
     "platform": "all",
     "require": [],
-    "show": ["Test Suite"],
-    "tooltip": ""
+    "show": [
+      "Test Suite"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
-  	"name": "Configuration",
+    "name": "Configuration",
     "category": "configuration",
     "platform": "all",
     "require": [
@@ -16,24 +19,35 @@
       "headless",
       "platform"
     ],
-    "show": ["Browser Name", "Headless", "Platform"],
-    "tooltip": ""
+    "show": [
+      "Browser Name",
+      "Headless",
+      "Platform"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Group",
     "category": "group",
     "platform": "all",
     "require": [],
-    "show": ["Group"],
-    "tooltip": ""
+    "show": [
+      "Group"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Test Case",
     "category": "test",
     "platform": "all",
     "require": [],
-    "show": ["Test Case"],
-    "tooltip": ""
+    "show": [
+      "Test Case"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Click",
@@ -42,8 +56,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Link",
@@ -52,8 +69,11 @@
     "require": [
       "url"
     ],
-    "show": ["URL Value"],
-    "tooltip": ""
+    "show": [
+      "URL Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Submit",
@@ -62,8 +82,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Clear",
@@ -72,8 +95,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Input Text",
@@ -83,8 +109,12 @@
       "locator",
       "text"
     ],
-    "show": ["Locator", "Text Value"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Text Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Upload",
@@ -94,8 +124,12 @@
       "locator",
       "file"
     ],
-    "show": ["Locator", "File Path"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "File Path"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Back",
@@ -103,7 +137,8 @@
     "platform": "web",
     "require": [],
     "show": [],
-    "tooltip": ""
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Forward",
@@ -111,7 +146,8 @@
     "platform": "web",
     "require": [],
     "show": [],
-    "tooltip": ""
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Refresh",
@@ -119,7 +155,8 @@
     "platform": "web",
     "require": [],
     "show": [],
-    "tooltip": ""
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Close",
@@ -127,7 +164,8 @@
     "platform": "web",
     "require": [],
     "show": [],
-    "tooltip": ""
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Click And Hold",
@@ -136,8 +174,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Release",
@@ -145,7 +186,8 @@
     "platform": "web",
     "require": [],
     "show": [],
-    "tooltip": ""
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Drag And Drop",
@@ -155,8 +197,12 @@
       "locator",
       "locator"
     ],
-    "show": ["Drag Locator", "Drop Locator"],
-    "tooltip": ""
+    "show": [
+      "Drag Locator",
+      "Drop Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Hover",
@@ -165,8 +211,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Context Click",
@@ -175,8 +224,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Double Click",
@@ -185,8 +237,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Scroll Into View",
@@ -195,18 +250,26 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Scroll By",
     "category": "action",
     "platform": "web",
     "require": [
-      "number", "number"
+      "number",
+      "number"
     ],
-    "show": ["X Value", "Y Value"],
-    "tooltip": ""
+    "show": [
+      "X Value",
+      "Y Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "New Tab",
@@ -215,8 +278,11 @@
     "require": [
       "url"
     ],
-    "show": ["URL Value"],
-    "tooltip": ""
+    "show": [
+      "URL Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Maximize",
@@ -224,7 +290,8 @@
     "platform": "web",
     "require": [],
     "show": [],
-    "tooltip": ""
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Minimize",
@@ -232,7 +299,8 @@
     "platform": "web",
     "require": [],
     "show": [],
-    "tooltip": ""
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Fullscreen",
@@ -240,31 +308,47 @@
     "platform": "web",
     "require": [],
     "show": [],
-    "tooltip": ""
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Switch To Window",
     "category": "action",
     "platform": "web",
-    "require": ["number"],
-    "show": ["Index"],
-    "tooltip": ""
+    "require": [
+      "number"
+    ],
+    "show": [
+      "Index"
+    ],
+    "tooltip": "",
+    "limit": []
   },
-   {
+  {
     "name": "Switch To Frame By Index",
     "category": "action",
     "platform": "web",
-    "require": ["number"],
-    "show": ["Index"],
-    "tooltip": ""
+    "require": [
+      "number"
+    ],
+    "show": [
+      "Index"
+    ],
+    "tooltip": "",
+    "limit": []
   },
-   {
+  {
     "name": "Switch To Frame By Locator",
     "category": "action",
     "platform": "web",
-    "require": ["locator"],
-    "show": ["Locator"],
-    "tooltip": ""
+    "require": [
+      "locator"
+    ],
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Switch To Default Frame",
@@ -272,31 +356,53 @@
     "platform": "web",
     "require": [],
     "show": [],
-    "tooltip": ""
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Select Dropdown By Text",
     "category": "action",
     "platform": "web",
-    "require": ["locator", "text"],
-    "show": ["Locator", "Text Value"],
-    "tooltip": ""
+    "require": [
+      "locator",
+      "text"
+    ],
+    "show": [
+      "Locator",
+      "Text Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Select Dropdown By Value",
     "category": "action",
     "platform": "web",
-    "require": ["locator", "text"],
-    "show": ["Locator", "Attribute Value"],
-    "tooltip": ""
+    "require": [
+      "locator",
+      "text"
+    ],
+    "show": [
+      "Locator",
+      "Attribute Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Select Dropdown By Index",
     "category": "action",
     "platform": "web",
-    "require": ["locator", "number"],
-    "show": ["Locator", "Index"],
-    "tooltip": ""
+    "require": [
+      "locator",
+      "number"
+    ],
+    "show": [
+      "Locator",
+      "Index"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Displayed",
@@ -305,8 +411,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Enabled",
@@ -315,8 +424,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Selected",
@@ -325,165 +437,256 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Text Contains",
     "category": "assert",
     "platform": "web",
     "require": [
-      "locator","text"
+      "locator",
+      "text"
     ],
-    "show": ["Locator", "Text Value"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Text Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Text Equals",
     "category": "assert",
     "platform": "web",
     "require": [
-      "locator","text"
+      "locator",
+      "text"
     ],
-    "show": ["Locator", "Text Value"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Text Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Text Starts With",
     "category": "assert",
     "platform": "web",
     "require": [
-      "locator","text"
+      "locator",
+      "text"
     ],
-    "show": ["Locator", "Text Value"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Text Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Text Ends With",
     "category": "assert",
     "platform": "web",
     "require": [
-      "locator","text"
+      "locator",
+      "text"
     ],
-    "show": ["Locator", "Text Value"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Text Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Title Contains",
     "category": "assert",
     "platform": "web",
-    "require": ["text"
+    "require": [
+      "text"
     ],
-    "show": ["Title Value"],
-    "tooltip": ""
+    "show": [
+      "Title Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Title Equals",
     "category": "assert",
     "platform": "web",
-    "require": ["text"
+    "require": [
+      "text"
     ],
-    "show": ["Title Value"],
-    "tooltip": ""
+    "show": [
+      "Title Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
-   {
+  {
     "name": "Title Starts With",
     "category": "assert",
     "platform": "web",
-    "require": ["text"
+    "require": [
+      "text"
     ],
-    "show": ["Title Value"],
-    "tooltip": ""
+    "show": [
+      "Title Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Title Ends With",
     "category": "assert",
     "platform": "web",
-    "require": ["text"
+    "require": [
+      "text"
     ],
-    "show": ["Title Value"],
-    "tooltip": ""
+    "show": [
+      "Title Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Url Contains",
     "category": "assert",
     "platform": "web",
-    "require": ["text"
+    "require": [
+      "text"
     ],
-    "show": ["URL Value"],
-    "tooltip": ""
+    "show": [
+      "URL Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Url Equals",
     "category": "assert",
     "platform": "web",
-    "require": ["text"
+    "require": [
+      "text"
     ],
-    "show": ["URL Value"],
-    "tooltip": ""
+    "show": [
+      "URL Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Url Starts With",
     "category": "assert",
     "platform": "web",
-    "require": ["text"
+    "require": [
+      "text"
     ],
-    "show": ["URL Value"],
-    "tooltip": ""
+    "show": [
+      "URL Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Url Ends With",
     "category": "assert",
     "platform": "web",
-    "require": ["text"
+    "require": [
+      "text"
     ],
-    "show": ["URL Value"],
-    "tooltip": ""
+    "show": [
+      "URL Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Page Source Contains",
     "category": "assert",
     "platform": "web",
-    "require": ["text"
+    "require": [
+      "text"
     ],
-    "show": ["Text Value"],
-    "tooltip": ""
+    "show": [
+      "Text Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
-   {
+  {
     "name": "Attribute Contains",
     "category": "assert",
     "platform": "web",
-    "require": ["locator", "text", "text"
+    "require": [
+      "locator",
+      "text",
+      "text"
     ],
-    "show": ["Locator", "Attribute Name", "Attribute Value"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Attribute Name",
+      "Attribute Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Attribute Equals",
     "category": "assert",
     "platform": "web",
-    "require": ["locator", "text", "text"
+    "require": [
+      "locator",
+      "text",
+      "text"
     ],
-    "show": ["Locator", "Attribute Name", "Attribute Value"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Attribute Name",
+      "Attribute Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Attribute Starts With",
     "category": "assert",
     "platform": "web",
-    "require": ["locator", "text", "text"
+    "require": [
+      "locator",
+      "text",
+      "text"
     ],
-    "show": ["Locator", "Attribute Name", "Attribute Value"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Attribute Name",
+      "Attribute Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Attribute Ends With",
     "category": "assert",
     "platform": "web",
-    "require": ["locator", "text", "text"
+    "require": [
+      "locator",
+      "text",
+      "text"
     ],
-    "show": ["Locator", "Attribute Name", "Attribute Value"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Attribute Name",
+      "Attribute Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Sleep",
@@ -492,8 +695,11 @@
     "require": [
       "time"
     ],
-    "show": ["Delay Time"],
-    "tooltip": ""
+    "show": [
+      "Delay Time"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Page To Load",
@@ -502,8 +708,11 @@
     "require": [
       "time"
     ],
-    "show": ["Timeout"],
-    "tooltip": ""
+    "show": [
+      "Timeout"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Presence",
@@ -513,8 +722,12 @@
       "time",
       "locator"
     ],
-    "show": ["Timeout", "Locator"],
-    "tooltip": ""
+    "show": [
+      "Timeout",
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Visible",
@@ -524,8 +737,12 @@
       "time",
       "locator"
     ],
-    "show": ["Timeout", "Locator"],
-    "tooltip": ""
+    "show": [
+      "Timeout",
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Clickable",
@@ -535,8 +752,12 @@
       "time",
       "locator"
     ],
-    "show": ["Timeout", "Locator"],
-    "tooltip": ""
+    "show": [
+      "Timeout",
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Invisible",
@@ -546,8 +767,12 @@
       "time",
       "locator"
     ],
-    "show": ["Timeout", "Locator"],
-    "tooltip": ""
+    "show": [
+      "Timeout",
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Selected",
@@ -557,8 +782,12 @@
       "time",
       "locator"
     ],
-    "show": ["Timeout", "Locator"],
-    "tooltip": ""
+    "show": [
+      "Timeout",
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Title Contains",
@@ -568,8 +797,12 @@
       "time",
       "text"
     ],
-    "show": ["Timeout", "Text Value"],
-    "tooltip": ""
+    "show": [
+      "Timeout",
+      "Text Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Title To Be",
@@ -579,8 +812,12 @@
       "time",
       "text"
     ],
-    "show": ["Timeout", "Text Value"],
-    "tooltip": ""
+    "show": [
+      "Timeout",
+      "Text Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Url Contains",
@@ -590,8 +827,12 @@
       "time",
       "url"
     ],
-    "show": ["Timeout", "URL Value"],
-    "tooltip": ""
+    "show": [
+      "Timeout",
+      "URL Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Url To Be",
@@ -601,8 +842,12 @@
       "time",
       "url"
     ],
-    "show": ["Timeout", "URL Value"],
-    "tooltip": ""
+    "show": [
+      "Timeout",
+      "URL Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Alert Is Present",
@@ -611,8 +856,11 @@
     "require": [
       "time"
     ],
-    "show": ["Timeout"],
-    "tooltip": ""
+    "show": [
+      "Timeout"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Attribute To Be",
@@ -624,8 +872,14 @@
       "text",
       "text"
     ],
-    "show": ["Timeout", "Locator", "Attribute Name", "Attribute Value"],
-    "tooltip": ""
+    "show": [
+      "Timeout",
+      "Locator",
+      "Attribute Name",
+      "Attribute Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Attribute Contains",
@@ -637,8 +891,14 @@
       "text",
       "text"
     ],
-    "show": ["Timeout", "Locator", "Attribute Name", "Attribute Value"],
-    "tooltip": ""
+    "show": [
+      "Timeout",
+      "Locator",
+      "Attribute Name",
+      "Attribute Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Pause",
@@ -647,8 +907,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Play",
@@ -657,8 +920,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Mute",
@@ -667,8 +933,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Unmute",
@@ -677,8 +946,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Replay",
@@ -687,48 +959,71 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Set Volume",
     "category": "video",
     "platform": "web",
     "require": [
-      "locator", "time"
+      "locator",
+      "time"
     ],
-    "show": ["Locator", "Volume"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Volume"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Set Time",
     "category": "video",
     "platform": "web",
     "require": [
-      "locator", "time"
+      "locator",
+      "time"
     ],
-    "show": ["Locator", "Time"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Time"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Volume Equals",
     "category": "video",
     "platform": "web",
     "require": [
-      "locator", "time"
+      "locator",
+      "time"
     ],
-    "show": ["Locator", "Volume"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Volume"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Time Equals",
     "category": "video",
     "platform": "web",
     "require": [
-      "locator", "time"
+      "locator",
+      "time"
     ],
-    "show": ["Locator", "Time"],
-    "tooltip": ""
+    "show": [
+      "Locator",
+      "Time"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Is Muted",
@@ -737,8 +1032,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Is Unmuted",
@@ -747,8 +1045,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Is Paused",
@@ -757,8 +1058,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Is Playing",
@@ -767,8 +1071,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Is Loaded",
@@ -777,8 +1084,11 @@
     "require": [
       "locator"
     ],
-    "show": ["Locator"],
-    "tooltip": ""
+    "show": [
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Execute JS Command",
@@ -787,28 +1097,41 @@
     "require": [
       "text"
     ],
-    "show": ["Command"],
-    "tooltip": ""
+    "show": [
+      "Command"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Execute JS Command By Locator",
     "category": "script",
     "platform": "web",
     "require": [
-      "text", "locator"
+      "text",
+      "locator"
     ],
-    "show": ["Command", "Locator"],
-    "tooltip": ""
+    "show": [
+      "Command",
+      "Locator"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Executed JS Result Equals",
     "category": "script",
     "platform": "web",
     "require": [
-      "text", "text"
+      "text",
+      "text"
     ],
-    "show": ["Command", "Text Value"],
-    "tooltip": ""
+    "show": [
+      "Command",
+      "Text Value"
+    ],
+    "tooltip": "",
+    "limit": []
   },
   {
     "name": "Execute Java File",
@@ -817,7 +1140,10 @@
     "require": [
       "file"
     ],
-    "show": ["File Path"],
-    "tooltip": ""
+    "show": [
+      "File Path"
+    ],
+    "tooltip": "",
+    "limit": []
   }
 ]
