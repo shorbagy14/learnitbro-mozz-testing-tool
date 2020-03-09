@@ -64,6 +64,12 @@ public class DynamicTree extends JPanel {
 			DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
 			MutableTreeNode parent = (MutableTreeNode) (currentNode.getParent());
 
+			int level = -1;
+			int index = -1;
+			int parentIndex = -1;
+			int grandparentIndex = -1;
+			int superparentIndex = -1;
+			
 			MyTreeNode n = new MyTreeNode(currentNode);
 			for (int x = 0; x < MyTreeNode.all.length(); x++) {
 				JSONObject value = (JSONObject) MyTreeNode.all.get(x);
@@ -85,8 +91,23 @@ public class DynamicTree extends JPanel {
 				}
 
 				if (isLevelMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch && isSuperParentIndexMatch) {
+					level = value.getInt("level");
+					index = value.getInt("index");
+					parentIndex = value.getInt("parentIndex");
+					grandparentIndex = value.getInt("grandparentIndex");
+					superparentIndex = value.getInt("superparentIndex");
 					MyTreeNode.all.remove(x);
 					break;
+				}
+			}
+			
+			for (int y = 0; y < MyTreeNode.all.length(); y++) {
+				JSONObject v = MyTreeNode.all.getJSONObject(y);
+				if (parentIndex == v.getInt("parentIndex") && grandparentIndex == v.getInt("grandparentIndex")
+						&& superparentIndex == v.getInt("superparentIndex") && level == v.getInt("level")) {
+					
+					if(index < v.getInt("index"))
+						MyTreeNode.all.getJSONObject(y).put("index", v.getInt("index")-1);
 				}
 			}
 			
@@ -98,7 +119,6 @@ public class DynamicTree extends JPanel {
 				return;
 			}
 		}
-
 		
 		// Either there was no selection, or the root was selected.
 		toolkit.beep();

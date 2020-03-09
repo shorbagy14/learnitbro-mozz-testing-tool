@@ -377,10 +377,11 @@ public class UI extends JPanel implements ActionListener {
 					return;
 				}
 
-				int index = node.getParent().getIndex(node);
-				int number = node.getParent().getChildCount();
+//				int index = node.getParent().getIndex(node);
+//				int number = node.getParent().getChildCount();
+//				|| index+1 != number
 				
-				if (node.getChildCount() != 0 || node.isRoot() || index+1 != number)
+				if (node.getChildCount() != 0 || node.isRoot())
 					btnRemove.setEnabled(false);
 				else
 					btnRemove.setEnabled(true);

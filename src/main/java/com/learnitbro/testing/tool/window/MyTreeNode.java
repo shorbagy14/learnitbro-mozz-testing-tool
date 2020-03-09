@@ -79,6 +79,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 			String uuid = item.getString("uuid");
 
 			int index = item.getInt("index");
+			int level = item.getInt("level");
 			int parentIndex = item.getInt("parentIndex");
 			int grandparentIndex = item.getInt("grandparentIndex");
 			int superparentIndex = item.getInt("superparentIndex");
@@ -86,17 +87,19 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 			boolean isUuidMatch = uuid.equalsIgnoreCase(value);
 
 			boolean isIndexMatch = index == getIndex();
+			boolean isLevelMatch = level == getLevel();
 			boolean isParentIndexMatch = parentIndex == getParentIndex();
 			boolean isGrandParentIndexMatch = grandparentIndex == getGrandParentIndex();
 			boolean isSuperParentIndexMatch = superparentIndex == getSuperParentIndex();
 
-			if (isUuidMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch && isSuperParentIndexMatch)
+			if (isUuidMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch && isSuperParentIndexMatch
+					&& isLevelMatch)
 				return true;
 		}
 
 		return false;
 	}
-	
+
 	public int getLevel() {
 		return node.getLevel();
 	}
