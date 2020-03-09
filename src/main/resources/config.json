@@ -1163,5 +1163,23 @@
     "show": ["Locator"],
     "tooltip": "",
     "limit": []
+  },
+  {
+    "name": "Compare Full Page Screenshot With",
+    "category": "picture",
+    "platform": "web",
+    "require": ["file"],
+    "show": ["Expected Image Path"],
+    "tooltip": "",
+    "limit": []
+  },
+   {
+    "name": "Compare Element Screenshot With",
+    "category": "picture",
+    "platform": "web",
+    "require": ["file", "locator"],
+    "show": ["Expected Image Path", "Locator"],
+    "tooltip": "",
+    "limit": []
   }
 ]

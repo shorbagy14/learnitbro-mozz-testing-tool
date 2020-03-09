@@ -424,6 +424,12 @@ public class Coordinator {
 		case "element screenshot":
 			p.elementScreenshot((By) locator.get(0));
 			break;
+		case "comapre full page screenshot with":
+			p.comapreFullpageScreenshotWith(file.getString(0));
+			break;
+		case "comapre element screenshot with":
+			p.comapreElementScreenshotWith(file.getString(0), (By) locator.get(0));
+			break;
 		}
 	}
 
