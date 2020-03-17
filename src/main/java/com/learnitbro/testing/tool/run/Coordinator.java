@@ -57,7 +57,7 @@ public class Coordinator {
 	public void runTests(JSONObject obj) {
 		try {
 			build(obj);
-		} catch (Exception | AssertionError e) {
+		} catch (AssertionError | Exception e) {
 			throw new RuntimeException("Test has failed. Refer to the report");
 		} finally {
 			driver.quit();
@@ -231,7 +231,7 @@ public class Coordinator {
 				a.selectDropdownByIndex((By) locator.get(0), number.getInt(0));
 				break;
 			}
-		} catch (AssertionError e) {
+		} catch (AssertionError | Exception e) {
 			report.fail("Assert check: FAIL", e);
 			isFail = true;
 			softAssert.assertTrue(false);
@@ -310,7 +310,7 @@ public class Coordinator {
 						userObject);
 				break;
 			}
-		} catch (AssertionError e) {
+		} catch (AssertionError | Exception e) {
 			report.fail("Assert check: FAIL", e);
 			isFail = true;
 			softAssert.assertTrue(false);
@@ -364,7 +364,7 @@ public class Coordinator {
 				w.attributeToBe((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
 				break;
 			}
-		} catch (AssertionError e) {
+		} catch (AssertionError | Exception e) {
 			report.fail("Assert check: FAIL", e);
 			isFail = true;
 			softAssert.assertTrue(false);
@@ -421,7 +421,7 @@ public class Coordinator {
 				Assert.assertFalse(v.volumeEquals((By) locator.get(0), time.getDouble(0)), userObject);
 				break;
 			}
-		} catch (AssertionError e) {
+		} catch (AssertionError | Exception e) {
 			report.fail("Assert check: FAIL", e);
 			isFail = true;
 			softAssert.assertTrue(false);
@@ -448,7 +448,7 @@ public class Coordinator {
 				j.executeJavaFile(file.getString(0));
 				break;
 			}
-		} catch (AssertionError e) {
+		} catch (AssertionError | Exception e) {
 			report.fail("Assert check: FAIL", e);
 			isFail = true;
 			softAssert.assertTrue(false);
@@ -476,7 +476,7 @@ public class Coordinator {
 						userObject);
 				break;
 			}
-		} catch (AssertionError e) {
+		} catch (AssertionError | Exception e) {
 			report.fail("Assert check: FAIL", e);
 			isFail = true;
 			softAssert.assertTrue(false);

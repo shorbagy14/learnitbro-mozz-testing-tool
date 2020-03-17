@@ -83,12 +83,12 @@ public class UI extends JPanel implements ActionListener {
 		frame.getContentPane().add(btnPanel);
 		btnPanel.setLayout(null);
 
-		JButton btnRefresh = new JButton("Refresh");
-		btnRefresh.setEnabled(false);
-		btnRefresh.setBounds(86, 18, 136, 29);
-		btnPanel.add(btnRefresh);
-		btnRefresh.setActionCommand(ADD_COMMAND);
-		btnRefresh.addActionListener(this);
+		JButton btnClear = new JButton("Clear");
+		btnClear.setEnabled(false);
+		btnClear.setBounds(86, 18, 136, 29);
+		btnPanel.add(btnClear);
+		btnClear.setActionCommand(ADD_COMMAND);
+		btnClear.addActionListener(this);
 
 		JButton btnRemove = new JButton("Remove");
 		btnRemove.setBounds(316, 18, 136, 29);
