@@ -33,6 +33,8 @@ public class Coordinator {
 	private JSONArray timeValue = null;
 	private JSONArray number = null;
 	private JSONArray numberValue = null;
+	
+	private boolean isFail = false;
 
 	private WebDriver driver;
 	private SoftAssert softAssert;
@@ -60,6 +62,8 @@ public class Coordinator {
 		} finally {
 			driver.quit();
 			report.flush();
+			softAssert.assertAll();
+
 //			String info = " - " + Control.browser.toUpperCase();
 //			email.sendAttachmentInEmail("Test Report - " + report.getTime() + info,
 //					"This is an automated email. Here is the report for the test. Mohamed Elshorbagy", emailList,
@@ -83,12 +87,17 @@ public class Coordinator {
 				report.info((String) test.get("userObject"));
 				JSONArray input = test.getJSONArray("children");
 				try {
+					
+					isFail = false;
 					for (int i = 0; i < input.length(); i++) {
 						JSONObject run = input.getJSONObject(i);
 						steps(run);
 					}
-					softAssert.assertAll();
-					report.pass(DESCRIPTION + " - PASS");
+					
+					if(isFail)
+						throw new Exception("Group : " + DESCRIPTION + " is marked as 'FAIL' due to the errors above");
+					else
+						report.pass(DESCRIPTION + " - PASS");
 				} catch (Exception e) {
 					e.printStackTrace();
 					report.fail(DESCRIPTION + " - FAIL", e);
@@ -132,94 +141,100 @@ public class Coordinator {
 		String userObject = run.getString("userObject");
 		setValues(run);
 
-		switch (userObject.toLowerCase()) {
-		case "link":
-			a.link(url.getString(0));
-			break;
-		case "click":
-			a.click((By) locator.get(0));
-			break;
-		case "input text":
-			a.inputText((By) locator.get(0), text.getString(0));
-			break;
-		case "submit":
-			a.submit((By) locator.get(0));
-			break;
-		case "clear":
-			a.clear((By) locator.get(0));
-			break;
-		case "upload":
-			a.upload((By) locator.get(0), file.getString(0));
-			break;
-		case "back":
-			a.back();
-			break;
-		case "forward":
-			a.forward();
-			break;
-		case "refresh":
-			a.refresh();
-			break;
-		case "close":
-			a.close();
-			break;
-		case "click and hold":
-			a.close();
-			break;
-		case "release":
-			a.close();
-			break;
-		case "drag and drop":
-			a.dragAndDrop((By) locator.get(0), (By) locator.get(1));
-			break;
-		case "hover":
-			a.hover((By) locator.get(0));
-			break;
-		case "context click":
-			a.contextClick((By) locator.get(0));
-			break;
-		case "double click":
-			a.doubleClick((By) locator.get(0));
-			break;
-		case "maximize":
-			a.maximize();
-			break;
-		case "minimize":
-			a.minimize();
-			break;
-		case "fullscreen":
-			a.fullscreen();
-			break;
-		case "new tab":
-			j.openNewTab(url.getString(0));
-			break;
-		case "scroll into view":
-			j.scrollIntoView((By) locator.get(0));
-			break;
-		case "scroll by":
-			j.scrollBy(number.getInt(0), number.getInt(1));
-			break;
-		case "switch to window":
-			a.switchToWindow(number.getInt(0));
-			break;
-		case "switch to frame by index":
-			a.switchToFrame(number.getInt(0));
-			break;
-		case "switch to frame by locator":
-			a.switchToFrame((By) locator.get(0));
-			break;
-		case "switch to default frame":
-			a.switchToDefaultFrame();
-			break;
-		case "select dropdown by text":
-			a.selectDropdownByText((By) locator.get(0), text.getString(0));
-			break;
-		case "select dropdown by value":
-			a.selectDropdownByValue((By) locator.get(0), text.getString(0));
-			break;
-		case "select dropdown by index":
-			a.selectDropdownByIndex((By) locator.get(0), number.getInt(0));
-			break;
+		try {
+			switch (userObject.toLowerCase()) {
+			case "link":
+				a.link(url.getString(0));
+				break;
+			case "click":
+				a.click((By) locator.get(0));
+				break;
+			case "input text":
+				a.inputText((By) locator.get(0), text.getString(0));
+				break;
+			case "submit":
+				a.submit((By) locator.get(0));
+				break;
+			case "clear":
+				a.clear((By) locator.get(0));
+				break;
+			case "upload":
+				a.upload((By) locator.get(0), file.getString(0));
+				break;
+			case "back":
+				a.back();
+				break;
+			case "forward":
+				a.forward();
+				break;
+			case "refresh":
+				a.refresh();
+				break;
+			case "close":
+				a.close();
+				break;
+			case "click and hold":
+				a.close();
+				break;
+			case "release":
+				a.close();
+				break;
+			case "drag and drop":
+				a.dragAndDrop((By) locator.get(0), (By) locator.get(1));
+				break;
+			case "hover":
+				a.hover((By) locator.get(0));
+				break;
+			case "context click":
+				a.contextClick((By) locator.get(0));
+				break;
+			case "double click":
+				a.doubleClick((By) locator.get(0));
+				break;
+			case "maximize":
+				a.maximize();
+				break;
+			case "minimize":
+				a.minimize();
+				break;
+			case "fullscreen":
+				a.fullscreen();
+				break;
+			case "new tab":
+				j.openNewTab(url.getString(0));
+				break;
+			case "scroll into view":
+				j.scrollIntoView((By) locator.get(0));
+				break;
+			case "scroll by":
+				j.scrollBy(number.getInt(0), number.getInt(1));
+				break;
+			case "switch to window":
+				a.switchToWindow(number.getInt(0));
+				break;
+			case "switch to frame by index":
+				a.switchToFrame(number.getInt(0));
+				break;
+			case "switch to frame by locator":
+				a.switchToFrame((By) locator.get(0));
+				break;
+			case "switch to default frame":
+				a.switchToDefaultFrame();
+				break;
+			case "select dropdown by text":
+				a.selectDropdownByText((By) locator.get(0), text.getString(0));
+				break;
+			case "select dropdown by value":
+				a.selectDropdownByValue((By) locator.get(0), text.getString(0));
+				break;
+			case "select dropdown by index":
+				a.selectDropdownByIndex((By) locator.get(0), number.getInt(0));
+				break;
+			}
+		} catch (AssertionError e) {
+			report.fail("Assert check: FAIL", e);
+			isFail = true;
+			softAssert.assertTrue(false);
 		}
 	}
 
@@ -228,67 +243,77 @@ public class Coordinator {
 		String userObject = run.getString("userObject");
 		setValues(run);
 
-		switch (userObject.toLowerCase()) {
-		case "displayed":
-			softAssert.assertTrue(a.isDisplayed((By) locator.get(0)));
-			break;
-		case "enabled":
-			softAssert.assertTrue(a.isEnabled((By) locator.get(0)));
-			break;
-		case "selected":
-			softAssert.assertTrue(a.isSelected((By) locator.get(0)));
-			break;
-		case "text contains":
-			softAssert.assertTrue(a.textContains((By) locator.get(0), text.getString(0)));
-			break;
-		case "text equals":
-			softAssert.assertTrue(a.textEquals((By) locator.get(0), text.getString(0)));
-			break;
-		case "text starts with":
-			softAssert.assertTrue(a.textStartsWith((By) locator.get(0), text.getString(0)));
-			break;
-		case "text ends with":
-			softAssert.assertTrue(a.textEndsWith((By) locator.get(0), text.getString(0)));
-			break;
-		case "title contains":
-			softAssert.assertTrue(a.titleContains(text.getString(0)));
-			break;
-		case "title equals":
-			softAssert.assertTrue(a.titleEquals(text.getString(0)));
-			break;
-		case "title starts with":
-			softAssert.assertTrue(a.titleStartsWith(text.getString(0)));
-			break;
-		case "title ends with":
-			softAssert.assertTrue(a.titleEndsWith(text.getString(0)));
-			break;
-		case "url contains":
-			softAssert.assertTrue(a.urlContains(text.getString(0)));
-			break;
-		case "url equals":
-			softAssert.assertTrue(a.urlEquals(url.getString(0)));
-			break;
-		case "url starts with":
-			softAssert.assertTrue(a.urlStartsWith(text.getString(0)));
-			break;
-		case "url ends with":
-			softAssert.assertTrue(a.urlEndsWith(text.getString(0)));
-			break;
-		case "page source contains":
-			softAssert.assertTrue(a.pageSourceContains(text.getString(0)));
-			break;
-		case "attribute contains":
-			softAssert.assertTrue(a.attributeContains((By) locator.get(0), text.getString(0), text.getString(1)));
-			break;
-		case "attribute equals":
-			softAssert.assertTrue(a.attributeEquals((By) locator.get(0), text.getString(0), text.getString(1)));
-			break;
-		case "attribute starts with":
-			softAssert.assertTrue(a.attributeStartsWith((By) locator.get(0), text.getString(0), text.getString(1)));
-			break;
-		case "attribute ends with":
-			softAssert.assertTrue(a.attributeEndsWith((By) locator.get(0), text.getString(0), text.getString(1)));
-			break;
+		try {
+			switch (userObject.toLowerCase()) {
+			case "displayed":
+				Assert.assertTrue(a.isDisplayed((By) locator.get(0)), userObject);
+				break;
+			case "enabled":
+				Assert.assertTrue(a.isEnabled((By) locator.get(0)), userObject);
+				break;
+			case "selected":
+				Assert.assertTrue(a.isSelected((By) locator.get(0)), userObject);
+				break;
+			case "text contains":
+				Assert.assertTrue(a.textContains((By) locator.get(0), text.getString(0)), userObject);
+				break;
+			case "text equals":
+				Assert.assertTrue(a.textEquals((By) locator.get(0), text.getString(0)), userObject);
+				break;
+			case "text starts with":
+				Assert.assertTrue(a.textStartsWith((By) locator.get(0), text.getString(0)), userObject);
+				break;
+			case "text ends with":
+				Assert.assertTrue(a.textEndsWith((By) locator.get(0), text.getString(0)), userObject);
+				break;
+			case "title contains":
+				Assert.assertTrue(a.titleContains(text.getString(0)), userObject);
+				break;
+			case "title equals":
+				Assert.assertTrue(a.titleEquals(text.getString(0)), userObject);
+				break;
+			case "title starts with":
+				Assert.assertTrue(a.titleStartsWith(text.getString(0)), userObject);
+				break;
+			case "title ends with":
+				Assert.assertTrue(a.titleEndsWith(text.getString(0)), userObject);
+				break;
+			case "url contains":
+				Assert.assertTrue(a.urlContains(text.getString(0)), userObject);
+				break;
+			case "url equals":
+				Assert.assertTrue(a.urlEquals(url.getString(0)), userObject);
+				break;
+			case "url starts with":
+				Assert.assertTrue(a.urlStartsWith(text.getString(0)), userObject);
+				break;
+			case "url ends with":
+				Assert.assertTrue(a.urlEndsWith(text.getString(0)), userObject);
+				break;
+			case "page source contains":
+				Assert.assertTrue(a.pageSourceContains(text.getString(0)), userObject);
+				break;
+			case "attribute contains":
+				Assert.assertTrue(a.attributeContains((By) locator.get(0), text.getString(0), text.getString(1)),
+						userObject);
+				break;
+			case "attribute equals":
+				Assert.assertTrue(a.attributeEquals((By) locator.get(0), text.getString(0), text.getString(1)),
+						userObject);
+				break;
+			case "attribute starts with":
+				Assert.assertTrue(a.attributeStartsWith((By) locator.get(0), text.getString(0), text.getString(1)),
+						userObject);
+				break;
+			case "attribute ends with":
+				Assert.assertTrue(a.attributeEndsWith((By) locator.get(0), text.getString(0), text.getString(1)),
+						userObject);
+				break;
+			}
+		} catch (AssertionError e) {
+			report.fail("Assert check: FAIL", e);
+			isFail = true;
+			softAssert.assertTrue(false);
 		}
 	}
 
@@ -297,46 +322,52 @@ public class Coordinator {
 		String userObject = run.getString("userObject");
 		setValues(run);
 
-		switch (userObject.toLowerCase()) {
-		case "sleep":
-			w.sleep(time.getInt(0));
-			break;
-		case "page to load":
-			w.pageToLoad(time.getInt(0));
-			break;
-		case "presence":
-			w.presence((By) locator.get(0), time.getInt(0));
-			break;
-		case "visble":
-			w.visibility((By) locator.get(0), time.getInt(0));
-			break;
-		case "clickable":
-			w.clickable((By) locator.get(0), time.getInt(0));
-			break;
-		case "invisble":
-			w.invisibility((By) locator.get(0), time.getInt(0));
-			break;
-		case "selected":
-			w.selected((By) locator.get(0), time.getInt(0));
-			break;
-		case "title contains":
-			w.titleContains(text.getString(0), time.getInt(0));
-			break;
-		case "title to be":
-			w.titleToBe(text.getString(0), time.getInt(0));
-			break;
-		case "url contains":
-			w.urlContains(text.getString(0), time.getInt(0));
-			break;
-		case "url to be":
-			w.urlToBe(url.getString(0), time.getInt(0));
-			break;
-		case "attribute contains":
-			w.attributeContains((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
-			break;
-		case "attribute to be":
-			w.attributeToBe((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
-			break;
+		try {
+			switch (userObject.toLowerCase()) {
+			case "sleep":
+				w.sleep(time.getInt(0));
+				break;
+			case "page to load":
+				w.pageToLoad(time.getInt(0));
+				break;
+			case "presence":
+				w.presence((By) locator.get(0), time.getInt(0));
+				break;
+			case "visble":
+				w.visibility((By) locator.get(0), time.getInt(0));
+				break;
+			case "clickable":
+				w.clickable((By) locator.get(0), time.getInt(0));
+				break;
+			case "invisble":
+				w.invisibility((By) locator.get(0), time.getInt(0));
+				break;
+			case "selected":
+				w.selected((By) locator.get(0), time.getInt(0));
+				break;
+			case "title contains":
+				w.titleContains(text.getString(0), time.getInt(0));
+				break;
+			case "title to be":
+				w.titleToBe(text.getString(0), time.getInt(0));
+				break;
+			case "url contains":
+				w.urlContains(text.getString(0), time.getInt(0));
+				break;
+			case "url to be":
+				w.urlToBe(url.getString(0), time.getInt(0));
+				break;
+			case "attribute contains":
+				w.attributeContains((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
+				break;
+			case "attribute to be":
+				w.attributeToBe((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
+				break;
+			}
+		} catch (AssertionError e) {
+			report.fail("Assert check: FAIL", e);
+			isFail = true;
+			softAssert.assertTrue(false);
 		}
 	}
 
@@ -345,49 +376,55 @@ public class Coordinator {
 		String userObject = run.getString("userObject");
 		setValues(run);
 
-		switch (userObject.toLowerCase()) {
-		case "pause":
-			v.pause((By) locator.get(0));
-			break;
-		case "play":
-			v.play((By) locator.get(0));
-			break;
-		case "mute":
-			v.mute((By) locator.get(0));
-			break;
-		case "unmute":
-			v.unmute((By) locator.get(0));
-			break;
-		case "replay":
-			v.replay((By) locator.get(0));
-			break;
-		case "set volume":
-			v.setVolume((By) locator.get(0), time.getDouble(0));
-			break;
-		case "set time":
-			v.setVolume((By) locator.get(0), time.getDouble(0));
-			break;
-		case "is playing":
-			softAssert.assertFalse(v.isPaused((By) locator.get(0)));
-			break;
-		case "is paused":
-			softAssert.assertTrue(v.isPaused((By) locator.get(0)));
-			break;
-		case "is unmuted":
-			softAssert.assertFalse(v.isMuted((By) locator.get(0)));
-			break;
-		case "is muted":
-			softAssert.assertTrue(v.isMuted((By) locator.get(0)));
-			break;
-		case "is loaded":
-			softAssert.assertTrue(v.isLoaded((By) locator.get(0)));
-			break;
-		case "time equals":
-			softAssert.assertTrue(v.timeEquals((By) locator.get(0), time.getDouble(0)));
-			break;
-		case "volume equals":
-			softAssert.assertFalse(v.volumeEquals((By) locator.get(0), time.getDouble(0)));
-			break;
+		try {
+			switch (userObject.toLowerCase()) {
+			case "pause":
+				v.pause((By) locator.get(0));
+				break;
+			case "play":
+				v.play((By) locator.get(0));
+				break;
+			case "mute":
+				v.mute((By) locator.get(0));
+				break;
+			case "unmute":
+				v.unmute((By) locator.get(0));
+				break;
+			case "replay":
+				v.replay((By) locator.get(0));
+				break;
+			case "set volume":
+				v.setVolume((By) locator.get(0), time.getDouble(0));
+				break;
+			case "set time":
+				v.setVolume((By) locator.get(0), time.getDouble(0));
+				break;
+			case "is playing":
+				Assert.assertFalse(v.isPaused((By) locator.get(0)), userObject);
+				break;
+			case "is paused":
+				Assert.assertTrue(v.isPaused((By) locator.get(0)), userObject);
+				break;
+			case "is unmuted":
+				Assert.assertFalse(v.isMuted((By) locator.get(0)), userObject);
+				break;
+			case "is muted":
+				Assert.assertTrue(v.isMuted((By) locator.get(0)), userObject);
+				break;
+			case "is loaded":
+				Assert.assertTrue(v.isLoaded((By) locator.get(0)), userObject);
+				break;
+			case "time equals":
+				Assert.assertTrue(v.timeEquals((By) locator.get(0), time.getDouble(0)), userObject);
+				break;
+			case "volume equals":
+				Assert.assertFalse(v.volumeEquals((By) locator.get(0), time.getDouble(0)), userObject);
+				break;
+			}
+		} catch (AssertionError e) {
+			report.fail("Assert check: FAIL", e);
+			isFail = true;
+			softAssert.assertTrue(false);
 		}
 	}
 
@@ -396,19 +433,25 @@ public class Coordinator {
 		String userObject = run.getString("userObject");
 		setValues(run);
 
-		switch (userObject.toLowerCase()) {
-		case "execute js command":
-			j.executeJS(text.getString(0));
-			break;
-		case "execute js command by locator":
-			j.executeJS(text.getString(0), (By) locator.get(0));
-			break;
-		case "executed js result equals":
-			j.executedJSResultEquals(text.getString(0), text.getString(1));
-			break;
-		case "executed java file":
-			j.executeJavaFile(file.getString(0));
-			break;
+		try {
+			switch (userObject.toLowerCase()) {
+			case "execute js command":
+				j.executeJS(text.getString(0));
+				break;
+			case "execute js command by locator":
+				j.executeJS(text.getString(0), (By) locator.get(0));
+				break;
+			case "executed js result equals":
+				j.executedJSResultEquals(text.getString(0), text.getString(1));
+				break;
+			case "executed java file":
+				j.executeJavaFile(file.getString(0));
+				break;
+			}
+		} catch (AssertionError e) {
+			report.fail("Assert check: FAIL", e);
+			isFail = true;
+			softAssert.assertTrue(false);
 		}
 	}
 
@@ -417,19 +460,26 @@ public class Coordinator {
 		String userObject = run.getString("userObject");
 		setValues(run);
 
-		switch (userObject.toLowerCase()) {
-		case "full page screenshot":
-			p.fullpageScreenshot();
-			break;
-		case "element screenshot":
-			p.elementScreenshot((By) locator.get(0));
-			break;
-		case "compare full page screenshot with":
-			softAssert.assertTrue(p.isFullpageScreenshotWithFileMatch(file.getString(0)));
-			break;
-		case "compare element screenshot with":
-			softAssert.assertTrue(p.isElementScreenshotWithFileMatch(file.getString(0), (By) locator.get(0)));
-			break;
+		try {
+			switch (userObject.toLowerCase()) {
+			case "full page screenshot":
+				p.fullpageScreenshot();
+				break;
+			case "element screenshot":
+				p.elementScreenshot((By) locator.get(0));
+				break;
+			case "compare full page screenshot with":
+				Assert.assertTrue(p.isFullpageScreenshotWithFileMatch(file.getString(0)), userObject);
+				break;
+			case "compare element screenshot with":
+				Assert.assertTrue(p.isElementScreenshotWithFileMatch(file.getString(0), (By) locator.get(0)),
+						userObject);
+				break;
+			}
+		} catch (AssertionError e) {
+			report.fail("Assert check: FAIL", e);
+			isFail = true;
+			softAssert.assertTrue(false);
 		}
 	}
 

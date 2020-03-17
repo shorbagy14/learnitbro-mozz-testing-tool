@@ -1,6 +1,6 @@
 package com.learnitbro.testing.tool.file;
 
-
+import java.awt.Desktop;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,7 +10,7 @@ import java.net.URL;
 import java.nio.file.Files;
 
 public class FileHandler {
-	
+
 	public File gettResourceAsFile(String fileName) throws IOException {
 		InputStream initialStream = getClass().getResourceAsStream(fileName);
 		String dir = System.getProperty("user.dir");
@@ -24,7 +24,7 @@ public class FileHandler {
 		String dir = System.getProperty("user.dir");
 		DirectoryHandler.create(String.format("%s/assets/", dir));
 		String outputfile = String.format("%s/assets%s", dir, FILE_NAME);
-		
+
 		FileOutputStream fileOutputStream = new FileOutputStream(outputfile);
 		byte dataBuffer[] = new byte[1024];
 		int bytesRead;
@@ -58,7 +58,15 @@ public class FileHandler {
 		}
 		return file;
 	}
-	
+
+	public static void open(String file) {
+		try {
+			Desktop.getDesktop().open(new File(file));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static String getUserDir() {
 		return System.getProperty("user.dir");
 	}

@@ -17,9 +17,9 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<selenium.version>3.141.59</selenium.version>
-		<webdrivermanager.version>2.2.4</webdrivermanager.version>
+		<webdrivermanager.version>3.8.1</webdrivermanager.version>
 		<json.version>20180813</json.version>
-		<appium.version>5.0.4</appium.version>
+		<appium.version>7.3.0</appium.version>
 		<extentreports.version>4.0.6</extentreports.version>
 		<ashot.version>1.5.2</ashot.version>
 		<testng.version>6.9.9</testng.version>

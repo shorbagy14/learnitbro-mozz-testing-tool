@@ -88,8 +88,8 @@ public class Operation {
 		
 		switch (driverType.toLowerCase()) {
 		case "chrome":
-//			WebDriverManager.chromedriver().setup();
-			WebDriverManager.chromedriver().version("79").setup();
+			WebDriverManager.chromedriver().setup();
+//			WebDriverManager.chromedriver().version("79").setup();
 
 			ChromeOptions chromeOptions = new ChromeOptions();
 			chromeOptions.addArguments("window-size=1200x600");

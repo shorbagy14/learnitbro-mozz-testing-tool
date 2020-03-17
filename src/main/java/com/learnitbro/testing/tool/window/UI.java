@@ -133,14 +133,20 @@ public class UI extends JPanel implements ActionListener {
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 
-		JMenu lblGeneralText = new JMenu("File");
-		menuBar.add(lblGeneralText);
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
 
 		JMenuItem mntmSave = new JMenuItem("Save");
-		lblGeneralText.add(mntmSave);
+		mnFile.add(mntmSave);
 
 		JMenuItem mntmLoad = new JMenuItem("Load");
-		lblGeneralText.add(mntmLoad);
+		mnFile.add(mntmLoad);
+
+		JMenuItem mntmReports = new JMenuItem("Reports");
+		mnFile.add(mntmReports);
+
+		JMenuItem mntmScreenshots = new JMenuItem("Screenshots");
+		mnFile.add(mntmScreenshots);
 
 		List<String> action = new ArrayList<String>();
 		List<String> waiting = new ArrayList<String>();
@@ -339,7 +345,7 @@ public class UI extends JPanel implements ActionListener {
 		// Save Tree
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+				JFileChooser j = new JFileChooser(FileHandler.getUserDir());
 
 				// invoke the showsSaveDialog function to show the save dialog
 				int r = j.showSaveDialog(null);
@@ -376,11 +382,11 @@ public class UI extends JPanel implements ActionListener {
 					generalPanel.setVisible(false);
 					return;
 				}
-				
+
 //				int index = node.getParent().getIndex(node);
 //				int number = node.getParent().getChildCount();
 //				|| index+1 != number
-				
+
 				if (node.getChildCount() != 0 || node.isRoot())
 					btnRemove.setEnabled(false);
 				else
@@ -389,7 +395,7 @@ public class UI extends JPanel implements ActionListener {
 				/* retrieve the node that was selected */
 				// Object nodeInfo = node.getUserObject();
 				int level = node.getLevel();
-				
+
 				MyTreeNode myNode = new MyTreeNode(node);
 //				System.out.println(myNode);				
 
@@ -403,11 +409,23 @@ public class UI extends JPanel implements ActionListener {
 				}
 			}
 		});
+
+		mntmReports.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FileHandler.open(FileHandler.getUserDir() + File.separator + "reports");
+			}
+		});
+
+		mntmScreenshots.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FileHandler.open(FileHandler.getUserDir() + File.separator + "screenshots");
+			}
+		});
 	}
 
 	private void loadTree() {
 
-		JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		JFileChooser j = new JFileChooser(FileHandler.getUserDir());
 
 		j.addChoosableFileFilter(new FileFilter() {
 			public String getDescription() {
@@ -620,8 +638,14 @@ public class UI extends JPanel implements ActionListener {
 		} else if (LAUNCH_COMMAND.equals(command)) {
 			saveTree(null);
 			frame.setVisible(false);
-			Control control = new Control();
-			control.start();
+
+			try {
+				Control control = new Control();
+				control.start();
+			} catch (AssertionError ex) {
+				ex.printStackTrace();
+			}
+			
 			frame.setVisible(true);
 		}
 	}
