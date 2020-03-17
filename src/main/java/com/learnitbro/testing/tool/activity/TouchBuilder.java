@@ -23,7 +23,7 @@ public class TouchBuilder {
 		this.driver = driver;
 		this.report = report;
 		if (touch == null)
-			touch = new TouchActions(driver);
+			touch = new TouchActions(this.driver);
 	}
 
 //	/**

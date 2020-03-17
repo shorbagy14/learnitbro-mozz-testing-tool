@@ -19,7 +19,6 @@ public class AssertBuilder {
 	public AssertBuilder(WebDriver driver, Report report) {
 		this.driver = driver;
 		this.report = report;
-
 	}
 
 	//////////// RETURNS ////////////

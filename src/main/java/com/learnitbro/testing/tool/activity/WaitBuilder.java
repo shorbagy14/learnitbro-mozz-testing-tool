@@ -23,7 +23,6 @@ public class WaitBuilder {
 	public WaitBuilder(WebDriver driver, Report report) {
 		this.driver = driver;
 		this.report = report;
-
 	}
 	
 	/**

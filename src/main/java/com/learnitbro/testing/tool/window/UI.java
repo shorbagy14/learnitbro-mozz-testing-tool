@@ -376,7 +376,7 @@ public class UI extends JPanel implements ActionListener {
 					generalPanel.setVisible(false);
 					return;
 				}
-
+				
 //				int index = node.getParent().getIndex(node);
 //				int number = node.getParent().getChildCount();
 //				|| index+1 != number
@@ -389,7 +389,7 @@ public class UI extends JPanel implements ActionListener {
 				/* retrieve the node that was selected */
 				// Object nodeInfo = node.getUserObject();
 				int level = node.getLevel();
-
+				
 				MyTreeNode myNode = new MyTreeNode(node);
 //				System.out.println(myNode);				
 

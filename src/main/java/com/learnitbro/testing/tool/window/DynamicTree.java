@@ -41,6 +41,11 @@ public class DynamicTree extends JPanel {
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setShowsRootHandles(true);
 
+//		tree.setDragEnabled(true);
+//		tree.setDropMode(DropMode.ON_OR_INSERT);
+//		tree.setTransferHandler(new TreeTransferHandler());
+//		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
+
 		JScrollPane scrollPane = new JScrollPane(tree);
 		add(scrollPane);
 	}
@@ -69,7 +74,7 @@ public class DynamicTree extends JPanel {
 			int parentIndex = -1;
 			int grandparentIndex = -1;
 			int superparentIndex = -1;
-			
+
 			MyTreeNode n = new MyTreeNode(currentNode);
 			for (int x = 0; x < MyTreeNode.all.length(); x++) {
 				JSONObject value = (JSONObject) MyTreeNode.all.get(x);
@@ -90,7 +95,8 @@ public class DynamicTree extends JPanel {
 					}
 				}
 
-				if (isLevelMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch && isSuperParentIndexMatch) {
+				if (isLevelMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch
+						&& isSuperParentIndexMatch) {
 					level = value.getInt("level");
 					index = value.getInt("index");
 					parentIndex = value.getInt("parentIndex");
@@ -100,26 +106,26 @@ public class DynamicTree extends JPanel {
 					break;
 				}
 			}
-			
+
 			for (int y = 0; y < MyTreeNode.all.length(); y++) {
 				JSONObject v = MyTreeNode.all.getJSONObject(y);
 				if (parentIndex == v.getInt("parentIndex") && grandparentIndex == v.getInt("grandparentIndex")
 						&& superparentIndex == v.getInt("superparentIndex") && level == v.getInt("level")) {
-					
-					if(index < v.getInt("index"))
-						MyTreeNode.all.getJSONObject(y).put("index", v.getInt("index")-1);
+
+					if (index < v.getInt("index"))
+						MyTreeNode.all.getJSONObject(y).put("index", v.getInt("index") - 1);
 				}
 			}
-			
+
 			JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/node.json"), MyTreeNode.all.toString(1));
-			
+
 			System.out.println("Removing this node : " + currentNode);
 			if (parent != null) {
 				treeModel.removeNodeFromParent(currentNode);
 				return;
 			}
 		}
-		
+
 		// Either there was no selection, or the root was selected.
 		toolkit.beep();
 	}

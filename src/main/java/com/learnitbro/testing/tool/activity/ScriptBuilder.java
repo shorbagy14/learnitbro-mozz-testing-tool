@@ -27,8 +27,7 @@ public class ScriptBuilder {
 		this.driver = driver;
 		this.report = report;
 		if (js == null)
-			js = ((JavascriptExecutor) driver);
-
+			js = ((JavascriptExecutor) this.driver);
 	}
 
 	/**

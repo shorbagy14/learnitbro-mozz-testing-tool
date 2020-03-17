@@ -27,7 +27,7 @@ public class MyTreeCellRenderer extends DefaultTreeCellRenderer {
 		super.getTreeCellRendererComponent(tree, value, sel, exp, leaf, row, hasFocus);
 
 		// Assuming you have a tree of Strings
-		String node = (String) ((DefaultMutableTreeNode) value).getUserObject();
+		String node = ((DefaultMutableTreeNode) value).getUserObject().toString();
 		int level = (int) ((DefaultMutableTreeNode) value).getLevel();
 
 		if (level == 1)

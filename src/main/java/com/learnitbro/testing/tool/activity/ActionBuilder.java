@@ -26,8 +26,7 @@ public class ActionBuilder {
 		this.driver = driver;
 		this.report = report;
 		if (actions == null)
-			actions = new Actions(driver);
-
+			actions = new Actions(this.driver);
 	}
 
 	/////////////////////// WebDriver & WebElement Class ///////////////////////

@@ -64,7 +64,6 @@ public class Coordinator {
 //			email.sendAttachmentInEmail("Test Report - " + report.getTime() + info,
 //					"This is an automated email. Here is the report for the test. Mohamed Elshorbagy", emailList,
 //					report.getAllReports());
-			softAssert.assertAll();
 		}
 	}
 
@@ -88,6 +87,7 @@ public class Coordinator {
 						JSONObject run = input.getJSONObject(i);
 						steps(run);
 					}
+					softAssert.assertAll();
 					report.pass(DESCRIPTION + " - PASS");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -424,11 +424,11 @@ public class Coordinator {
 		case "element screenshot":
 			p.elementScreenshot((By) locator.get(0));
 			break;
-		case "comapre full page screenshot with":
-			p.comapreFullpageScreenshotWith(file.getString(0));
+		case "compare full page screenshot with":
+			softAssert.assertTrue(p.isFullpageScreenshotWithFileMatch(file.getString(0)));
 			break;
-		case "comapre element screenshot with":
-			p.comapreElementScreenshotWith(file.getString(0), (By) locator.get(0));
+		case "compare element screenshot with":
+			softAssert.assertTrue(p.isElementScreenshotWithFileMatch(file.getString(0), (By) locator.get(0)));
 			break;
 		}
 	}
