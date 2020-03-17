@@ -26,10 +26,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.json.JSONArray;
@@ -39,8 +40,10 @@ import com.learnitbro.testing.tool.exceptions.JSONFileNotValidException;
 import com.learnitbro.testing.tool.exceptions.ReadFileException;
 import com.learnitbro.testing.tool.file.FileHandler;
 import com.learnitbro.testing.tool.file.JSONHandler;
+import com.learnitbro.testing.tool.file.URLHandler;
 import com.learnitbro.testing.tool.run.Control;
 import com.learnitbro.testing.tool.stream.StreamHandler;
+import com.learnitbro.testing.tool.window.jtextfield.JTextFieldNumberLimit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javax.swing.JTextField;
@@ -645,7 +648,7 @@ public class UI extends JPanel implements ActionListener {
 			} catch (AssertionError ex) {
 				ex.printStackTrace();
 			}
-			
+
 			frame.setVisible(true);
 		}
 	}
@@ -672,6 +675,8 @@ public class UI extends JPanel implements ActionListener {
 			String objCategory = obj.getString("category");
 			JSONArray req = obj.getJSONArray("require");
 			JSONArray show = obj.getJSONArray("show");
+//			JSONArray limit = obj.getJSONArray("limit");
+
 			lblTop.setText(objName);
 
 			if (level == 1) {
@@ -744,6 +749,7 @@ public class UI extends JPanel implements ActionListener {
 
 						String v = req.getString(y);
 						String s = show.getString(y);
+//						String l = limit.getString(y);
 						list.add(v);
 
 						JTextField jtf = new JTextField();
@@ -774,6 +780,41 @@ public class UI extends JPanel implements ActionListener {
 						}
 
 						posY += 100;
+
+						if (v.equalsIgnoreCase("number") || v.equalsIgnoreCase("time"))
+							jtf.setDocument(new JTextFieldNumberLimit(5));
+						else if (v.equalsIgnoreCase("url")) {
+							jtf.getDocument().addDocumentListener(new DocumentListener() {
+
+								@Override
+								public void insertUpdate(DocumentEvent e) {
+									listen();
+								}
+
+								@Override
+								public void removeUpdate(DocumentEvent e) {
+									listen();
+								}
+
+								@Override
+								public void changedUpdate(DocumentEvent e) {
+									listen();
+								}
+
+								public void listen() {
+									String value = jtf.getText();
+									if((URLHandler.isURLValid(value)) || value.isEmpty()) {
+										lbl.setText(s);
+										lbl.setForeground(Color.BLACK);
+									} else  {
+										lbl.setText(s + " Is Not Valid");
+										lbl.setForeground(Color.RED);
+									}
+								}
+
+							});
+						}
+
 					}
 					break;
 				}
