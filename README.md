@@ -21,8 +21,37 @@ Using the terminal or jenkins:
 - The file will include the browser, test cases and all information the test needs
 - The test will start and a report will be send to the email provided
 
+### Supports:
+Web Browsers:
+- Chrome, Firefox, Internet Explorer, Edge, Safari and Opera
+- Headless: Chrome and Firefox
+ 
+Visual Testing:
+- Full page screenshot comparison 
+- Element screenshot comparison
+ 
+Video:
+- Video testing for default browser videos
+
+Script:
+- JavaScript execution
+
+### In Progress
+Video:
+- Custom video testing
+
+Mobile Browsers:
+- Chrome (Android) and Safari (iOS)
+
+Mobile Apps:
+- Android and iOS
+
+User Interface:
+- Change test's order
+
 ### Requirements:
 - Java 8
+- Appium 7 (for mobile only) - to be supported soon
 
 ### Dependencies:
 - Selenium 3.141.59
