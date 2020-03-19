@@ -8,8 +8,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.opera.OperaOptions;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 
 import com.learnitbro.testing.tool.reporting.Report;
 import com.learnitbro.testing.tool.stream.StreamHandler;
@@ -112,7 +120,50 @@ public class Operation {
 				firefoxOptions.addArguments("--headless");
 				driver = new FirefoxDriver(firefoxOptions);
 			} else {
-				driver = new FirefoxDriver(firefoxOptions);
+				driver = new FirefoxDriver();
+			}
+			break;
+			
+		case "ie":
+			WebDriverManager.iedriver().setup();
+			InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
+			if (headless) {
+				internetExplorerOptions.setCapability("headless", true);
+				driver = new InternetExplorerDriver(internetExplorerOptions);
+			} else {
+				driver = new InternetExplorerDriver();
+			}
+			break;
+			
+		case "edge":
+			WebDriverManager.edgedriver().setup();
+			EdgeOptions edgeOptions = new EdgeOptions();
+			if (headless) {
+				edgeOptions.setCapability("headless", true);
+				driver = new EdgeDriver(edgeOptions);
+			} else {
+				driver = new EdgeDriver();
+			}
+			break;
+			
+		case "opera":
+			WebDriverManager.operadriver().setup();
+			OperaOptions operaOptions = new OperaOptions();
+			if (headless) {
+				operaOptions.addArguments("--headless");
+				driver = new OperaDriver(operaOptions);
+			} else {
+				driver = new OperaDriver();
+			}
+			break;
+			
+		case "safari":
+			SafariOptions safariOptions = new SafariOptions();
+			if (headless) {
+				safariOptions.setCapability("headless", true);
+				driver = new SafariDriver(safariOptions);
+			} else {
+				driver = new SafariDriver();
 			}
 			break;
 
