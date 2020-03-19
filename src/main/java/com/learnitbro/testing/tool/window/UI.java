@@ -189,8 +189,8 @@ public class UI extends JPanel implements ActionListener {
 		JMenuItem mntmConsole = new JMenuItem("Console");
 		mnView.add(mntmConsole);
 
-		JMenuItem mntmTest = new JMenuItem("Test");
-		mnView.add(mntmTest);
+		JMenuItem mntmUserInterface = new JMenuItem("User Interface");
+		mnView.add(mntmUserInterface);
 		
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
@@ -482,7 +482,7 @@ public class UI extends JPanel implements ActionListener {
 			}
 		});
 		
-		mntmTest.addActionListener(new ActionListener() {
+		mntmUserInterface.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().getComponent(0).setVisible(true);
 				frame.getContentPane().getComponent(1).setVisible(true);

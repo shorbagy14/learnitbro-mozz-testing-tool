@@ -1,4 +1,4 @@
-package com.learnitbro.testing.tool.reporting;
+package com.learnitbro.testing.tool.mail;
 
 
 import java.io.File;
