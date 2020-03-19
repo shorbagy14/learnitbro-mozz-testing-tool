@@ -29,14 +29,16 @@ Web Browsers:
 Visual Testing:
 - Full page screenshot comparison 
 - Element screenshot comparison
+- Features average luminosity
  
 Video:
 - Video testing for default browser videos
+- Options: Play, Pause, Mute, Unmute and more
 
 Script:
 - JavaScript execution
 
-### In Progress
+### In Progress:
 Video:
 - Custom video testing
 
