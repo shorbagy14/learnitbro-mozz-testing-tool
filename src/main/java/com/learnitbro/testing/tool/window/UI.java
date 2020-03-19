@@ -13,7 +13,11 @@ import java.util.UUID;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
+import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -43,6 +47,8 @@ import com.learnitbro.testing.tool.file.JSONHandler;
 import com.learnitbro.testing.tool.file.URLHandler;
 import com.learnitbro.testing.tool.run.Control;
 import com.learnitbro.testing.tool.stream.StreamHandler;
+import com.learnitbro.testing.tool.stream.TeePrintStream;
+import com.learnitbro.testing.tool.stream.TextAreaOutputStream;
 import com.learnitbro.testing.tool.window.jtextfield.JTextFieldNumberLimit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -75,6 +81,7 @@ public class UI extends JPanel implements ActionListener {
 		frame.setBounds(100, 100, 1040, 650);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 
 		config = StreamHandler.inputStreamTextBuilder(getClass().getResourceAsStream("/config.json"));
@@ -82,7 +89,7 @@ public class UI extends JPanel implements ActionListener {
 		// <---- Button Panel
 
 		JPanel btnPanel = new JPanel();
-		btnPanel.setBounds(275, 537, 765, 69);
+		btnPanel.setBounds(279, 537, 765, 69);
 		frame.getContentPane().add(btnPanel);
 		btnPanel.setLayout(null);
 
@@ -109,7 +116,7 @@ public class UI extends JPanel implements ActionListener {
 		// End of Button Panel ---->
 
 		JPanel mainPanel = new JPanel();
-		mainPanel.setBounds(275, 0, 765, 538);
+		mainPanel.setBounds(280, 0, 765, 538);
 		frame.getContentPane().add(mainPanel);
 		mainPanel.setLayout(null);
 
@@ -131,6 +138,27 @@ public class UI extends JPanel implements ActionListener {
 		frame.getContentPane().add(treePanel);
 
 		// End of Tree Panel ---->
+
+		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
+		textArea.setBorder(new EmptyBorder(10, 10, 10, 10));
+		textArea.setFont(new Font("Sitka Text", Font.BOLD, 12));
+		textArea.setBackground(new Color(51, 51, 51));
+		textArea.setForeground(Color.GREEN);
+
+		TextAreaOutputStream taos = new TextAreaOutputStream(textArea, 1000);
+		TeePrintStream tee = new TeePrintStream(taos, System.out);
+		TeePrintStream ter = new TeePrintStream(taos, System.err);
+		System.setOut(tee);
+		System.setErr(ter);
+
+		JScrollPane jscrollPaneConsole = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+		jscrollPaneConsole.setBounds(0, 0, 1040, 620);
+		jscrollPaneConsole.setVisible(false);
+		frame.getContentPane().add(jscrollPaneConsole);
+
 		// <---- Menu Bar
 
 		JMenuBar menuBar = new JMenuBar();
@@ -150,6 +178,15 @@ public class UI extends JPanel implements ActionListener {
 
 		JMenuItem mntmScreenshots = new JMenuItem("Screenshots");
 		mnFile.add(mntmScreenshots);
+		
+		JMenu mnView = new JMenu("View");
+		menuBar.add(mnView);
+		
+		JMenuItem mntmConsole = new JMenuItem("Console");
+		mnView.add(mntmConsole);
+
+		JMenuItem mntmTest = new JMenuItem("Test");
+		mnView.add(mntmTest);
 
 		List<String> action = new ArrayList<String>();
 		List<String> waiting = new ArrayList<String>();
@@ -195,10 +232,6 @@ public class UI extends JPanel implements ActionListener {
 		}
 		disableMenuItems(mnAdd);
 		enableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
-
-		/**
-		 * Condition Menu - To be added
-		 */
 
 		// Action Menu
 		final JMenu mnAction = new JMenu("Action");
@@ -424,6 +457,24 @@ public class UI extends JPanel implements ActionListener {
 				FileHandler.open(FileHandler.getUserDir() + File.separator + "screenshots");
 			}
 		});
+		
+		mntmConsole.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().getComponent(0).setVisible(false);
+				frame.getContentPane().getComponent(1).setVisible(false);
+				frame.getContentPane().getComponent(2).setVisible(false);
+				frame.getContentPane().getComponent(3).setVisible(true);
+			}
+		});
+		
+		mntmTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().getComponent(0).setVisible(true);
+				frame.getContentPane().getComponent(1).setVisible(true);
+				frame.getContentPane().getComponent(2).setVisible(true);
+				frame.getContentPane().getComponent(3).setVisible(false);
+			}
+		});
 	}
 
 	private void loadTree() {
@@ -640,16 +691,31 @@ public class UI extends JPanel implements ActionListener {
 			treePanel.removeCurrentNode();
 		} else if (LAUNCH_COMMAND.equals(command)) {
 			saveTree(null);
-			frame.setVisible(false);
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				@Override
+				protected Void doInBackground() throws Exception {
 
-			try {
-				Control control = new Control();
-				control.start();
-			} catch (AssertionError ex) {
-				ex.printStackTrace();
-			}
+					frame.getContentPane().getComponent(0).setVisible(false);
+					frame.getContentPane().getComponent(1).setVisible(false);
+					frame.getContentPane().getComponent(2).setVisible(false);
+					frame.getContentPane().getComponent(3).setVisible(true);
 
-			frame.setVisible(true);
+					try {
+						Control control = new Control();
+						control.start();
+					} catch (AssertionError ex) {
+						ex.printStackTrace();
+					}
+
+					frame.getContentPane().getComponent(0).setVisible(true);
+					frame.getContentPane().getComponent(1).setVisible(true);
+					frame.getContentPane().getComponent(2).setVisible(true);
+					frame.getContentPane().getComponent(3).setVisible(false);
+
+					return null;
+				}
+			};
+			worker.execute();
 		}
 	}
 
@@ -803,10 +869,10 @@ public class UI extends JPanel implements ActionListener {
 
 								public void listen() {
 									String value = jtf.getText();
-									if((URLHandler.isURLValid(value)) || value.isEmpty()) {
+									if ((URLHandler.isURLValid(value)) || value.isEmpty()) {
 										lbl.setText(s);
 										lbl.setForeground(Color.BLACK);
-									} else  {
+									} else {
 										lbl.setText(s + " Is Not Valid");
 										lbl.setForeground(Color.RED);
 									}
