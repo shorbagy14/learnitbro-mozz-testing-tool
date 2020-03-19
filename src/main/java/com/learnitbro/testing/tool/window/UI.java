@@ -40,6 +40,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.learnitbro.testing.tool.App;
 import com.learnitbro.testing.tool.exceptions.JSONFileNotValidException;
 import com.learnitbro.testing.tool.exceptions.ReadFileException;
 import com.learnitbro.testing.tool.file.FileHandler;
@@ -158,6 +159,9 @@ public class UI extends JPanel implements ActionListener {
 		jscrollPaneConsole.setBounds(0, 0, 1040, 620);
 		jscrollPaneConsole.setVisible(false);
 		frame.getContentPane().add(jscrollPaneConsole);
+		
+		App app = new App();
+		app.printCreds();
 
 		// <---- Menu Bar
 
@@ -187,6 +191,17 @@ public class UI extends JPanel implements ActionListener {
 
 		JMenuItem mntmTest = new JMenuItem("Test");
 		mnView.add(mntmTest);
+		
+		JMenu mnEdit = new JMenu("Edit");
+		menuBar.add(mnEdit);
+		
+		JMenuItem mntmMoveUp = new JMenuItem("Move Up");
+		mnEdit.add(mntmMoveUp);
+		
+		JMenuItem mntmMoveDown = new JMenuItem("Move Down");
+		mnEdit.add(mntmMoveDown);
+		
+		disableMenuItems(mnEdit);
 
 		List<String> action = new ArrayList<String>();
 		List<String> waiting = new ArrayList<String>();

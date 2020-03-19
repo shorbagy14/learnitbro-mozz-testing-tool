@@ -8,6 +8,9 @@ Test any website with a click of a button (open source tool developed by [learni
 ### Summary:
 This testing tool allows to create automated tests using a user interface
 
+### Download:
+Click on [here](https://learnitbro.com/) to download version 1.1.0
+
 ### Steps:
 Using the user interface:
 - Run the jar file
@@ -20,6 +23,7 @@ Using the terminal or jenkins:
 - Example: java -jar tool.jar tree.json
 - The file will include the browser, test cases and all information the test needs
 - The test will start and a report will be send to the email provided
+- Any failures in the test will fail the jenkins job
 
 ### Supports:
 Web Browsers:

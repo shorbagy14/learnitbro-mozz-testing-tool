@@ -16,7 +16,7 @@ import com.learnitbro.testing.tool.window.UI;
 public class App {
 
 	private String version = "Version : " + getClass().getPackage().getImplementationVersion();
-	private String title = "Learn It Bro Testing Tool";
+	private String title = "Mozz Testing Tool by Learn It Bro";
 
 	/**
 	 * Launch the application.
@@ -24,12 +24,12 @@ public class App {
 	 */
 	public static void main(String[] args) throws Exception {
 		App app = new App();
-		app.printCreds();
 		
 		if (args.length == 0) {
 			System.out.println("UI mode activated");
 			app.ui();
 		} else if (args.length == 1) {
+			app.printCreds();
 			app.console(args[0]);
 		} else {
 			throw new RuntimeException("Incorrect number of arguments");
@@ -104,7 +104,7 @@ public class App {
 	/**
 	 * Prints the credentials of the project
 	 */
-	private void printCreds() {
+	public void printCreds() {
 		System.out.print("Copyright Learn It Bro (2020) All Rights Reserved\nMohamed Elshorbagy\nLearn It Bro\n");
 		System.out.println(getTitle());
 		System.out.println(getVersion());
