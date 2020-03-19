@@ -1,7 +1,9 @@
 package com.learnitbro.testing.tool.activity;
 
+import java.util.ArrayList;
+
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
@@ -13,7 +15,6 @@ public class ActionBuilder {
 	private WebDriver driver;
 	private Report report;
 	private Actions actions;
-	private JavascriptExecutor js;
 
 	@SuppressWarnings("unused")
 	private ActionBuilder() {
@@ -25,8 +26,7 @@ public class ActionBuilder {
 		this.driver = driver;
 		this.report = report;
 		if (actions == null)
-			actions = new Actions(driver);
-
+			actions = new Actions(this.driver);
 	}
 
 	/////////////////////// WebDriver & WebElement Class ///////////////////////
@@ -37,32 +37,32 @@ public class ActionBuilder {
 	 * @param url
 	 */
 	public void link(String url) {
-		driver.get(url);
 		report.info("Going to " + url);
+		driver.get(url);
 	}
 
 	/**
 	 * navigate back
 	 */
 	public void back() {
-		driver.navigate().back();
 		report.info("Navigating back");
+		driver.navigate().back();
 	}
 
 	/**
 	 * navigate forward
 	 */
 	public void forward() {
-		driver.navigate().forward();
 		report.info("Navigating forward");
+		driver.navigate().forward();
 	}
 
 	/**
 	 * refresh
 	 */
 	public void refresh() {
-		driver.navigate().refresh();
 		report.info("Page refresh");
+		driver.navigate().refresh();
 	}
 
 	/**
@@ -72,14 +72,6 @@ public class ActionBuilder {
 		report.info("Close current tab");
 		driver.close();
 	}
-
-//	/**
-//	 * Close browser
-//	 */
-//	public void quit() {
-//		driver.quit();
-//		report.info("Close browser");
-//	}
 
 	/**
 	 * clicks the element
@@ -206,8 +198,8 @@ public class ActionBuilder {
 	 * @param locator
 	 * @param text    (String)
 	 */
-	public void selectDropdownByVisibleText(By locator, String text) {
-		report.info("Selecting " + text + " from drop down");
+	public void selectDropdownByText(By locator, String text) {
+		report.info("Selecting text equals" + text + " from drop down of locator : " + locator);
 		Select select = new Select(driver.findElement(locator));
 		select.selectByVisibleText(text);
 	}
@@ -218,10 +210,10 @@ public class ActionBuilder {
 	 * @param locator
 	 * @param value   (String)
 	 */
-	public void selectDropdownByValue(By locator, String value) {
-		report.info("Selecting " + value + " from drop down");
+	public void selectDropdownByValue(By locator, String text) {
+		report.info("Selecting text that has attribute value of " + text + " from drop down of locator : " + locator);
 		Select select = new Select(driver.findElement(locator));
-		select.selectByValue(value);
+		select.selectByValue(text);
 	}
 
 	/**
@@ -231,8 +223,80 @@ public class ActionBuilder {
 	 * @param index   (Integer)
 	 */
 	public void selectDropdownByIndex(By locator, int index) {
-		report.info("Selecting element at index " + index + " from drop down");
+		report.info("Selecting element at index " + index + " from drop down of locator : " + locator);
 		Select select = new Select(driver.findElement(locator));
 		select.selectByIndex(index);
+	}
+
+	/////////////////// Window Class ////////////////////////
+
+	/**
+	 * 
+	 */
+	public void maximize() {
+		report.info("Browser window maximize");
+		driver.manage().window().maximize();
+	}
+
+	/**
+	 * 
+	 */
+	public void fullscreen() {
+		report.info("Browser window fullscreen");
+		driver.manage().window().fullscreen();
+	}
+
+	/**
+	 * 
+	 */
+	public void minimize() {
+		report.info("Browser window minimize");
+		driver.manage().window().setPosition(new Point(0, -2000));
+	}
+
+	/**
+	 * 
+	 * @param index
+	 */
+	public void switchToWindow(int index) {
+		report.info("Switching to window of index : " + index);
+		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+		driver.switchTo().window(tabs.get(index));
+	}
+
+	/////////////////// Frame Class ////////////////////////
+
+	/**
+	 * 
+	 * @param locator
+	 */
+	public void switchToFrame(By locator) {
+		report.info("Switching to frame of locator : " + locator);
+		driver.switchTo().frame(driver.findElement(locator));
+	}
+	
+	/**
+	 * 
+	 * @param index
+	 */
+	public void switchToFrame(int index) {
+		report.info("Switching to frame of index : " + index);
+		driver.switchTo().frame(index);
+	}
+
+//	/**
+//	 * 
+//	 */
+//	public void switchToParentFrame() {
+//		report.info("Switching to parent frame");
+//		driver.switchTo().parentFrame();
+//	}
+
+	/**
+	 * 
+	 */
+	public void switchToDefaultFrame() {
+		report.info("Switching to default frame");
+		driver.switchTo().defaultContent();
 	}
 }

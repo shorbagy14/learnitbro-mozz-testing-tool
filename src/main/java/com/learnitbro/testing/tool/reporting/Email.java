@@ -13,10 +13,10 @@ import javax.mail.internet.*;
 public class Email {
 
 	// Sender's email ID needs to be mentioned
-	final String FROM = "apps-learnitbro@outlook.com";
+	final String FROM = "";
 
-	final String USERNAME = "apps-learnitbro@outlook.com";
-	final String PASSWORD = "s3N)+)}Q(*b-";
+	final String USERNAME = "";
+	final String PASSWORD = "";
 
 	private Properties props;
 

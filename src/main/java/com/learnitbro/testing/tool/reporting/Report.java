@@ -16,6 +16,7 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.ExtentLoggerReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.learnitbro.testing.tool.file.DirectoryHandler;
+import com.learnitbro.testing.tool.file.FileHandler;
 
 public class Report {
 
@@ -23,6 +24,7 @@ public class Report {
 	private ExtentReports extent;
 	private String location;
 	private String timeStamp;
+	private String details;
 
 //	@SuppressWarnings("unused")
 //	private Report() {
@@ -35,10 +37,10 @@ public class Report {
 	}
 
 	public void setExtentReports(String details) {
-		String dir = System.getProperty("user.dir");
+		this.details = details;
 		
 		setTime();
-		location = DirectoryHandler.create(String.format("%s/reports/report-%s-%s", dir, details, timeStamp)).getPath();
+		location = DirectoryHandler.create(String.format("%s/reports/report-%s-%s", FileHandler.getUserDir(), details, timeStamp)).getPath();
 
 		ExtentLoggerReporter logger = new ExtentLoggerReporter(location);
 		ExtentHtmlReporter html = new ExtentHtmlReporter(location + "/report.html");
@@ -51,6 +53,10 @@ public class Report {
 
 	private void setTime() {
 		timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(Calendar.getInstance().getTime());
+	}
+	
+	public String getDetails() {
+		return details;
 	}
 	
 	public String getTime() {

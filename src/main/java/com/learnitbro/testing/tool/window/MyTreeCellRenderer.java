@@ -1,14 +1,8 @@
 package com.learnitbro.testing.tool.window;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -33,24 +27,30 @@ public class MyTreeCellRenderer extends DefaultTreeCellRenderer {
 		super.getTreeCellRendererComponent(tree, value, sel, exp, leaf, row, hasFocus);
 
 		// Assuming you have a tree of Strings
-		String node = (String) ((DefaultMutableTreeNode) value).getUserObject();
+		String node = ((DefaultMutableTreeNode) value).getUserObject().toString();
 		int level = (int) ((DefaultMutableTreeNode) value).getLevel();
 
 		if (level == 1)
-			setIcon(new ImageIcon(getClass().getResource("/config.png")));
+			setIcon(new ImageIcon(getClass().getResource("/icons/config.png")));
 		else if (level == 2)
-			setIcon(new ImageIcon(getClass().getResource("/group.png")));
+			setIcon(new ImageIcon(getClass().getResource("/icons/group.png")));
 		else if (level == 3)
-			setIcon(new ImageIcon(getClass().getResource("/test.png")));
+			setIcon(new ImageIcon(getClass().getResource("/icons/test.png")));
 		else if (level == 4) {
 			if (getCategory(node).equalsIgnoreCase("action"))
-				setIcon(new ImageIcon(getClass().getResource("/action.png")));
+				setIcon(new ImageIcon(getClass().getResource("/icons/action.png")));
 			else if (getCategory(node).equalsIgnoreCase("wait"))
-				setIcon(new ImageIcon(getClass().getResource("/wait.png")));
+				setIcon(new ImageIcon(getClass().getResource("/icons/wait.png")));
 			else if (getCategory(node).equalsIgnoreCase("assert"))
-				setIcon(new ImageIcon(getClass().getResource("/assert.png")));
+				setIcon(new ImageIcon(getClass().getResource("/icons/assert.png")));
+			else if (getCategory(node).equalsIgnoreCase("video"))
+				setIcon(new ImageIcon(getClass().getResource("/icons/video.png")));
+			else if (getCategory(node).equalsIgnoreCase("script"))
+				setIcon(new ImageIcon(getClass().getResource("/icons/script.png")));
+			else if (getCategory(node).equalsIgnoreCase("picture"))
+				setIcon(new ImageIcon(getClass().getResource("/icons/picture.png")));
 		} else {
-			setIcon(new ImageIcon(getClass().getResource("/default.png")));
+			setIcon(new ImageIcon(getClass().getResource("/icons/default.png")));
 		}
 
 		return this;

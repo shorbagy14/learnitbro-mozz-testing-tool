@@ -13,7 +13,11 @@ import java.util.UUID;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
+import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -21,22 +25,31 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.learnitbro.testing.tool.exceptions.JSONFileNotValidException;
 import com.learnitbro.testing.tool.exceptions.ReadFileException;
 import com.learnitbro.testing.tool.file.FileHandler;
 import com.learnitbro.testing.tool.file.JSONHandler;
+import com.learnitbro.testing.tool.file.URLHandler;
 import com.learnitbro.testing.tool.run.Control;
 import com.learnitbro.testing.tool.stream.StreamHandler;
+import com.learnitbro.testing.tool.stream.TeePrintStream;
+import com.learnitbro.testing.tool.stream.TextAreaOutputStream;
+import com.learnitbro.testing.tool.window.jtextfield.JTextFieldNumberLimit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javax.swing.JTextField;
@@ -68,6 +81,7 @@ public class UI extends JPanel implements ActionListener {
 		frame.setBounds(100, 100, 1040, 650);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 
 		config = StreamHandler.inputStreamTextBuilder(getClass().getResourceAsStream("/config.json"));
@@ -75,16 +89,16 @@ public class UI extends JPanel implements ActionListener {
 		// <---- Button Panel
 
 		JPanel btnPanel = new JPanel();
-		btnPanel.setBounds(275, 537, 765, 69);
+		btnPanel.setBounds(279, 537, 765, 69);
 		frame.getContentPane().add(btnPanel);
 		btnPanel.setLayout(null);
 
-		JButton btnRefresh = new JButton("Refresh");
-		btnRefresh.setEnabled(false);
-		btnRefresh.setBounds(86, 18, 136, 29);
-		btnPanel.add(btnRefresh);
-		btnRefresh.setActionCommand(ADD_COMMAND);
-		btnRefresh.addActionListener(this);
+		JButton btnClear = new JButton("Clear");
+		btnClear.setEnabled(false);
+		btnClear.setBounds(86, 18, 136, 29);
+		btnPanel.add(btnClear);
+		btnClear.setActionCommand(ADD_COMMAND);
+		btnClear.addActionListener(this);
 
 		JButton btnRemove = new JButton("Remove");
 		btnRemove.setBounds(316, 18, 136, 29);
@@ -102,7 +116,7 @@ public class UI extends JPanel implements ActionListener {
 		// End of Button Panel ---->
 
 		JPanel mainPanel = new JPanel();
-		mainPanel.setBounds(275, 0, 765, 538);
+		mainPanel.setBounds(280, 0, 765, 538);
 		frame.getContentPane().add(mainPanel);
 		mainPanel.setLayout(null);
 
@@ -124,24 +138,63 @@ public class UI extends JPanel implements ActionListener {
 		frame.getContentPane().add(treePanel);
 
 		// End of Tree Panel ---->
+
+		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
+		textArea.setBorder(new EmptyBorder(10, 10, 10, 10));
+		textArea.setFont(new Font("Sitka Text", Font.BOLD, 12));
+		textArea.setBackground(new Color(51, 51, 51));
+		textArea.setForeground(Color.GREEN);
+
+		TextAreaOutputStream taos = new TextAreaOutputStream(textArea, 1000);
+		TeePrintStream tee = new TeePrintStream(taos, System.out);
+		TeePrintStream ter = new TeePrintStream(taos, System.err);
+		System.setOut(tee);
+		System.setErr(ter);
+
+		JScrollPane jscrollPaneConsole = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+		jscrollPaneConsole.setBounds(0, 0, 1040, 620);
+		jscrollPaneConsole.setVisible(false);
+		frame.getContentPane().add(jscrollPaneConsole);
+
 		// <---- Menu Bar
 
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 
-		JMenu lblGeneralText = new JMenu("File");
-		menuBar.add(lblGeneralText);
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
 
 		JMenuItem mntmSave = new JMenuItem("Save");
-		lblGeneralText.add(mntmSave);
+		mnFile.add(mntmSave);
 
 		JMenuItem mntmLoad = new JMenuItem("Load");
-		lblGeneralText.add(mntmLoad);
+		mnFile.add(mntmLoad);
+
+		JMenuItem mntmReports = new JMenuItem("Reports");
+		mnFile.add(mntmReports);
+
+		JMenuItem mntmScreenshots = new JMenuItem("Screenshots");
+		mnFile.add(mntmScreenshots);
+		
+		JMenu mnView = new JMenu("View");
+		menuBar.add(mnView);
+		
+		JMenuItem mntmConsole = new JMenuItem("Console");
+		mnView.add(mntmConsole);
+
+		JMenuItem mntmTest = new JMenuItem("Test");
+		mnView.add(mntmTest);
 
 		List<String> action = new ArrayList<String>();
 		List<String> waiting = new ArrayList<String>();
 		List<String> asserting = new ArrayList<String>();
 		List<String> adding = new ArrayList<String>();
+		List<String> video = new ArrayList<String>();
+		List<String> script = new ArrayList<String>();
+		List<String> picture = new ArrayList<String>();
 
 		JSONArray arr = new JSONArray(config);
 		for (int x = 0; x < arr.length(); x++) {
@@ -158,6 +211,12 @@ public class UI extends JPanel implements ActionListener {
 				asserting.add(objName);
 			else if (objCat.equalsIgnoreCase("action"))
 				action.add(objName);
+			else if (objCat.equalsIgnoreCase("video"))
+				video.add(objName);
+			else if (objCat.equalsIgnoreCase("script"))
+				script.add(objName);
+			else if (objCat.equalsIgnoreCase("picture"))
+				picture.add(objName);
 
 		}
 
@@ -173,10 +232,6 @@ public class UI extends JPanel implements ActionListener {
 		}
 		disableMenuItems(mnAdd);
 		enableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
-
-		/**
-		 * Condition Menu - To be added
-		 */
 
 		// Action Menu
 		final JMenu mnAction = new JMenu("Action");
@@ -213,6 +268,42 @@ public class UI extends JPanel implements ActionListener {
 			mntm.addActionListener(this);
 		}
 		disableMenuItems(mnAssert);
+
+		// Video Menu
+		final JMenu mnVideo = new JMenu("Video");
+		menuBar.add(mnVideo);
+		for (int x = 0; x < video.size(); x++) {
+			JMenuItem mntm = new JMenuItem(video.get(x));
+			mntm.putClientProperty("category", "video");
+			mnVideo.add(mntm);
+			mntm.setActionCommand(ADD_COMMAND);
+			mntm.addActionListener(this);
+		}
+		disableMenuItems(mnVideo);
+
+		// Script Menu
+		final JMenu mnScript = new JMenu("Script");
+		menuBar.add(mnScript);
+		for (int x = 0; x < script.size(); x++) {
+			JMenuItem mntm = new JMenuItem(script.get(x));
+			mntm.putClientProperty("category", "script");
+			mnScript.add(mntm);
+			mntm.setActionCommand(ADD_COMMAND);
+			mntm.addActionListener(this);
+		}
+		disableMenuItems(mnScript);
+
+		// Picture Menu
+		final JMenu mnPicture = new JMenu("Picture");
+		menuBar.add(mnPicture);
+		for (int x = 0; x < picture.size(); x++) {
+			JMenuItem mntm = new JMenuItem(picture.get(x));
+			mntm.putClientProperty("category", "picture");
+			mnPicture.add(mntm);
+			mntm.setActionCommand(ADD_COMMAND);
+			mntm.addActionListener(this);
+		}
+		disableMenuItems(mnPicture);
 
 		// End of Menu Bar ---->
 
@@ -263,16 +354,26 @@ public class UI extends JPanel implements ActionListener {
 						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(1));
 					}
 
-				} else if (level == 3) {
+				}
+
+				if (level == 3) {
 					enableMenuItems(mnAction);
 					enableMenuItems(mnWait);
 					enableMenuItems(mnAssert);
+					enableMenuItems(mnVideo);
+					enableMenuItems(mnScript);
+					enableMenuItems(mnPicture);
 					disableMenuItems(mnAdd);
-				} else {
+				}
+
+				if (level == 4) {
+					disableMenuItems(mnAdd);
 					disableMenuItems(mnAction);
 					disableMenuItems(mnWait);
-					disableMenuItems(mnAdd);
 					disableMenuItems(mnAssert);
+					disableMenuItems(mnVideo);
+					disableMenuItems(mnScript);
+					disableMenuItems(mnPicture);
 				}
 			}
 		};
@@ -280,19 +381,21 @@ public class UI extends JPanel implements ActionListener {
 		// Save Tree
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				saveTree();
+				JFileChooser j = new JFileChooser(FileHandler.getUserDir());
+
+				// invoke the showsSaveDialog function to show the save dialog
+				int r = j.showSaveDialog(null);
+
+				// if the user selects a file
+				if (r == JFileChooser.APPROVE_OPTION)
+					saveTree(j.getSelectedFile().getAbsolutePath());
 			}
 		});
 
 		// Load Tree
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object root = treePanel.getTreeModel().getRoot();
-				int count = treePanel.getTreeModel().getChildCount(root);
-				if (count != 0) {
-					treePanel.removeAll();
-					UI.generalPanel.removeAll();
-				}
+
 				loadTree();
 
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePanel.getDefaultMutableTreeNode();
@@ -316,6 +419,10 @@ public class UI extends JPanel implements ActionListener {
 					return;
 				}
 
+//				int index = node.getParent().getIndex(node);
+//				int number = node.getParent().getChildCount();
+//				|| index+1 != number
+
 				if (node.getChildCount() != 0 || node.isRoot())
 					btnRemove.setEnabled(false);
 				else
@@ -338,56 +445,123 @@ public class UI extends JPanel implements ActionListener {
 				}
 			}
 		});
+
+		mntmReports.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FileHandler.open(FileHandler.getUserDir() + File.separator + "reports");
+			}
+		});
+
+		mntmScreenshots.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FileHandler.open(FileHandler.getUserDir() + File.separator + "screenshots");
+			}
+		});
+		
+		mntmConsole.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().getComponent(0).setVisible(false);
+				frame.getContentPane().getComponent(1).setVisible(false);
+				frame.getContentPane().getComponent(2).setVisible(false);
+				frame.getContentPane().getComponent(3).setVisible(true);
+			}
+		});
+		
+		mntmTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().getComponent(0).setVisible(true);
+				frame.getContentPane().getComponent(1).setVisible(true);
+				frame.getContentPane().getComponent(2).setVisible(true);
+				frame.getContentPane().getComponent(3).setVisible(false);
+			}
+		});
 	}
 
 	private void loadTree() {
 
-		String content = null;
-		try {
-			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/tree.json"));
-		} catch (Exception ex) {
-			throw new ReadFileException("Can't read file", ex);
-		}
+		JFileChooser j = new JFileChooser(FileHandler.getUserDir());
 
-		JSONObject suite = new JSONObject(content);
-//		DefaultMutableTreeNode p0;
-//		treePanel.setRootUserObject(suite.getString("userObject"));
-//		p0 = treePanel.getDefaultMutableTreeNode();
+		j.addChoosableFileFilter(new FileFilter() {
+			public String getDescription() {
+				return "JSON Files (*.json)";
+			}
 
-		JSONArray configCase = suite.getJSONArray("children");
-		for (int z = 0; z < configCase.length(); z++) {
-			DefaultMutableTreeNode p1;
-			JSONObject config = configCase.getJSONObject(z);
-			p1 = treePanel.addObject(null, config.getString("userObject"));
-			addNode(1, "configuration", config.getString("userObject"), p1);
-			setValues(p1, config);
-			JSONArray groupCase = config.getJSONArray("children");
-			for (int x = 0; x < groupCase.length(); x++) {
-				DefaultMutableTreeNode p2;
-				JSONObject group = groupCase.getJSONObject(x);
-				p2 = treePanel.addObject(p1, group.getString("userObject"));
-				addNode(2, "group", group.getString("userObject"), p2);
-
-				JSONArray testCase = group.getJSONArray("children");
-				for (int y = 0; y < testCase.length(); y++) {
-					DefaultMutableTreeNode p3;
-					JSONObject test = testCase.getJSONObject(y);
-					p3 = treePanel.addObject(p2, test.getString("userObject"));
-					addNode(3, "testCase", test.getString("userObject"), p3);
-					JSONArray input = test.getJSONArray("children");
-					try {
-						for (int i = 0; i < input.length(); i++) {
-							DefaultMutableTreeNode p4;
-							JSONObject run = input.getJSONObject(i);
-							p4 = treePanel.addObject(p3, run.getString("userObject"));
-							addNode(4, run.getString("category"), run.getString("userObject"), p4);
-							setValues(p4, run);
-						}
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
+			public boolean accept(File f) {
+				if (f.isDirectory()) {
+					return true;
+				} else {
+					return f.getName().toLowerCase().endsWith(".json");
 				}
 			}
+		});
+
+		// invoke the showOpenDialog function to show the load dialog
+		int r = j.showOpenDialog(null);
+
+		// if the user selects a file
+		if (r == JFileChooser.APPROVE_OPTION) {
+
+			String content = null;
+			try {
+//				content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/tree.json"));
+				content = JSONHandler.read(new File(j.getSelectedFile().getAbsolutePath()));
+			} catch (Exception ex) {
+				throw new ReadFileException("Can't read file", ex);
+			}
+
+			if (!JSONHandler.isJSONValid(content)) {
+				JOptionPane.showMessageDialog(null, "File is not a valid JSON", "Error", JOptionPane.ERROR_MESSAGE);
+				throw new JSONFileNotValidException("File is not a valid JSON");
+			}
+
+			Object root = treePanel.getTreeModel().getRoot();
+			int count = treePanel.getTreeModel().getChildCount(root);
+			if (count != 0) {
+				treePanel.removeAll();
+				UI.generalPanel.removeAll();
+			}
+
+			JSONObject suite = new JSONObject(content);
+
+			try {
+				JSONArray configCase = suite.getJSONArray("children");
+				for (int z = 0; z < configCase.length(); z++) {
+					DefaultMutableTreeNode p1;
+					JSONObject config = configCase.getJSONObject(z);
+					p1 = treePanel.addObject(null, config.getString("userObject"));
+					addNode(1, "configuration", config.getString("userObject"), p1);
+					setValues(p1, config);
+					JSONArray groupCase = config.getJSONArray("children");
+					for (int x = 0; x < groupCase.length(); x++) {
+						DefaultMutableTreeNode p2;
+						JSONObject group = groupCase.getJSONObject(x);
+						p2 = treePanel.addObject(p1, group.getString("userObject"));
+						addNode(2, "group", group.getString("userObject"), p2);
+						JSONArray testCase = group.getJSONArray("children");
+						for (int y = 0; y < testCase.length(); y++) {
+							DefaultMutableTreeNode p3;
+							JSONObject test = testCase.getJSONObject(y);
+							p3 = treePanel.addObject(p2, test.getString("userObject"));
+							addNode(3, "testCase", test.getString("userObject"), p3);
+							JSONArray input = test.getJSONArray("children");
+							for (int i = 0; i < input.length(); i++) {
+								DefaultMutableTreeNode p4;
+								JSONObject run = input.getJSONObject(i);
+								p4 = treePanel.addObject(p3, run.getString("userObject"));
+								addNode(4, run.getString("category"), run.getString("userObject"), p4);
+								setValues(p4, run);
+							}
+						}
+					}
+				}
+
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(null, "JSON format is not valid", "Error", JOptionPane.ERROR_MESSAGE);
+				throw new JSONFileNotValidException("JSON format is not valid", ex);
+			}
+			JOptionPane.showMessageDialog(null, "Test has been loaded successfully", "Message",
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -477,17 +651,28 @@ public class UI extends JPanel implements ActionListener {
 		menuItem.setEnabled(false);
 	}
 
-	private void saveTree() {
+	private void saveTree(String filename) {
 		Object root = treePanel.getTreeModel().getRoot();
-		Gson gson = new GsonBuilder()
-				.registerTypeAdapter(DefaultMutableTreeNode.class, new DefaultMutableTreeNodeSerializer())
-				// .registerTypeAdapter(DefaultMutableTreeNode.class, new
-				// DefaultMutableTreeNodeDeserializer())
-				.setPrettyPrinting().create();
 
-		String jsonString = gson.toJson(root);
-		System.out.println(jsonString);
-		JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/tree.json"), jsonString);
+		if (generalPanel.getComponents().length == 0) {
+			JOptionPane.showMessageDialog(null, "Nothing to save here", "Error", JOptionPane.ERROR_MESSAGE);
+		} else {
+
+			Gson gson = new GsonBuilder()
+					.registerTypeAdapter(DefaultMutableTreeNode.class, new DefaultMutableTreeNodeSerializer())
+					// .registerTypeAdapter(DefaultMutableTreeNode.class, new
+					// DefaultMutableTreeNodeDeserializer())
+					.setPrettyPrinting().create();
+
+			String jsonString = gson.toJson(root);
+			System.out.println(jsonString);
+			JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/tree.json"), jsonString);
+			if (filename != null) {
+				JSONHandler.write(new File(filename), jsonString);
+				JOptionPane.showMessageDialog(null, "Test has been saved successfully", "Message",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -505,9 +690,32 @@ public class UI extends JPanel implements ActionListener {
 			// Remove button clicked
 			treePanel.removeCurrentNode();
 		} else if (LAUNCH_COMMAND.equals(command)) {
-			saveTree();
-			Control control = new Control();
-			control.start();
+			saveTree(null);
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				@Override
+				protected Void doInBackground() throws Exception {
+
+					frame.getContentPane().getComponent(0).setVisible(false);
+					frame.getContentPane().getComponent(1).setVisible(false);
+					frame.getContentPane().getComponent(2).setVisible(false);
+					frame.getContentPane().getComponent(3).setVisible(true);
+
+					try {
+						Control control = new Control();
+						control.start();
+					} catch (AssertionError ex) {
+						ex.printStackTrace();
+					}
+
+					frame.getContentPane().getComponent(0).setVisible(true);
+					frame.getContentPane().getComponent(1).setVisible(true);
+					frame.getContentPane().getComponent(2).setVisible(true);
+					frame.getContentPane().getComponent(3).setVisible(false);
+
+					return null;
+				}
+			};
+			worker.execute();
 		}
 	}
 
@@ -520,10 +728,10 @@ public class UI extends JPanel implements ActionListener {
 
 		JLabel lblTop = new JLabel();
 		lblTop.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTop.setBounds(258, 0, 160, 15);
+		lblTop.setBounds(200, 0, 280, 15);
 		lblTop.setFont(lblTop.getFont().deriveFont(Font.BOLD, 14f));
 		lblTop.setName(uuid);
-		lblTop.setText(name);
+//		lblTop.setText(name);
 
 		JSONArray arr = new JSONArray(config);
 		for (int x = 0; x < arr.length(); x++) {
@@ -532,6 +740,10 @@ public class UI extends JPanel implements ActionListener {
 			String objName = obj.getString("name");
 			String objCategory = obj.getString("category");
 			JSONArray req = obj.getJSONArray("require");
+			JSONArray show = obj.getJSONArray("show");
+//			JSONArray limit = obj.getJSONArray("limit");
+
+			lblTop.setText(objName);
 
 			if (level == 1) {
 
@@ -542,13 +754,14 @@ public class UI extends JPanel implements ActionListener {
 					for (int y = 0; y < req.length(); y++) {
 
 						String v = req.getString(y);
+						String s = show.getString(y);
 						list.add(v);
 
 						JLabel lbl = new JLabel();
 						lbl.setHorizontalAlignment(SwingConstants.CENTER);
 						lbl.setBounds(10 + posX, 25, 160, 15);
 						lbl.setName(uuid);
-						lbl.setText(v);
+						lbl.setText(s);
 						generalPanel.add(lbl);
 
 						JComboBox<String> jcb = null;
@@ -572,6 +785,19 @@ public class UI extends JPanel implements ActionListener {
 
 						posX += 250;
 					}
+					break;
+				}
+			}
+
+			else if (level == 2) {
+				if (objCategory.equalsIgnoreCase("group")) {
+					break;
+				}
+			}
+
+			else if (level == 3) {
+				if (objCategory.equalsIgnoreCase("test")) {
+					break;
 				}
 			}
 
@@ -588,10 +814,12 @@ public class UI extends JPanel implements ActionListener {
 					for (int y = 0; y < req.length(); y++) {
 
 						String v = req.getString(y);
+						String s = show.getString(y);
+//						String l = limit.getString(y);
 						list.add(v);
 
 						JTextField jtf = new JTextField();
-						jtf.setBounds(150, 55 + posY, 450, 35);
+						jtf.setBounds(150, 55 + posY, 410, 35);
 						jtf.setColumns(10);
 						jtf.setName(uuid);
 						jtf.putClientProperty("type", v);
@@ -603,7 +831,7 @@ public class UI extends JPanel implements ActionListener {
 						lbl.setHorizontalAlignment(SwingConstants.CENTER);
 						lbl.setBounds(260, 25 + posY, 160, 15);
 						lbl.setName(uuid);
-						lbl.setText(v);
+						lbl.setText(s);
 						generalPanel.add(lbl);
 
 						if (v.equals("locator")) {
@@ -618,8 +846,46 @@ public class UI extends JPanel implements ActionListener {
 						}
 
 						posY += 100;
+
+						if (v.equalsIgnoreCase("number") || v.equalsIgnoreCase("time"))
+							jtf.setDocument(new JTextFieldNumberLimit(5));
+						else if (v.equalsIgnoreCase("url")) {
+							jtf.getDocument().addDocumentListener(new DocumentListener() {
+
+								@Override
+								public void insertUpdate(DocumentEvent e) {
+									listen();
+								}
+
+								@Override
+								public void removeUpdate(DocumentEvent e) {
+									listen();
+								}
+
+								@Override
+								public void changedUpdate(DocumentEvent e) {
+									listen();
+								}
+
+								public void listen() {
+									String value = jtf.getText();
+									if ((URLHandler.isURLValid(value)) || value.isEmpty()) {
+										lbl.setText(s);
+										lbl.setForeground(Color.BLACK);
+									} else {
+										lbl.setText(s + " Is Not Valid");
+										lbl.setForeground(Color.RED);
+									}
+								}
+
+							});
+						}
+
 					}
+					break;
 				}
+			} else {
+				break;
 			}
 		}
 

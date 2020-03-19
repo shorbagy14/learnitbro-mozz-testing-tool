@@ -10,7 +10,11 @@ public class URLHandler {
         /* Try creating a valid URL */
         try { 
             new URL(url).toURI(); 
-            return true; 
+            
+            if(url.startsWith("http") && url.contains("."))
+            	return true; 
+            else 
+            	return false;
         } 
           
         // If there was an Exception 

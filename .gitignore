@@ -4,4 +4,6 @@
 /.settings
 /.project
 /temp
-*.html
+/reports
+/screenshots
+/tests

@@ -29,13 +29,20 @@ Using the terminal or jenkins:
 - Selenium 3.141.59
 - Extent Reports 4.0.6
 - TestNG 6.9.9
-- WebDriverManager 2.2.4
-- Appium 5.0.4
+- WebDriverManager 3.8.1
+- Appium 7.3.0
 - Ashot 1.5.2
 - Java Mail 1.4.0
 - Gson 2.8.4
 - Json 20180813
 - JUnit 3.8.1
+- JImageHash 3.0.0
+- H2 Database 1.4.197 
+
+### Reference:
+Icons used in this project was provided by [Dryicons.com](https://dryicons.com/)
+
+For more information, refer to [Learnitbro.com](https://learnitbro.com/) 
 
 ### Build:
 mvn package (Maven)

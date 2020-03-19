@@ -23,7 +23,6 @@ public class WaitBuilder {
 	public WaitBuilder(WebDriver driver, Report report) {
 		this.driver = driver;
 		this.report = report;
-
 	}
 	
 	/**
@@ -31,6 +30,7 @@ public class WaitBuilder {
 	 * @param time
 	 */
 	public void sleep(long time) {
+		report.info("Waiting for " + time + " seconds");
 		try {
 			Thread.sleep(time*1000);
 		} catch (Exception e) {
