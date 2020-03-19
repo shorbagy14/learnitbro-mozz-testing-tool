@@ -1,12 +1,12 @@
-# Testing Tool
+# Mo Testing Tool
 
 ### Description: 
-It allows to test any website
+Test any website with a click of a button
 
 ![](images/demo.png)
 
 ### Summary:
-This tool allows to create Selenium tests using a user interface in JAVA
+This tool allows to create automated tests using a user interface
 
 ### Steps:
 Using the user interface:
@@ -19,7 +19,6 @@ Using the terminal or jenkins:
 - Run the jar file and pass the json tree as a parameter
 - Example: java -jar tool.jar tree.json
 - The file will include the browser, test cases and all information the test needs
-- Press Enter
 - The test will start and a report will be send to the email provided
 
 ### Requirements:
