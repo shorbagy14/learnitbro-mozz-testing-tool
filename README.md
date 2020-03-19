@@ -1,12 +1,12 @@
-# Mo Testing Tool
+# ![](images/mozz.png) Mozz - Gotta Test It Bro
 
 ### Description: 
-Test any website with a click of a button
+Test any website with a click of a button (open source tool developed by [learnitbro.com](https://learnitbro.com/))
 
 ![](images/demo.png)
 
 ### Summary:
-This tool allows to create automated tests using a user interface
+This testing tool allows to create automated tests using a user interface
 
 ### Steps:
 Using the user interface:
@@ -38,8 +38,16 @@ Using the terminal or jenkins:
 - JImageHash 3.0.0
 - H2 Database 1.4.197 
 
-### Reference:
-Icons used in this project was provided by [Dryicons.com](https://dryicons.com/)
+### References:
+Icons by [Dryicons.com](https://dryicons.com/)
+
+Reports by [Extentreports.com](https://extentreports.com/)
+
+Web Testing by Selenium [Selenium.dev](https://selenium.dev/)
+
+Mobile Testing by Appium [Appium.io](https://appium.io/)
+
+Also refer to TestNG, WebDriverManager, Ashot, Java Mail, Gson, Json, JUnit, JImageHash, H2 Database Libraries
 
 For more information, refer to [Learnitbro.com](https://learnitbro.com/) 
 
