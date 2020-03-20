@@ -8,6 +8,9 @@ Test any website with a click of a button (open source tool developed by [learni
 ### Summary:
 This testing tool allows to create automated tests using a user interface
 
+### Download:
+Click on [here](https://learnitbro.com/) to download version 1.1.0
+
 ### Steps:
 Using the user interface:
 - Run the jar file
@@ -20,9 +23,42 @@ Using the terminal or jenkins:
 - Example: java -jar tool.jar tree.json
 - The file will include the browser, test cases and all information the test needs
 - The test will start and a report will be send to the email provided
+- Any failures in the test will fail the jenkins job
+
+### Supports:
+Web Browsers:
+- Chrome, Firefox, Internet Explorer, Edge, Safari and Opera
+- Headless: Chrome and Firefox
+ 
+Visual Testing:
+- Full page screenshot comparison 
+- Element screenshot comparison
+- Features average luminosity
+ 
+Video:
+- Video testing for default browser videos
+- Options: Play, Pause, Mute, Unmute and more
+
+Script:
+- JavaScript execution
+
+### New Features:
+- Allow to reorder test cases using the edit menu
+- Visual testing support
+
+### In Progress:
+Video:
+- Custom video testing
+
+Mobile Browsers:
+- Chrome (Android) and Safari (iOS)
+
+Mobile Apps:
+- Android and iOS
 
 ### Requirements:
 - Java 8
+- Appium 7 (for mobile only) - to be supported soon
 
 ### Dependencies:
 - Selenium 3.141.59

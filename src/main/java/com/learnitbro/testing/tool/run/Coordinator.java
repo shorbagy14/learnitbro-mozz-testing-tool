@@ -11,7 +11,7 @@ import org.testng.asserts.SoftAssert;
 
 import com.learnitbro.testing.tool.file.FileHandler;
 import com.learnitbro.testing.tool.file.URLHandler;
-import com.learnitbro.testing.tool.reporting.Email;
+import com.learnitbro.testing.tool.mail.Email;
 import com.learnitbro.testing.tool.reporting.Report;
 import com.learnitbro.testing.tool.web.ElementHandler;
 import com.learnitbro.testing.tool.activity.ActionBuilder;

@@ -17,8 +17,8 @@ import com.github.kilianB.matcher.exotic.SingleImageMatcher;
 import com.learnitbro.testing.tool.exceptions.ReadFileException;
 import com.learnitbro.testing.tool.file.DirectoryHandler;
 import com.learnitbro.testing.tool.file.FileHandler;
+import com.learnitbro.testing.tool.os.OS;
 import com.learnitbro.testing.tool.reporting.Report;
-import com.learnitbro.testing.tool.run.OS;
 
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;

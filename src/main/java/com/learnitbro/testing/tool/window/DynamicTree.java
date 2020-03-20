@@ -130,6 +130,88 @@ public class DynamicTree extends JPanel {
 		toolkit.beep();
 	}
 
+	public void moveCurrentNode(String direction) {
+		TreePath currentSelection = tree.getSelectionPath();
+		if (currentSelection != null) {
+			DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
+			DefaultMutableTreeNode previousNode = currentNode.getPreviousNode();
+			DefaultMutableTreeNode nextNode = currentNode.getNextNode();
+
+			MutableTreeNode parent = (MutableTreeNode) (currentNode.getParent());
+
+			int level = -1;
+			int index = -1;
+			int parentIndex = -1;
+			int grandparentIndex = -1;
+			int superparentIndex = -1;
+
+			MyTreeNode n = new MyTreeNode(currentNode);
+			for (int x = 0; x < MyTreeNode.all.length(); x++) {
+				JSONObject value = (JSONObject) MyTreeNode.all.get(x);
+
+				boolean isIndexMatch = n.getIndex() == value.getInt("index");
+				boolean isLevelMatch = n.getLevel() == value.getInt("level");
+
+				boolean isParentIndexMatch = true;
+				boolean isGrandParentIndexMatch = true;
+				boolean isSuperParentIndexMatch = true;
+				if (n.getParentTreeNode() != null) {
+					isParentIndexMatch = n.getParentIndex() == value.getInt("parentIndex");
+					if (n.getGrandParentTreeNode() != null) {
+						isGrandParentIndexMatch = n.getGrandParentIndex() == value.getInt("grandparentIndex");
+						if (n.getSuperParentTreeNode() != null) {
+							isSuperParentIndexMatch = n.getSuperParentIndex() == value.getInt("superparentIndex");
+						}
+					}
+				}
+
+				if (isLevelMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch
+						&& isSuperParentIndexMatch) {
+					level = value.getInt("level");
+					index = value.getInt("index");
+					parentIndex = value.getInt("parentIndex");
+					grandparentIndex = value.getInt("grandparentIndex");
+					superparentIndex = value.getInt("superparentIndex");
+					break;
+				}
+			}
+
+			JSONArray org = MyTreeNode.all;
+			for (int y = 0; y < MyTreeNode.all.length(); y++) {
+				JSONObject v = MyTreeNode.all.getJSONObject(y);
+				JSONObject o = org.getJSONObject(y);
+				boolean isTrue = parentIndex == v.getInt("parentIndex")
+						&& grandparentIndex == v.getInt("grandparentIndex")
+						&& superparentIndex == v.getInt("superparentIndex") && level == v.getInt("level");
+
+				if (index == o.getInt("index") && isTrue) {
+					if (direction.equalsIgnoreCase("down")) {
+						v.put("index", o.getInt("index") + 1);
+						treeModel.removeNodeFromParent(currentNode);
+						treeModel.insertNodeInto(currentNode, parent, o.getInt("index"));
+
+					} else if (direction.equalsIgnoreCase("up")) {
+						v.put("index", o.getInt("index") - 1);
+						treeModel.removeNodeFromParent(currentNode);
+						treeModel.insertNodeInto(currentNode, parent, o.getInt("index"));
+					}
+				} else if (index + 1 == o.getInt("index") && isTrue) {
+					if (direction.equalsIgnoreCase("down")) {
+						v.put("index", o.getInt("index") - 1);
+					}
+				} else if (index - 1 == o.getInt("index") && isTrue) {
+					if (direction.equalsIgnoreCase("up")) {
+						v.put("index", o.getInt("index") + 1);
+					}
+				}
+			}
+
+			JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/node.json"), MyTreeNode.all.toString(1));
+
+			System.out.println("Moving this node : " + currentNode);
+		}
+	}
+
 	public void removeAll() {
 		for (int x = treeModel.getChildCount(rootNode) - 1; x >= 0; x--) {
 			treeModel.removeNodeFromParent((DefaultMutableTreeNode) treeModel.getChild(rootNode, x));

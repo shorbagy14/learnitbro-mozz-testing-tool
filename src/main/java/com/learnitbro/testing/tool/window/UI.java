@@ -40,6 +40,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.learnitbro.testing.tool.App;
 import com.learnitbro.testing.tool.exceptions.JSONFileNotValidException;
 import com.learnitbro.testing.tool.exceptions.ReadFileException;
 import com.learnitbro.testing.tool.file.FileHandler;
@@ -159,6 +160,9 @@ public class UI extends JPanel implements ActionListener {
 		jscrollPaneConsole.setVisible(false);
 		frame.getContentPane().add(jscrollPaneConsole);
 
+		App app = new App();
+		app.printCreds();
+
 		// <---- Menu Bar
 
 		JMenuBar menuBar = new JMenuBar();
@@ -178,15 +182,39 @@ public class UI extends JPanel implements ActionListener {
 
 		JMenuItem mntmScreenshots = new JMenuItem("Screenshots");
 		mnFile.add(mntmScreenshots);
-		
+
 		JMenu mnView = new JMenu("View");
 		menuBar.add(mnView);
-		
+
 		JMenuItem mntmConsole = new JMenuItem("Console");
 		mnView.add(mntmConsole);
 
-		JMenuItem mntmTest = new JMenuItem("Test");
-		mnView.add(mntmTest);
+		JMenuItem mntmUserInterface = new JMenuItem("User Interface");
+		mnView.add(mntmUserInterface);
+
+		JMenu mnEdit = new JMenu("Edit");
+		menuBar.add(mnEdit);
+
+		JMenuItem mntmMoveUp = new JMenuItem("Move Up");
+		mnEdit.add(mntmMoveUp);
+		
+		mntmMoveUp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				treePanel.moveCurrentNode("up");
+			}
+		});
+
+		JMenuItem mntmMoveDown = new JMenuItem("Move Down");
+		mnEdit.add(mntmMoveDown);
+		
+		mntmMoveDown.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				treePanel.moveCurrentNode("down");
+			}
+		});
+
+
+		disableMenuItems(mnEdit);
 
 		List<String> action = new ArrayList<String>();
 		List<String> waiting = new ArrayList<String>();
@@ -428,6 +456,19 @@ public class UI extends JPanel implements ActionListener {
 				else
 					btnRemove.setEnabled(true);
 
+				if (node.getLevel() == 4) {
+					mntmMoveUp.setEnabled(true);
+					mntmMoveDown.setEnabled(true);
+					if (node.getParent().getIndex(node) == 0) {
+						mntmMoveUp.setEnabled(false);
+					} else if (node.getParent().getIndex(node) == node.getParent().getChildCount() - 1) {
+						mntmMoveDown.setEnabled(false);
+					}
+				} else {
+					mntmMoveUp.setEnabled(false);
+					mntmMoveDown.setEnabled(false);
+				}
+
 				/* retrieve the node that was selected */
 				// Object nodeInfo = node.getUserObject();
 				int level = node.getLevel();
@@ -457,7 +498,7 @@ public class UI extends JPanel implements ActionListener {
 				FileHandler.open(FileHandler.getUserDir() + File.separator + "screenshots");
 			}
 		});
-		
+
 		mntmConsole.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().getComponent(0).setVisible(false);
@@ -466,8 +507,8 @@ public class UI extends JPanel implements ActionListener {
 				frame.getContentPane().getComponent(3).setVisible(true);
 			}
 		});
-		
-		mntmTest.addActionListener(new ActionListener() {
+
+		mntmUserInterface.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().getComponent(0).setVisible(true);
 				frame.getContentPane().getComponent(1).setVisible(true);
