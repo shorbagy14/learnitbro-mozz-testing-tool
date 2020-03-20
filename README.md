@@ -42,6 +42,10 @@ Video:
 Script:
 - JavaScript execution
 
+### New Features:
+- Allow to reorder test cases using the edit menu
+- Visual testing support
+
 ### In Progress:
 Video:
 - Custom video testing
@@ -51,9 +55,6 @@ Mobile Browsers:
 
 Mobile Apps:
 - Android and iOS
-
-User Interface:
-- Change test's order
 
 ### Requirements:
 - Java 8
