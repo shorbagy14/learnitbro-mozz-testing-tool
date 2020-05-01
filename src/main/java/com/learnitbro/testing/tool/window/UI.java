@@ -394,7 +394,7 @@ public class UI extends JPanel implements ActionListener {
 					disableMenuItems(mnAdd);
 				}
 
-				if (level == 4) {
+				if (level == 4 || level == 0 || level == 1 || level == 2) {
 					disableMenuItems(mnAdd);
 					disableMenuItems(mnAction);
 					disableMenuItems(mnWait);
