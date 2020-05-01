@@ -76,6 +76,7 @@ public class Coordinator {
 	 */
 	public void build(JSONObject obj) {
 		String DESCRIPTION = null;
+		String TEST_DESCRIPTION = null;
 		JSONArray category = obj.getJSONArray("children");
 		for (int x = 0; x < category.length(); x++) {
 			JSONObject cat = category.getJSONObject(x);
@@ -84,7 +85,8 @@ public class Coordinator {
 			JSONArray testCase = cat.getJSONArray("children");
 			for (int y = 0; y < testCase.length(); y++) {
 				JSONObject test = testCase.getJSONObject(y);
-				report.info((String) test.get("userObject"));
+				TEST_DESCRIPTION = test.getString("userObject");
+				report.info(TEST_DESCRIPTION);
 				JSONArray input = test.getJSONArray("children");
 				try {
 					
@@ -95,12 +97,12 @@ public class Coordinator {
 					}
 					
 					if(isFail)
-						throw new Exception("Group : " + DESCRIPTION + " is marked as 'FAIL' due to the errors above");
+						throw new Exception("Test : " + TEST_DESCRIPTION + " is marked as 'FAIL' due to the errors above");
 					else
-						report.pass(DESCRIPTION + " - PASS");
+						report.pass(TEST_DESCRIPTION + " - PASS");
 				} catch (Exception e) {
 					e.printStackTrace();
-					report.fail(DESCRIPTION + " - FAIL", e);
+					report.fail(TEST_DESCRIPTION + " - FAIL", e);
 				}
 			}
 		}

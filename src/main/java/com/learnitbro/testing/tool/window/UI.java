@@ -372,14 +372,32 @@ public class UI extends JPanel implements ActionListener {
 						enableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
 						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(1));
 						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(2));
+						disableMenuItems(mnAction);
+						disableMenuItems(mnWait);
+						disableMenuItems(mnAssert);
+						disableMenuItems(mnVideo);
+						disableMenuItems(mnScript);
+						disableMenuItems(mnPicture);
 					} else if (level == 1) {
 						enableMenuItem((JMenuItem) mnAdd.getMenuComponent(1));
 						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
 						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(2));
+						disableMenuItems(mnAction);
+						disableMenuItems(mnWait);
+						disableMenuItems(mnAssert);
+						disableMenuItems(mnVideo);
+						disableMenuItems(mnScript);
+						disableMenuItems(mnPicture);
 					} else {
 						enableMenuItem((JMenuItem) mnAdd.getMenuComponent(2));
 						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(0));
 						disableMenuItem((JMenuItem) mnAdd.getMenuComponent(1));
+						disableMenuItems(mnAction);
+						disableMenuItems(mnWait);
+						disableMenuItems(mnAssert);
+						disableMenuItems(mnVideo);
+						disableMenuItems(mnScript);
+						disableMenuItems(mnPicture);
 					}
 
 				}
@@ -394,7 +412,7 @@ public class UI extends JPanel implements ActionListener {
 					disableMenuItems(mnAdd);
 				}
 
-				if (level == 4 || level == 0 || level == 1 || level == 2) {
+				if (level == 4) {
 					disableMenuItems(mnAdd);
 					disableMenuItems(mnAction);
 					disableMenuItems(mnWait);
