@@ -201,6 +201,7 @@ public class UI extends JPanel implements ActionListener {
 		mntmMoveUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				treePanel.moveCurrentNode("up");
+				mntmMoveUp.setEnabled(false);
 			}
 		});
 
@@ -210,6 +211,7 @@ public class UI extends JPanel implements ActionListener {
 		mntmMoveDown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				treePanel.moveCurrentNode("down");
+				mntmMoveDown.setEnabled(false);
 			}
 		});
 
@@ -473,15 +475,19 @@ public class UI extends JPanel implements ActionListener {
 					btnRemove.setEnabled(false);
 				else
 					btnRemove.setEnabled(true);
-
+				
 				if (node.getLevel() == 4) {
 					mntmMoveUp.setEnabled(true);
 					mntmMoveDown.setEnabled(true);
-					if (node.getParent().getIndex(node) == 0) {
+					if (node.getParent().getIndex(node) == 0)
 						mntmMoveUp.setEnabled(false);
-					} else if (node.getParent().getIndex(node) == node.getParent().getChildCount() - 1) {
+					
+					if (node.getParent().getIndex(node) == node.getParent().getChildCount() - 1)
 						mntmMoveDown.setEnabled(false);
-					}
+					
+//					if (node.getParent().getChildCount() == 1)
+//						mntmMoveDown.setEnabled(false);
+
 				} else {
 					mntmMoveUp.setEnabled(false);
 					mntmMoveDown.setEnabled(false);

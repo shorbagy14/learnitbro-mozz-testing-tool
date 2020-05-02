@@ -56,9 +56,9 @@ public class PictureBuilder {
 		report.info("Taking a full page screenshot");
 		
 		// Hides the scroll bar when taking the screenshot
-		js.executeScript("$('html').css('overflow', 'hidden')");
+//		js.executeScript("$('html').css('overflow', 'hidden')");
 		// Freezes the header when taking the screenshot
-		js.executeScript("$('header').css('position', 'absolute')");
+//		js.executeScript("$('header').css('position', 'absolute')");
 		
 		OS.OSType ostype = OS.getOperatingSystemType();
 		Screenshot sc = null;
