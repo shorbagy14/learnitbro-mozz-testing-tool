@@ -79,9 +79,9 @@ Icons by [Dryicons.com](https://dryicons.com/)
 
 Reports by [Extentreports.com](https://extentreports.com/)
 
-Web Testing by Selenium [Selenium.dev](https://selenium.dev/)
+Web Testing by [Selenium.dev](https://selenium.dev/)
 
-Mobile Testing by Appium [Appium.io](https://appium.io/)
+Mobile Testing by [Appium.io](https://appium.io/)
 
 Also refer to TestNG, WebDriverManager, Ashot, Java Mail, Gson, Json, JUnit, JImageHash, H2 Database Libraries
 
