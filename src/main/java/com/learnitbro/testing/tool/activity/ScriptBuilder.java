@@ -61,6 +61,19 @@ public class ScriptBuilder {
 		report.info("Command result : " + isTrue);
 		return isTrue;
 	}
+	
+	/**
+	 * 
+	 * @param command
+	 * @param text
+	 * @return
+	 */
+	public boolean executedJSResultContains(String command, String text) {
+		report.info("Checking results of this command : " + command + " to contains " + text);
+		boolean isTrue = getExecutedJSResult(command).contains(text);
+		report.info("Command result : " + isTrue);
+		return isTrue;
+	}
 
 	/**
 	 * 

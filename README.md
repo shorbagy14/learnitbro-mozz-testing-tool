@@ -9,7 +9,7 @@ Test any website with a click of a button (open source tool developed by [learni
 This testing tool allows to create automated tests using a user interface
 
 ### Download:
-Click on [here](https://github.com/shorbagy14/learnitbro-mozz-testing-tool/releases/download/1.1.3/learnitbro-mozz-testing-tool-1.1.3.jar) to download the latest build (version 1.1.3)
+Click on [here](https://github.com/shorbagy14/learnitbro-mozz-testing-tool/releases/download/1.1.5/learnitbro-mozz-testing-tool-1.1.5.jar) to download the latest build (version 1.1.5)
 
 ### Steps:
 Using the user interface:
@@ -79,9 +79,9 @@ Icons by [Dryicons.com](https://dryicons.com/)
 
 Reports by [Extentreports.com](https://extentreports.com/)
 
-Web Testing by Selenium [Selenium.dev](https://selenium.dev/)
+Web Testing by [Selenium.dev](https://selenium.dev/)
 
-Mobile Testing by Appium [Appium.io](https://appium.io/)
+Mobile Testing by [Appium.io](https://appium.io/)
 
 Also refer to TestNG, WebDriverManager, Ashot, Java Mail, Gson, Json, JUnit, JImageHash, H2 Database Libraries
 

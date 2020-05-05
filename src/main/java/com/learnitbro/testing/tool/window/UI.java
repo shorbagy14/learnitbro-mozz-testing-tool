@@ -197,7 +197,7 @@ public class UI extends JPanel implements ActionListener {
 
 		JMenuItem mntmMoveUp = new JMenuItem("Move Up");
 		mnEdit.add(mntmMoveUp);
-		
+
 		mntmMoveUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				treePanel.moveCurrentNode("up");
@@ -207,14 +207,13 @@ public class UI extends JPanel implements ActionListener {
 
 		JMenuItem mntmMoveDown = new JMenuItem("Move Down");
 		mnEdit.add(mntmMoveDown);
-		
+
 		mntmMoveDown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				treePanel.moveCurrentNode("down");
 				mntmMoveDown.setEnabled(false);
 			}
 		});
-
 
 		disableMenuItems(mnEdit);
 
@@ -475,16 +474,16 @@ public class UI extends JPanel implements ActionListener {
 					btnRemove.setEnabled(false);
 				else
 					btnRemove.setEnabled(true);
-				
+
 				if (node.getLevel() == 4) {
 					mntmMoveUp.setEnabled(true);
 					mntmMoveDown.setEnabled(true);
 					if (node.getParent().getIndex(node) == 0)
 						mntmMoveUp.setEnabled(false);
-					
+
 					if (node.getParent().getIndex(node) == node.getParent().getChildCount() - 1)
 						mntmMoveDown.setEnabled(false);
-					
+
 //					if (node.getParent().getChildCount() == 1)
 //						mntmMoveDown.setEnabled(false);
 
@@ -602,12 +601,14 @@ public class UI extends JPanel implements ActionListener {
 						JSONObject group = groupCase.getJSONObject(x);
 						p2 = treePanel.addObject(p1, group.getString("userObject"));
 						addNode(2, "group", group.getString("userObject"), p2);
+						setValues(p2, group);
 						JSONArray testCase = group.getJSONArray("children");
 						for (int y = 0; y < testCase.length(); y++) {
 							DefaultMutableTreeNode p3;
 							JSONObject test = testCase.getJSONObject(y);
 							p3 = treePanel.addObject(p2, test.getString("userObject"));
 							addNode(3, "testCase", test.getString("userObject"), p3);
+							setValues(p3, test);
 							JSONArray input = test.getJSONArray("children");
 							for (int i = 0; i < input.length(); i++) {
 								DefaultMutableTreeNode p4;
@@ -636,7 +637,7 @@ public class UI extends JPanel implements ActionListener {
 			MyTreeNode myNode = new MyTreeNode(p3);
 			if (item.toString().contains("JTextField")) {
 				String uuid = ((JTextField) item).getName();
-				if (myNode.isMatch(uuid) || (myNode.getLevel() == 0 && run.has("browserName"))) {
+				if (myNode.isMatch(uuid)) {
 					JTextField jtf = ((JTextField) item);
 					String type = jtf.getClientProperty("type").toString();
 					int index = Integer.parseInt(jtf.getClientProperty("index").toString());
@@ -644,7 +645,7 @@ public class UI extends JPanel implements ActionListener {
 				}
 			} else if (item.toString().contains("JComboBox")) {
 				String uuid = ((JComboBox) item).getName();
-				if (myNode.isMatch(uuid) || (myNode.getLevel() == 0 && run.has("browserName"))) {
+				if (myNode.isMatch(uuid)) {
 					JComboBox jcb = ((JComboBox) item);
 					String type = jcb.getClientProperty("type").toString();
 					int index = Integer.parseInt(jcb.getClientProperty("index").toString());
@@ -856,12 +857,84 @@ public class UI extends JPanel implements ActionListener {
 
 			else if (level == 2) {
 				if (objCategory.equalsIgnoreCase("group")) {
+					int posX = 0;
+
+					List<String> list = new ArrayList<String>();
+					for (int y = 0; y < req.length(); y++) {
+
+						String v = req.getString(y);
+						String s = show.getString(y);
+						list.add(v);
+
+						JLabel lbl = new JLabel();
+						lbl.setHorizontalAlignment(SwingConstants.CENTER);
+						lbl.setBounds(10 + posX, 25, 160, 15);
+						lbl.setName(uuid);
+						lbl.setText(s);
+						generalPanel.add(lbl);
+
+						JComboBox<String> jcb = null;
+						if (v.equals("skip")) {
+							jcb = new JComboBox<String>(new String[] { "false", "true" });
+						} else if (v.equals("dependency")) {
+							jcb = new JComboBox<String>(new String[] { "none" });
+						} else if (v.equals("severity level")) {
+							jcb = new JComboBox<String>(new String[] { "medium" });
+						} else {
+							throw new IllegalArgumentException("Wrong argument in the configuration file");
+						}
+
+						jcb.setName(uuid);
+						jcb.setBounds(40 + posX, 60, 100, 25);
+						jcb.putClientProperty("type", v);
+						jcb.putClientProperty("category", objCategory);
+						jcb.putClientProperty("index", Collections.frequency(list, v) - 1);
+						generalPanel.add(jcb);
+
+						posX += 250;
+					}
 					break;
 				}
 			}
 
 			else if (level == 3) {
 				if (objCategory.equalsIgnoreCase("test")) {
+					int posX = 0;
+
+					List<String> list = new ArrayList<String>();
+					for (int y = 0; y < req.length(); y++) {
+
+						String v = req.getString(y);
+						String s = show.getString(y);
+						list.add(v);
+
+						JLabel lbl = new JLabel();
+						lbl.setHorizontalAlignment(SwingConstants.CENTER);
+						lbl.setBounds(10 + posX, 25, 160, 15);
+						lbl.setName(uuid);
+						lbl.setText(s);
+						generalPanel.add(lbl);
+
+						JComboBox<String> jcb = null;
+						if (v.equals("skip")) {
+							jcb = new JComboBox<String>(new String[] { "false", "true" });
+						} else if (v.equals("dependency")) {
+							jcb = new JComboBox<String>(new String[] { "none" });
+						} else if (v.equals("severity level")) {
+							jcb = new JComboBox<String>(new String[] { "medium" });
+						} else {
+							throw new IllegalArgumentException("Wrong argument in the configuration file");
+						}
+
+						jcb.setName(uuid);
+						jcb.setBounds(40 + posX, 60, 100, 25);
+						jcb.putClientProperty("type", v);
+						jcb.putClientProperty("category", objCategory);
+						jcb.putClientProperty("index", Collections.frequency(list, v) - 1);
+						generalPanel.add(jcb);
+
+						posX += 250;
+					}
 					break;
 				}
 			}
