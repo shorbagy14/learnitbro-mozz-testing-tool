@@ -335,7 +335,7 @@ public class Coordinator {
 			case "presence":
 				w.presence((By) locator.get(0), time.getInt(0));
 				break;
-			case "visble":
+			case "visible":
 				w.visibility((By) locator.get(0), time.getInt(0));
 				break;
 			case "clickable":
