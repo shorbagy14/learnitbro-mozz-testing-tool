@@ -974,7 +974,7 @@ public class UI extends JPanel implements ActionListener {
 
 						if (v.equals("locator")) {
 							JComboBox<String> jcb = new JComboBox<String>(
-									new String[] { "xpath", "css", "class", "id", "name" });
+									new String[] { "xpath", "text", "partial text", "css selector", "class name", "id", "name" });
 							jcb.setName(uuid);
 							jcb.setBounds(40, 60 + posY, 100, 25);
 							jcb.putClientProperty("type", "locatorType");
