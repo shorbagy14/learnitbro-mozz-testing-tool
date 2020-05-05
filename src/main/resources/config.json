@@ -1134,6 +1134,21 @@
     "limit": []
   },
   {
+    "name": "Executed JS Result Contains",
+    "category": "script",
+    "platform": "web",
+    "require": [
+      "text",
+      "text"
+    ],
+    "show": [
+      "Command",
+      "Text Value"
+    ],
+    "tooltip": "",
+    "limit": []
+  },
+  {
     "name": "Execute Java File",
     "category": "script",
     "platform": "web",

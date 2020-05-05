@@ -176,10 +176,10 @@ public class Coordinator {
 				a.close();
 				break;
 			case "click and hold":
-				a.close();
+				a.clickAndHold((By) locator.get(0));
 				break;
 			case "release":
-				a.close();
+				a.release();
 				break;
 			case "drag and drop":
 				a.dragAndDrop((By) locator.get(0), (By) locator.get(1));
@@ -341,7 +341,7 @@ public class Coordinator {
 			case "clickable":
 				w.clickable((By) locator.get(0), time.getInt(0));
 				break;
-			case "invisble":
+			case "invisible":
 				w.invisibility((By) locator.get(0), time.getInt(0));
 				break;
 			case "selected":
@@ -445,6 +445,9 @@ public class Coordinator {
 				break;
 			case "executed js result equals":
 				j.executedJSResultEquals(text.getString(0), text.getString(1));
+				break;
+			case "executed js result contains":
+				j.executedJSResultContains(text.getString(0), text.getString(1));
 				break;
 			case "executed java file":
 				j.executeJavaFile(file.getString(0));
