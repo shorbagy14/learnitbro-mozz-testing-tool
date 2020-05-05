@@ -83,9 +83,13 @@ public class ElementHandler {
 	public static By getLocator(String type, String text) {
 		if(type.equals("xpath"))
 			return By.xpath(text);
-		else if(type.equals("class"))
+		else if(type.equals("text"))
+			return By.linkText(text);
+		else if(type.equals("partial text"))
+			return By.partialLinkText(text);
+		else if(type.equals("class name"))
 			return By.className(text);
-		else if(type.equals("css"))
+		else if(type.equals("css selector"))
 			return By.cssSelector(text);
 		else if(type.equals("name"))
 			return By.name(text);

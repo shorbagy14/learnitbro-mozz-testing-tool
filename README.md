@@ -9,7 +9,7 @@ Test any website with a click of a button (open source tool developed by [learni
 This testing tool allows to create automated tests using a user interface
 
 ### Download:
-Click on [here](https://github.com/shorbagy14/learnitbro-mozz-testing-tool/releases/download/1.1.5/learnitbro-mozz-testing-tool-1.1.5.jar) to download the latest build (version 1.1.5)
+Click on [here](https://github.com/shorbagy14/learnitbro-mozz-testing-tool/releases/download/1.1.6/learnitbro-mozz-testing-tool-1.1.6.jar) to download the latest build (version 1.1.6)
 
 ### Steps:
 Using the user interface:
