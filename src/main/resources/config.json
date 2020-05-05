@@ -31,9 +31,9 @@
     "name": "Group",
     "category": "group",
     "platform": "all",
-    "require": [],
+    "require": ["skip", "dependency", "severity level"],
     "show": [
-      "Group"
+      "Skip", "Dependency", "Severity Level"
     ],
     "tooltip": "",
     "limit": []
@@ -42,9 +42,9 @@
     "name": "Test Case",
     "category": "test",
     "platform": "all",
-    "require": [],
+    "require": ["skip", "dependency", "severity level"],
     "show": [
-      "Test Case"
+      "Skip", "Dependency", "Severity Level"
     ],
     "tooltip": "",
     "limit": []

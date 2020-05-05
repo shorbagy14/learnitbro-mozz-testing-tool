@@ -193,8 +193,10 @@ class DefaultMutableTreeNodeSerializer implements JsonSerializer<DefaultMutableT
 			setLevel(myNode, jsonObject);
 		} else if (src.getLevel() == 2) {
 			jsonObject.addProperty("level", "group");
+			setLevel(myNode, jsonObject);
 		} else if (src.getLevel() == 3) {
 			jsonObject.addProperty("level", "testCase");
+			setLevel(myNode, jsonObject);
 		} else if (src.getLevel() == 4) {
 			jsonObject.addProperty("level", "input");
 			src.setAllowsChildren(false);
