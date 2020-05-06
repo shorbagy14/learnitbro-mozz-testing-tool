@@ -641,7 +641,10 @@ public class UI extends JPanel implements ActionListener {
 					JTextField jtf = ((JTextField) item);
 					String type = jtf.getClientProperty("type").toString();
 					int index = Integer.parseInt(jtf.getClientProperty("index").toString());
-					jtf.setText(run.getJSONArray(type).getString(index));
+					if(run.has(type))
+						jtf.setText(run.getJSONArray(type).getString(index));
+					else
+						jtf.setText("");
 				}
 			} else if (item.toString().contains("JComboBox")) {
 				String uuid = ((JComboBox) item).getName();
@@ -649,7 +652,10 @@ public class UI extends JPanel implements ActionListener {
 					JComboBox jcb = ((JComboBox) item);
 					String type = jcb.getClientProperty("type").toString();
 					int index = Integer.parseInt(jcb.getClientProperty("index").toString());
-					jcb.setSelectedItem(run.getJSONArray(type).getString(index));
+					if(run.has(type))
+						jcb.setSelectedItem(run.getJSONArray(type).getString(index));
+					else
+						jcb.setSelectedIndex(0);
 				}
 			}
 		}
