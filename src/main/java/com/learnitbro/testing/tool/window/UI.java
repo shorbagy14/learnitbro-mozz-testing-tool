@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -797,7 +798,7 @@ public class UI extends JPanel implements ActionListener {
 
 		MyTreeNode myNode = new MyTreeNode(node);
 		myNode.setUUID(uuid);
-
+		
 		JLabel lblTop = new JLabel();
 		lblTop.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTop.setBounds(200, 0, 280, 15);
