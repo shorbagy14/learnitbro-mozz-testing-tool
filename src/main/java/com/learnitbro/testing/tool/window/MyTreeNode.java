@@ -77,6 +77,24 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		return false;
 	}
 
+//	boolean isMatch(String value) {
+//
+//		JSONObject levels = list.getJSONObject("levels");
+//		JSONObject superparentIndex = levels.getJSONObject(String.valueOf(getLevel()))
+//				.getJSONObject("superparentIndex");
+//		JSONObject grandparentIndex = superparentIndex.getJSONObject(String.valueOf(getSuperParentIndex()))
+//				.getJSONObject("grandparentIndex");
+//		JSONObject parentIndex = grandparentIndex.getJSONObject(String.valueOf(getGrandParentIndex()))
+//				.getJSONObject("parentIndex");
+//		JSONArray arr = parentIndex.getJSONArray(String.valueOf(getParentIndex()));
+//		for (int i = 0; i < arr.length(); i++) {
+//			JSONObject o = arr.getJSONObject(i);
+//			if(value.equalsIgnoreCase(o.getString("uuid")) && getIndex() == o.getInt("index"))
+//				return true;
+//		}
+//		return false;
+//	}
+
 	public int getLevel() {
 		return node.getLevel();
 	}
@@ -150,30 +168,44 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		jo.put("superparentIndex", getSuperParentIndex());
 
 		all.put(jo);
-		set();
-		System.out.println(list);
 
+//		System.out.println("level : " + getLevel());
+//		System.out.println("parentIndex : " + getParentIndex());
+//		System.out.println("grandparentIndex : " + getGrandParentIndex());
+//		System.out.println("superparentIndex : " + getSuperParentIndex());
+//		System.out.println("index : " + getIndex());
+//		System.out.println();
+
+		set();
+		
+		System.out.println(list);
 	}
 
 	public void set() {
 		if (list.has("levels")) {
+			System.out.println("EXISTING JSON");
 			JSONObject levels = list.getJSONObject("levels");
 			if (levels.has(String.valueOf(getLevel()))) {
+				System.out.println("EXISTING LEVEL");
 				JSONObject superparentIndex = levels.getJSONObject(String.valueOf(getLevel()))
 						.getJSONObject("superparentIndex");
 				if (superparentIndex.has(String.valueOf(getSuperParentIndex()))) {
+					System.out.println("EXISTING SUPERPARENT");
 					JSONObject grandparentIndex = superparentIndex.getJSONObject(String.valueOf(getSuperParentIndex()))
 							.getJSONObject("grandparentIndex");
 					if (grandparentIndex.has(String.valueOf(getGrandParentIndex()))) {
+						System.out.println("EXISTING GRANDPARENT");
 						JSONObject parentIndex = grandparentIndex.getJSONObject(String.valueOf(getGrandParentIndex()))
 								.getJSONObject("parentIndex");
 						if (parentIndex.has(String.valueOf(getParentIndex()))) {
-							JSONArray arr = parentIndex.getJSONArray(String.valueOf(getParentIndex()));
+							System.out.println("EXISTING PARENT");
+							JSONArray parentArr = parentIndex.getJSONArray(String.valueOf(getParentIndex()));
 							JSONObject o = new JSONObject();
 							o.put("uuid", getUUID());
 							o.put("index", getIndex());
-							arr.put(o);
+							parentArr.put(o);
 						} else {
+							System.out.println("NEW PARENT");
 							JSONObject o = new JSONObject();
 							o.put("uuid", getUUID());
 							o.put("index", getIndex());
@@ -182,6 +214,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 							parentIndex.put(String.valueOf(getParentIndex()), a);
 						}
 					} else {
+						System.out.println("NEW GRANDPARENT");
 						JSONObject o = new JSONObject();
 						o.put("uuid", getUUID());
 						o.put("index", getIndex());
@@ -190,10 +223,11 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 						JSONObject parentIndex = new JSONObject();
 						parentIndex.put(String.valueOf(getParentIndex()), a);
 						JSONObject i = new JSONObject();
-						i.put("parentIndex", i);
+						i.put("parentIndex", parentIndex);
 						grandparentIndex.put(String.valueOf(getGrandParentIndex()), i);
 					}
 				} else {
+					System.out.println("NEW SUPERPARENT");
 					JSONObject o = new JSONObject();
 					o.put("uuid", getUUID());
 					o.put("index", getIndex());
@@ -210,6 +244,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 					superparentIndex.put(String.valueOf(getGrandParentIndex()), e);
 				}
 			} else {
+				System.out.println("NEW LEVEL");
 				JSONObject o = new JSONObject();
 				o.put("uuid", getUUID());
 				o.put("index", getIndex());
@@ -230,6 +265,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 				levels.put(String.valueOf(getLevel()), l);
 			}
 		} else {
+			System.out.println("NEW JSON");
 			JSONObject o = new JSONObject();
 			o.put("uuid", getUUID());
 			o.put("index", getIndex());
