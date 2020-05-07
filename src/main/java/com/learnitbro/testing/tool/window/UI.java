@@ -692,18 +692,6 @@ public class UI extends JPanel implements ActionListener {
 		}
 	}
 
-//	private void listNodes(TreeNode node) {
-//		int count = node.getChildCount();
-//		for (int x = 0; x < count; x++) {
-//			if (node.getChildAt(x).getChildCount() == 0) {
-//				System.out.println(node.getChildAt(x));
-//			} else {
-//				System.out.println(node.getChildAt(x));
-//				listNodes(node.getChildAt(x));
-//			}
-//		}
-//	}
-
 	private void disableMenuItems(JMenu menu) {
 		for (int x = 0; x < menu.getItemCount(); x++) {
 			menu.getItem(x).setEnabled(false);
