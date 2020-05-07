@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -641,7 +642,10 @@ public class UI extends JPanel implements ActionListener {
 					JTextField jtf = ((JTextField) item);
 					String type = jtf.getClientProperty("type").toString();
 					int index = Integer.parseInt(jtf.getClientProperty("index").toString());
-					jtf.setText(run.getJSONArray(type).getString(index));
+					if(run.has(type))
+						jtf.setText(run.getJSONArray(type).getString(index));
+					else
+						jtf.setText("");
 				}
 			} else if (item.toString().contains("JComboBox")) {
 				String uuid = ((JComboBox) item).getName();
@@ -649,7 +653,10 @@ public class UI extends JPanel implements ActionListener {
 					JComboBox jcb = ((JComboBox) item);
 					String type = jcb.getClientProperty("type").toString();
 					int index = Integer.parseInt(jcb.getClientProperty("index").toString());
-					jcb.setSelectedItem(run.getJSONArray(type).getString(index));
+					if(run.has(type))
+						jcb.setSelectedItem(run.getJSONArray(type).getString(index));
+					else
+						jcb.setSelectedIndex(0);
 				}
 			}
 		}
@@ -684,18 +691,6 @@ public class UI extends JPanel implements ActionListener {
 			}
 		}
 	}
-
-//	private void listNodes(TreeNode node) {
-//		int count = node.getChildCount();
-//		for (int x = 0; x < count; x++) {
-//			if (node.getChildAt(x).getChildCount() == 0) {
-//				System.out.println(node.getChildAt(x));
-//			} else {
-//				System.out.println(node.getChildAt(x));
-//				listNodes(node.getChildAt(x));
-//			}
-//		}
-//	}
 
 	private void disableMenuItems(JMenu menu) {
 		for (int x = 0; x < menu.getItemCount(); x++) {
@@ -791,7 +786,7 @@ public class UI extends JPanel implements ActionListener {
 
 		MyTreeNode myNode = new MyTreeNode(node);
 		myNode.setUUID(uuid);
-
+		
 		JLabel lblTop = new JLabel();
 		lblTop.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTop.setBounds(200, 0, 280, 15);

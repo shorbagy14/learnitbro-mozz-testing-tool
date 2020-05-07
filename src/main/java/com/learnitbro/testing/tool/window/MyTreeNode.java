@@ -31,7 +31,7 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 	private String uuid;
 	private DefaultMutableTreeNode node;
 
-	static JSONArray all = new JSONArray();
+	static JSONObject list = new JSONObject();
 
 	public MyTreeNode(DefaultMutableTreeNode node) {
 		super(node);
@@ -46,57 +46,25 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 		return uuid;
 	}
 
-	public boolean isUuidExist(String uuid) {
-		String content = null;
-		try {
-			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/node.json"));
-		} catch (Exception e) {
-			throw new ReadFileException("Can't read file", e);
-		}
-		JSONArray array = new JSONArray(content);
-
-		for (int i = 0; i < array.length(); i++) {
-			JSONObject item = (JSONObject) array.get(i);
-			String id = (String) item.get("uuid");
-			if (id.equalsIgnoreCase(uuid))
-				return true;
-		}
-
-		return false;
-	}
-
 	boolean isMatch(String value) {
-		String content = null;
+
 		try {
-			content = JSONHandler.read(new File(FileHandler.getUserDir() + "/temp/node.json"));
+			JSONObject levels = list.getJSONObject("levels");
+			JSONObject superparentIndex = levels.getJSONObject(String.valueOf(getLevel()))
+					.getJSONObject("superparentIndex");
+			JSONObject grandparentIndex = superparentIndex.getJSONObject(String.valueOf(getSuperParentIndex()))
+					.getJSONObject("grandparentIndex");
+			JSONObject parentIndex = grandparentIndex.getJSONObject(String.valueOf(getGrandParentIndex()))
+					.getJSONObject("parentIndex");
+			JSONArray arr = parentIndex.getJSONArray(String.valueOf(getParentIndex()));
+			for (int i = 0; i < arr.length(); i++) {
+				JSONObject o = arr.getJSONObject(i);
+				if (value.equalsIgnoreCase(o.getString("uuid")) && getIndex() == i)
+					return true;
+			}
 		} catch (Exception e) {
-			throw new ReadFileException("Can't read file", e);
+			return false;
 		}
-		JSONArray array = new JSONArray(content);
-
-		for (int i = 0; i < array.length(); i++) {
-			JSONObject item = array.getJSONObject(i);
-			String uuid = item.getString("uuid");
-
-			int index = item.getInt("index");
-			int level = item.getInt("level");
-			int parentIndex = item.getInt("parentIndex");
-			int grandparentIndex = item.getInt("grandparentIndex");
-			int superparentIndex = item.getInt("superparentIndex");
-
-			boolean isUuidMatch = uuid.equalsIgnoreCase(value);
-
-			boolean isIndexMatch = index == getIndex();
-			boolean isLevelMatch = level == getLevel();
-			boolean isParentIndexMatch = parentIndex == getParentIndex();
-			boolean isGrandParentIndexMatch = grandparentIndex == getGrandParentIndex();
-			boolean isSuperParentIndexMatch = superparentIndex == getSuperParentIndex();
-
-			if (isUuidMatch && isIndexMatch && isParentIndexMatch && isGrandParentIndexMatch && isSuperParentIndexMatch
-					&& isLevelMatch)
-				return true;
-		}
-
 		return false;
 	}
 
@@ -164,16 +132,123 @@ public class MyTreeNode extends DefaultMutableTreeNode {
 
 	public void build() {
 
-		JSONObject jo = new JSONObject();
-		jo.put("uuid", getUUID());
-		jo.put("level", getLevel());
-		jo.put("index", getIndex());
-		jo.put("parentIndex", getParentIndex());
-		jo.put("grandparentIndex", getGrandParentIndex());
-		jo.put("superparentIndex", getSuperParentIndex());
+//		System.out.println("level : " + getLevel());
+//		System.out.println("parentIndex : " + getParentIndex());
+//		System.out.println("grandparentIndex : " + getGrandParentIndex());
+//		System.out.println("superparentIndex : " + getSuperParentIndex());
+//		System.out.println("index : " + getIndex());
+//		System.out.println();
 
-		all.put(jo);
-		JSONHandler.write(new File(FileHandler.getUserDir() + "/temp/node.json"), all.toString(1));
+		setLevels();
+		System.out.println(list);
+	}
+
+	public void setLevels() {
+		if (list.has("levels")) {
+			System.out.println("EXISTING JSON");
+			JSONObject levels = list.getJSONObject("levels");
+			if (levels.has(String.valueOf(getLevel()))) {
+				System.out.println("EXISTING LEVEL");
+				JSONObject superparentIndex = levels.getJSONObject(String.valueOf(getLevel()))
+						.getJSONObject("superparentIndex");
+				if (superparentIndex.has(String.valueOf(getSuperParentIndex()))) {
+					System.out.println("EXISTING SUPERPARENT");
+					JSONObject grandparentIndex = superparentIndex.getJSONObject(String.valueOf(getSuperParentIndex()))
+							.getJSONObject("grandparentIndex");
+					if (grandparentIndex.has(String.valueOf(getGrandParentIndex()))) {
+						System.out.println("EXISTING GRANDPARENT");
+						JSONObject parentIndex = grandparentIndex.getJSONObject(String.valueOf(getGrandParentIndex()))
+								.getJSONObject("parentIndex");
+						if (parentIndex.has(String.valueOf(getParentIndex()))) {
+							System.out.println("EXISTING PARENT");
+							JSONArray parentArr = parentIndex.getJSONArray(String.valueOf(getParentIndex()));
+							JSONObject o = new JSONObject();
+							o.put("uuid", getUUID());
+//							o.put("index", getIndex());
+							parentArr.put(o);
+						} else {
+							System.out.println("NEW PARENT");
+							JSONObject o = new JSONObject();
+							o.put("uuid", getUUID());
+//							o.put("index", getIndex());
+							JSONArray a = new JSONArray();
+							a.put(o);
+							parentIndex.put(String.valueOf(getParentIndex()), a);
+						}
+					} else {
+						System.out.println("NEW GRANDPARENT");
+						JSONObject o = new JSONObject();
+						o.put("uuid", getUUID());
+//						o.put("index", getIndex());
+						JSONArray a = new JSONArray();
+						a.put(o);
+						JSONObject parentIndex = new JSONObject();
+						parentIndex.put(String.valueOf(getParentIndex()), a);
+						JSONObject i = new JSONObject();
+						i.put("parentIndex", parentIndex);
+						grandparentIndex.put(String.valueOf(getGrandParentIndex()), i);
+					}
+				} else {
+					System.out.println("NEW SUPERPARENT");
+					JSONObject o = new JSONObject();
+					o.put("uuid", getUUID());
+//					o.put("index", getIndex());
+					JSONArray a = new JSONArray();
+					a.put(o);
+					JSONObject parentIndex = new JSONObject();
+					parentIndex.put(String.valueOf(getParentIndex()), a);
+					JSONObject i = new JSONObject();
+					i.put("parentIndex", parentIndex);
+					JSONObject grandparentIndex = new JSONObject();
+					grandparentIndex.put(String.valueOf(getGrandParentIndex()), i);
+					JSONObject e = new JSONObject();
+					e.put("grandparentIndex", grandparentIndex);
+					superparentIndex.put(String.valueOf(getGrandParentIndex()), e);
+				}
+			} else {
+				System.out.println("NEW LEVEL");
+				JSONObject o = new JSONObject();
+				o.put("uuid", getUUID());
+//				o.put("index", getIndex());
+				JSONArray a = new JSONArray();
+				a.put(o);
+				JSONObject parentIndex = new JSONObject();
+				parentIndex.put(String.valueOf(getParentIndex()), a);
+				JSONObject i = new JSONObject();
+				i.put("parentIndex", parentIndex);
+				JSONObject grandparentIndex = new JSONObject();
+				grandparentIndex.put(String.valueOf(getGrandParentIndex()), i);
+				JSONObject e = new JSONObject();
+				e.put("grandparentIndex", grandparentIndex);
+				JSONObject superparentIndex = new JSONObject();
+				superparentIndex.put(String.valueOf(getSuperParentIndex()), e);
+				JSONObject l = new JSONObject();
+				l.put("superparentIndex", superparentIndex);
+				levels.put(String.valueOf(getLevel()), l);
+			}
+		} else {
+			System.out.println("NEW JSON");
+			JSONObject o = new JSONObject();
+			o.put("uuid", getUUID());
+//			o.put("index", getIndex());
+			JSONArray a = new JSONArray();
+			a.put(o);
+			JSONObject parentIndex = new JSONObject();
+			parentIndex.put(String.valueOf(getParentIndex()), a);
+			JSONObject i = new JSONObject();
+			i.put("parentIndex", parentIndex);
+			JSONObject grandparentIndex = new JSONObject();
+			grandparentIndex.put(String.valueOf(getGrandParentIndex()), i);
+			JSONObject e = new JSONObject();
+			e.put("grandparentIndex", grandparentIndex);
+			JSONObject superparentIndex = new JSONObject();
+			superparentIndex.put(String.valueOf(getSuperParentIndex()), e);
+			JSONObject l = new JSONObject();
+			l.put("superparentIndex", superparentIndex);
+			JSONObject levels = new JSONObject();
+			levels.put(String.valueOf(getLevel()), l);
+			list.put("levels", levels);
+		}
 	}
 }
 
