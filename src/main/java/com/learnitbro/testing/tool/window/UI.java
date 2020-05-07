@@ -819,6 +819,7 @@ public class UI extends JPanel implements ActionListener {
 						list.add(v);
 
 						JLabel lbl = new JLabel();
+						lbl.setVisible(false);
 						lbl.setHorizontalAlignment(SwingConstants.CENTER);
 						lbl.setBounds(10 + posX, 25, 160, 15);
 						lbl.setName(uuid);
@@ -837,6 +838,7 @@ public class UI extends JPanel implements ActionListener {
 							throw new IllegalArgumentException("Wrong argument in the configuration file");
 						}
 
+						jcb.setVisible(false);
 						jcb.setName(uuid);
 						jcb.setBounds(40 + posX, 60, 100, 25);
 						jcb.putClientProperty("type", v);
@@ -862,6 +864,7 @@ public class UI extends JPanel implements ActionListener {
 						list.add(v);
 
 						JLabel lbl = new JLabel();
+						lbl.setVisible(false);
 						lbl.setHorizontalAlignment(SwingConstants.CENTER);
 						lbl.setBounds(10 + posX, 25, 160, 15);
 						lbl.setName(uuid);
@@ -879,6 +882,7 @@ public class UI extends JPanel implements ActionListener {
 							throw new IllegalArgumentException("Wrong argument in the configuration file");
 						}
 
+						jcb.setVisible(false);
 						jcb.setName(uuid);
 						jcb.setBounds(40 + posX, 60, 100, 25);
 						jcb.putClientProperty("type", v);
@@ -904,6 +908,7 @@ public class UI extends JPanel implements ActionListener {
 						list.add(v);
 
 						JLabel lbl = new JLabel();
+						lbl.setVisible(false);
 						lbl.setHorizontalAlignment(SwingConstants.CENTER);
 						lbl.setBounds(10 + posX, 25, 160, 15);
 						lbl.setName(uuid);
@@ -921,6 +926,7 @@ public class UI extends JPanel implements ActionListener {
 							throw new IllegalArgumentException("Wrong argument in the configuration file");
 						}
 
+						jcb.setVisible(false);
 						jcb.setName(uuid);
 						jcb.setBounds(40 + posX, 60, 100, 25);
 						jcb.putClientProperty("type", v);
@@ -952,6 +958,7 @@ public class UI extends JPanel implements ActionListener {
 						list.add(v);
 
 						JTextField jtf = new JTextField();
+						jtf.setVisible(false);
 						jtf.setBounds(150, 55 + posY, 410, 35);
 						jtf.setColumns(10);
 						jtf.setName(uuid);
@@ -961,6 +968,7 @@ public class UI extends JPanel implements ActionListener {
 						generalPanel.add(jtf);
 
 						JLabel lbl = new JLabel();
+						lbl.setVisible(false);
 						lbl.setHorizontalAlignment(SwingConstants.CENTER);
 						lbl.setBounds(260, 25 + posY, 160, 15);
 						lbl.setName(uuid);
@@ -970,6 +978,7 @@ public class UI extends JPanel implements ActionListener {
 						if (v.equals("locator")) {
 							JComboBox<String> jcb = new JComboBox<String>(
 									new String[] { "xpath", "text", "partial text", "css selector", "class name", "id", "name" });
+							jcb.setVisible(false);
 							jcb.setName(uuid);
 							jcb.setBounds(40, 60 + posY, 100, 25);
 							jcb.putClientProperty("type", "locatorType");
