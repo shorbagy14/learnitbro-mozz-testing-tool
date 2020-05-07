@@ -5,6 +5,7 @@ import java.io.File;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
@@ -20,6 +21,7 @@ import com.learnitbro.testing.tool.activity.PictureBuilder;
 import com.learnitbro.testing.tool.activity.ScriptBuilder;
 import com.learnitbro.testing.tool.activity.VideoBuilder;
 import com.learnitbro.testing.tool.activity.WaitBuilder;
+import com.learnitbro.testing.tool.exceptions.FailedTestException;
 
 public class Coordinator {
 
@@ -33,8 +35,9 @@ public class Coordinator {
 	private JSONArray timeValue = null;
 	private JSONArray number = null;
 	private JSONArray numberValue = null;
-	
+
 	private boolean isFail = false;
+	private boolean stopTest = false;
 
 	private WebDriver driver;
 	private SoftAssert softAssert;
@@ -77,45 +80,52 @@ public class Coordinator {
 	public void build(JSONObject obj) {
 		String DESCRIPTION = null;
 		String TEST_DESCRIPTION = null;
+
 		JSONArray group = obj.getJSONArray("children");
 		for (int x = 0; x < group.length(); x++) {
+			if (stopTest)
+				break;
+
 			JSONObject grp = group.getJSONObject(x);
-			
 			DESCRIPTION = grp.getString("userObject");
 			report.createTest(DESCRIPTION);
-			
-			if(Boolean.valueOf(grp.getJSONArray("skip").getString(0))) {
+
+			if (Boolean.valueOf(grp.getJSONArray("skip").getString(0))) {
 				report.skip("Skipping Group: " + DESCRIPTION);
 				continue;
 			}
-			
+
 			JSONArray testCase = grp.getJSONArray("children");
 			for (int y = 0; y < testCase.length(); y++) {
+				if (stopTest)
+					break;
+
 				JSONObject test = testCase.getJSONObject(y);
 				TEST_DESCRIPTION = test.getString("userObject");
-				report.info(TEST_DESCRIPTION);
+				report.info("Test Case Description: " + TEST_DESCRIPTION);
 				JSONArray input = test.getJSONArray("children");
-				
-				if(Boolean.valueOf(test.getJSONArray("skip").getString(0))) {
+
+				if (Boolean.valueOf(test.getJSONArray("skip").getString(0))) {
 					report.skip("Skipping Test Case: " + TEST_DESCRIPTION);
 					continue;
 				}
-				
+
 				try {
-					
+
 					isFail = false;
 					for (int i = 0; i < input.length(); i++) {
 						JSONObject run = input.getJSONObject(i);
 						steps(run);
 					}
-					
-					if(isFail)
-						throw new Exception("Test : " + TEST_DESCRIPTION + " is marked as 'FAIL' due to the errors above");
+
+					if (isFail)
+						throw new FailedTestException(
+								"Test : " + TEST_DESCRIPTION + " is marked as 'FAIL' due to the errors above");
 					else
-						report.pass(TEST_DESCRIPTION + " - PASS");
-				} catch (Exception e) {
-					e.printStackTrace();
-					report.fail(TEST_DESCRIPTION + " - FAIL", e);
+						report.pass("Test Case Result : " + TEST_DESCRIPTION + " - PASS");
+				} catch (FailedTestException e1) {
+					e1.printStackTrace();
+					report.fail("Test Case Result : " + TEST_DESCRIPTION + " - FAIL", e1);
 				}
 			}
 		}
@@ -246,8 +256,12 @@ public class Coordinator {
 				a.selectDropdownByIndex((By) locator.get(0), number.getInt(0));
 				break;
 			}
+		} catch (NoSuchWindowException e2) {
+			report.fatal("NoSuchWindowException: Browser has crashed or was closed by force", e2);
+			stopTest = true;
+			isFail = true;
 		} catch (AssertionError | Exception e) {
-			report.fail("Assert check: FAIL", e);
+			report.fail("Test step failed caused by the exception below", e);
 			isFail = true;
 			softAssert.assertTrue(false);
 		}
@@ -325,8 +339,12 @@ public class Coordinator {
 						userObject);
 				break;
 			}
+		} catch (NoSuchWindowException e2) {
+			report.fatal("NoSuchWindowException: Browser has crashed or was closed by force", e2);
+			stopTest = true;
+			isFail = true;
 		} catch (AssertionError | Exception e) {
-			report.fail("Assert check: FAIL", e);
+			report.fail("Test step failed caused by the exception below", e);
 			isFail = true;
 			softAssert.assertTrue(false);
 		}
@@ -379,8 +397,12 @@ public class Coordinator {
 				w.attributeToBe((By) locator.get(0), text.getString(0), text.getString(1), time.getInt(0));
 				break;
 			}
+		} catch (NoSuchWindowException e2) {
+			report.fatal("NoSuchWindowException: Browser has crashed or was closed by force", e2);
+			stopTest = true;
+			isFail = true;
 		} catch (AssertionError | Exception e) {
-			report.fail("Assert check: FAIL", e);
+			report.fail("Test step failed caused by the exception below", e);
 			isFail = true;
 			softAssert.assertTrue(false);
 		}
@@ -436,8 +458,12 @@ public class Coordinator {
 				Assert.assertFalse(v.volumeEquals((By) locator.get(0), time.getDouble(0)), userObject);
 				break;
 			}
+		} catch (NoSuchWindowException e2) {
+			report.fatal("NoSuchWindowException: Browser has crashed or was closed by force", e2);
+			stopTest = true;
+			isFail = true;
 		} catch (AssertionError | Exception e) {
-			report.fail("Assert check: FAIL", e);
+			report.fail("Test step failed caused by the exception below", e);
 			isFail = true;
 			softAssert.assertTrue(false);
 		}
@@ -466,8 +492,12 @@ public class Coordinator {
 				j.executeJavaFile(file.getString(0));
 				break;
 			}
+		} catch (NoSuchWindowException e2) {
+			report.fatal("NoSuchWindowException: Browser has crashed or was closed by force", e2);
+			stopTest = true;
+			isFail = true;
 		} catch (AssertionError | Exception e) {
-			report.fail("Assert check: FAIL", e);
+			report.fail("Test step failed caused by the exception below", e);
 			isFail = true;
 			softAssert.assertTrue(false);
 		}
@@ -494,8 +524,11 @@ public class Coordinator {
 						userObject);
 				break;
 			}
+		} catch (NoSuchWindowException e2) {
+			stopTest = true;
+			isFail = true;
 		} catch (AssertionError | Exception e) {
-			report.fail("Assert check: FAIL", e);
+			report.fail("Test step failed caused by the exception below", e);
 			isFail = true;
 			softAssert.assertTrue(false);
 		}
