@@ -833,7 +833,7 @@ public class UI extends JPanel implements ActionListener {
 						} else if (v.equals("headless")) {
 							jcb = new JComboBox<String>(new String[] { "false", "true" });
 						} else if (v.equals("platform")) {
-							jcb = new JComboBox<String>(new String[] { "web" });
+							jcb = new JComboBox<String>(new String[] { "web", "mobile web", "mobile app" });
 						} else {
 							throw new IllegalArgumentException("Wrong argument in the configuration file");
 						}
