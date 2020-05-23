@@ -79,12 +79,8 @@ public class Operation {
 			os = "Mac OS X";
 		} else if (p.contains("Win")) {
 			os = "Windows";
-		} else if (p.contains("Android")) {
-			os = "Android";
 		} else if (p.contains("Linux")) {
 			os = "Linux";
-		} else if (p.contains("iPhone") || p.contains("iPad")) {
-			os = "iPhone";
 		}
 		return os;
 	}
@@ -93,7 +89,7 @@ public class Operation {
 		System.out.println("Driver type: " + driverType);
 
 //		eventListener = new WebEventListener(report);
-		
+
 		switch (driverType.toLowerCase()) {
 		case "chrome":
 			WebDriverManager.chromedriver().setup();
@@ -123,7 +119,7 @@ public class Operation {
 				driver = new FirefoxDriver();
 			}
 			break;
-			
+
 		case "ie":
 			WebDriverManager.iedriver().setup();
 			InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
@@ -134,7 +130,7 @@ public class Operation {
 				driver = new InternetExplorerDriver();
 			}
 			break;
-			
+
 		case "edge":
 			WebDriverManager.edgedriver().setup();
 			EdgeOptions edgeOptions = new EdgeOptions();
@@ -145,7 +141,7 @@ public class Operation {
 				driver = new EdgeDriver();
 			}
 			break;
-			
+
 		case "opera":
 			WebDriverManager.operadriver().setup();
 			OperaOptions operaOptions = new OperaOptions();
@@ -156,7 +152,7 @@ public class Operation {
 				driver = new OperaDriver();
 			}
 			break;
-			
+
 		case "safari":
 			SafariOptions safariOptions = new SafariOptions();
 			if (headless) {
@@ -172,14 +168,13 @@ public class Operation {
 		}
 		// driver.manage().window().fullscreen();
 		// driver.manage().window().maximize();
-		
+
 		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-		
+
 //		EventFiringWebDriver driver = new EventFiringWebDriver(driver);
 //		driver.register(eventListener);
 
-		
 		App app = new App();
 		report.info(app.getTitle());
 		report.info(app.getVersion());

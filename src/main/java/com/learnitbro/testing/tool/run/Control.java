@@ -9,7 +9,11 @@ import com.learnitbro.testing.tool.file.JSONHandler;
 
 public class Control {
 
-	public static String browser;
+	private String appType = "com.google.android.youtube";
+	private String appPlatform = "android";
+	private String appActivity = "com.google.android.youtube.HomeActivity";
+	
+	private  String browser;
 	private String platform;
 	private boolean headless;
 
@@ -38,6 +42,13 @@ public class Control {
 			mobile.startServer();
 			mobile.setupReport();
 			mobile.setupDriver();
+			mobile.setupTest(obj);
+			mobile.stopServer();
+		} else if (platform.equalsIgnoreCase("mobile app")) {
+			Mobile mobile = new Mobile(appType, appPlatform, appActivity);
+			mobile.startServer();
+			mobile.setupReport();
+			mobile.setupApp();
 			mobile.setupTest(obj);
 			mobile.stopServer();
 		}

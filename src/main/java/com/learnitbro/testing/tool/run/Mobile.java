@@ -13,7 +13,6 @@ import org.json.JSONObject;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.learnitbro.testing.tool.App;
@@ -21,10 +20,8 @@ import com.learnitbro.testing.tool.os.OS;
 import com.learnitbro.testing.tool.reporting.Report;
 import com.learnitbro.testing.tool.stream.StreamHandler;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.appium.java_client.service.local.flags.GeneralServerFlag;
@@ -44,8 +41,21 @@ public class Mobile {
 	private String driverType;
 	private Report report;
 
+	private String appType;
+	private String appPlatform;
+	private String appActivity;
+
 	public Mobile(String driverType) {
 		this.driverType = driverType;
+		if (report == null) {
+			report = new Report();
+		}
+	}
+
+	public Mobile(String appType, String appPlatform, String appActivity) {
+		this.appType = appType;
+		this.appPlatform = appPlatform;
+		this.appActivity = appActivity;
 		if (report == null) {
 			report = new Report();
 		}
@@ -87,16 +97,10 @@ public class Mobile {
 		Object platform = js.executeScript("return navigator.platform;").toString();
 		String p = String.valueOf(platform);
 		String os = null;
-		if (p.contains("Mac")) {
-			os = "Mac OS X";
-		} else if (p.contains("Win")) {
-			os = "Windows";
-		} else if (p.contains("Android")) {
+		if (p.contains("Android") || p.contains("Linux")) {
 			os = "Android";
-		} else if (p.contains("Linux")) {
-			os = "Linux";
 		} else if (p.contains("iPhone") || p.contains("iPad")) {
-			os = "iPhone";
+			os = "iOS";
 		}
 		return os;
 	}
@@ -219,6 +223,60 @@ public class Mobile {
 		return isServerRunning;
 	}
 
+	public WebDriver setupApp() {
+		System.out.println("App type: " + appPlatform);
+
+		switch (appPlatform.toLowerCase()) {
+		case "android":
+			DesiredCapabilities capabilities_andriod_app = new DesiredCapabilities();
+			capabilities_andriod_app.setCapability("appPackage", appType);
+			capabilities_andriod_app.setCapability("appActivity", appActivity);
+			capabilities_andriod_app.setCapability("platformName", "android");
+			capabilities_andriod_app.setCapability("deviceName", "mozz");
+
+			try {
+				WebDriverManager.chromedriver().setup();
+				driver = new AndroidDriver<MobileElement>(new URL(String.format("http://%s:%s/wd/hub", ADDRESS, PORT)),
+						capabilities_andriod_app);
+			} catch (MalformedURLException e) {
+				System.out.println(e.getMessage());
+			}
+
+			break;
+		case "ios":
+			DesiredCapabilities capabilities_ios_app = new DesiredCapabilities();
+			capabilities_ios_app.setCapability("appPackage", appType);
+			capabilities_ios_app.setCapability("appActivity", appActivity);
+			capabilities_ios_app.setCapability("platformName", "ios");
+			capabilities_ios_app.setCapability("deviceName", "mozz");
+
+			try {
+				driver = new AndroidDriver<MobileElement>(new URL(String.format("http://%s:%s/wd/hub", ADDRESS, PORT)),
+						capabilities_ios_app);
+			} catch (MalformedURLException e) {
+				System.out.println(e.getMessage());
+			}
+
+			break;
+
+		default:
+			throw new WebDriverException("Driver type is not defined");
+		}
+
+		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+
+		App app = new App();
+		report.info(app.getTitle());
+		report.info(app.getVersion());
+		report.pass("Launching app");
+		report.info("App Name: " + appType);
+		report.info("App Platform: " + appPlatform);
+		report.info("Machine OS: " + System.getProperty("os.name"));
+		report.info("Headless: false");
+		return driver;
+	}
+
 //	private void launchAndroidApp() {
 //		DesiredCapabilities caps = new DesiredCapabilities();
 //		caps.setCapability("deviceName", "My Phone");
@@ -251,30 +309,29 @@ public class Mobile {
 
 		switch (driverType.toLowerCase()) {
 		case "chrome":
-			DesiredCapabilities capabilities_andriod = new DesiredCapabilities();
-			capabilities_andriod.setCapability("browserName", "chrome");
-			capabilities_andriod.setCapability("platformName", "android");
-			capabilities_andriod.setCapability("deviceName", "mozz");
+			DesiredCapabilities capabilities_andriod_mobile_web = new DesiredCapabilities();
+			capabilities_andriod_mobile_web.setCapability("browserName", "chrome");
+			capabilities_andriod_mobile_web.setCapability("platformName", "android");
+			capabilities_andriod_mobile_web.setCapability("deviceName", "mozz");
 
 			try {
 				WebDriverManager.chromedriver().setup();
 				driver = new AndroidDriver<MobileElement>(new URL(String.format("http://%s:%s/wd/hub", ADDRESS, PORT)),
-						capabilities_andriod);
+						capabilities_andriod_mobile_web);
 			} catch (MalformedURLException e) {
 				System.out.println(e.getMessage());
 			}
 
 			break;
 		case "safari":
-			DesiredCapabilities capabilities_ios = new DesiredCapabilities();
-			capabilities_ios.setCapability(MobileCapabilityType.PLATFORM_NAME, "iOS");
-//			capabilities_ios.setCapability(MobileCapabilityType.PLATFORM_VERSION, "13.2");
-//			capabilities_ios.setCapability(MobileCapabilityType.AUTOMATION_NAME, "XCUITest");
-//			capabilities_ios.setCapability(MobileCapabilityType.DEVICE_NAME, "iPhone 11");
-			capabilities_ios.setCapability(MobileCapabilityType.BROWSER_NAME, "Safari");
+			DesiredCapabilities capabilities_ios_mobile_web = new DesiredCapabilities();
+			capabilities_ios_mobile_web.setCapability("browserName", "safari");
+			capabilities_ios_mobile_web.setCapability("platformName", "ios");
+			capabilities_ios_mobile_web.setCapability("deviceName", "mozz");
 
 			try {
-				driver = new AndroidDriver<MobileElement>(new URL("http://0.0.0.0:4723/wd/hub"), capabilities_ios);
+				driver = new AndroidDriver<MobileElement>(new URL(String.format("http://%s:%s/wd/hub", ADDRESS, PORT)),
+						capabilities_ios_mobile_web);
 			} catch (MalformedURLException e) {
 				System.out.println(e.getMessage());
 			}
