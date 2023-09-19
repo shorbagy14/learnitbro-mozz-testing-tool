@@ -3,7 +3,7 @@ package com.learnitbro.testing.tool.activity;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.touch.TouchActions;
+//import org.openqa.selenium.interactions.touch.TouchActions;
 
 import com.learnitbro.testing.tool.reporting.Report;
 
@@ -11,7 +11,7 @@ public class TouchBuilder {
 
 	private WebDriver driver;
 	private Report report;
-	private TouchActions touch;
+//	private TouchActions touch;
 
 	@SuppressWarnings("unused")
 	private TouchBuilder() {
@@ -22,8 +22,8 @@ public class TouchBuilder {
 	public TouchBuilder(WebDriver driver, Report report) {
 		this.driver = driver;
 		this.report = report;
-		if (touch == null)
-			touch = new TouchActions(this.driver);
+//		if (touch == null)
+//			touch = new TouchActions(this.driver);
 	}
 
 //	/**
