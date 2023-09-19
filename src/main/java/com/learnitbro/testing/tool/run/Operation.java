@@ -14,8 +14,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
@@ -143,17 +141,6 @@ public class Operation {
 				driver = new EdgeDriver(edgeOptions);
 			} else {
 				driver = new EdgeDriver();
-			}
-			break;
-			
-		case "opera":
-			WebDriverManager.operadriver().setup();
-			OperaOptions operaOptions = new OperaOptions();
-			if (headless) {
-				operaOptions.addArguments("--headless");
-				driver = new OperaDriver(operaOptions);
-			} else {
-				driver = new OperaDriver();
 			}
 			break;
 			

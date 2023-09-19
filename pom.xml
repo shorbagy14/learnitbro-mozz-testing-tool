@@ -5,7 +5,7 @@
 
 	<groupId>com.learnitbro</groupId>
 	<artifactId>mozz.testing.tool</artifactId>
-	<version>1.2.1</version>
+	<version>1.2.2</version>
 	<packaging>jar</packaging>
 
 	<name>Mozz Testing Tool</name>
@@ -16,9 +16,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
-		<selenium.version>3.141.59</selenium.version>
-		<webdrivermanager.version>3.8.1</webdrivermanager.version>
-		<json.version>20180813</json.version>
+		<selenium.version>4.12.1</selenium.version>
+		<webdrivermanager.version>5.5.3</webdrivermanager.version>
+		<json.version>20230618</json.version>
 		<appium.version>7.3.0</appium.version>
 		<extentreports.version>4.0.6</extentreports.version>
 		<ashot.version>1.5.2</ashot.version>
@@ -105,12 +105,6 @@
 			<version>${selenium.version}</version>
 		</dependency>
 
-		<!-- Selenium server -->
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-server</artifactId>
-			<version>${selenium.version}</version>
-		</dependency>
 
 		<!-- Web Driver Manager -->
 		<dependency>
